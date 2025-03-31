@@ -1,0 +1,73 @@
+#!/bin/sh
+
+# 첫 번째 인자로 커밋 메시지 파일 경로를 받습니다.
+COMMIT_MSG_FILE=$1
+
+# 커밋 메시지 파일 내용을 읽습니다.
+MESSAGE=$(cat "$COMMIT_MSG_FILE")
+
+# 머지 커밋 메시지인 경우 스킵
+if echo "$MESSAGE" | grep -q "^Merge"; then
+  exit 0
+fi
+
+# 이미 이모지가 포함된 경우 변경을 스킵합니다.
+if echo "$MESSAGE" | grep -qE "^(✨ feat:|🐛 fix:|📝 docs:|💄 style:|♻️ refactor:|💬 comment:|🔄 rename:|🗑 remove:|🚀 chore:|🎨 design:|✅ test:|🚑️ !HOTFIX:|💥 !BREAKING CHANGE:)"; then
+  exit 0
+fi
+
+# 커밋 타입과 대체할 이모지를 정의합니다.
+replace_type() {
+  sed -i "s/^feat:/✨ feat:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^fix:/🐛 fix:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^docs:/📝 docs:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^style:/💄 style:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^refactor:/♻️ refactor:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^comment:/💬 comment:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^rename:/🔄 rename:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^remove:/🗑 remove:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^chore:/🚀 chore:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^design:/🎨 design:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^test:/✅ test:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^!HOTFIX:/🚑️ !HOTFIX:/g" "$COMMIT_MSG_FILE"
+  sed -i "s/^!BREAKING CHANGE:/💥 !BREAKING CHANGE:/g" "$COMMIT_MSG_FILE"
+}
+
+# 정규식으로 메시지 형식 검증 (필요 시 로직 추가)
+COMMITFORMAT="^(feat|fix|docs|style|refactor|comment|rename|remove|chore|design|test|!HOTFIX|!BREAKING CHANGE): .*"
+
+if [[ "$MESSAGE" =~ $COMMITFORMAT ]]; then
+  replace_type
+else
+  echo ""
+  echo " ꧁ Commit Message 포맷을 아래 예시와 같이 지켜주세요. ꧂"
+  echo "       사용가능한 commit의 Prefix는 아래와 같습니다."
+  echo ""
+  echo "======================= 반드시 콜론(:) 을 붙여야 합니다. ========================="
+  echo ""
+  echo "  feat:             새로운 기능을 추가"
+  echo "  fix:              버그 수정"
+  echo "  docs:             문서 수정"
+  echo "  style:            코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우"
+  echo "  refactor:         코드 리팩토링"
+  echo "  comment:          필요한 주석 추가 및 변경"
+  echo "  rename:           파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우"
+  echo "  remove:           파일을 삭제하는 작업만 수행한 경우"
+  echo "  chore:            빌드 업무 수정, 패키지 매니저 수정"
+  echo "  design:           CSS 등 사용자 UI 디자인 변경"
+  echo "  test:             빌드 업무 수정, 패키지 매니저 수정, 패키지 관리자 구성 등 업데이트, Production Code 변경 없음"
+  echo "  !HOTFIX:          급하게 치명적인 버그를 고쳐야하는 경우"
+  echo "  !BREAKING CHANGE: 커다란 API 변경의 경우"
+  echo ""
+  echo "=================================================================================="
+  echo ""
+  echo -e " 아래 EXAMPLE과 같이 첫째 줄에 Prefix와 함께 요약을 남기고 한 줄 개행 후 상세 내용을 작성해주세요."
+  echo ""
+  echo "================================== E X A M P L E ================================="
+  echo ""
+  echo -e " feat: 기능 A 추가\n\n  1. 000 파일 추가 \n  2. 111 파일 추가\n  3. 222 관련 비즈니스 로직 추가"
+  echo ""
+  echo "=================================================================================="
+  echo ""
+  exit 1
+fi
