@@ -5,7 +5,7 @@ public static class ResManager
 {
     public static async Task<GameObject> CreateUI(System.Type type)
     {
-        var request = Resources.LoadAsync<GameObject>("Prefabs/Remote/" + type.Name);
+        var request = Resources.LoadAsync<GameObject>("Prefabs/UI/Remote/" + type.Name);
 
         await request;
 #if UNITY_EDITOR
