@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public class GameSceneManager : MonoBehaviour 
+namespace QQ
 {
-    private void Start()
+    public class GameSceneManager : MonoBehaviour
     {
-        UIDialogue.Instantiate();
+        private void Start()
+        {
+            UIDialogue.Instantiate();
+        }
     }
 }

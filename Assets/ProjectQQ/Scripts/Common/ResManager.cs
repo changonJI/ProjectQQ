@@ -1,18 +1,23 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public static class ResManager
+namespace QQ
 {
-    public static async UniTask<GameObject> Instantiate(System.Type type)
+    public static class ResManager
     {
-        var resource = await Resources.LoadAsync<GameObject>("Prefabs/UI/Remote/" + type.Name);
-#if UNITY_EDITOR
-        if (resource == null)
+        private const string uiPath = "Prefabs/UI/Remote/";
+
+        public static async UniTask<GameObject> Instantiate(System.Type type)
         {
-            Debug.LogError($"{nameof(type)} null");
-            return null;
-        }
+            var resource = await Resources.LoadAsync<GameObject>(uiPath + type.Name);
+#if UNITY_EDITOR
+            if (resource == null)
+            {
+                Debug.LogError($"{nameof(type)} null");
+                return null;
+            }
 #endif
-        return GameObject.Instantiate(resource as GameObject);
+            return GameObject.Instantiate(resource as GameObject);
+        }
     }
 }

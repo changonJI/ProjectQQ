@@ -1,22 +1,23 @@
-using QQ;
-
-public class UIDialogue : UI<UIDialogue>
+namespace QQ
 {
-    protected override UIDepth depth => UIDepth.Fixed1;
-
-    protected override void OnFocus()
+    public class UIDialogue : UI<UIDialogue>
     {
-    }
+        protected override UIDepth depth => UIDepth.Fixed1;
 
-    protected override void OnInit()
-    {
-    }
+        protected override void OnFocus()
+        {
+        }
 
-    protected override void OnLostFocus()
-    {
-    }
+        protected override void OnInit()
+        {
+        }
 
-    protected override void OnStart()
-    {
+        protected override void OnLostFocus()
+        {
+        }
+
+        protected override void OnStart()
+        {
+        }
     }
 }
