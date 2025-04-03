@@ -19,11 +19,11 @@ namespace QQ
         public bool isActive { get; private set; }
 
 
-        public static async void CreateUI()
+        public static async void Instantiate()
         {
             if (instance == null)
             {
-                await ResManager.CreateUI(typeof(T));
+                await ResManager.Instantiate(typeof(T));
             }
 
             instance.SetActive(true);

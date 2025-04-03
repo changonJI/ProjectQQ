@@ -1,18 +1,18 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public static class ResManager
 {
-    public static async Task<GameObject> CreateUI(System.Type type)
+    public static async UniTask<GameObject> Instantiate(System.Type type)
     {
-        var request = Resources.LoadAsync<GameObject>("Prefabs/UI/Remote/" + type.Name);
-
-        await request;
+        var resource = await Resources.LoadAsync<GameObject>("Prefabs/UI/Remote/" + type.Name);
 #if UNITY_EDITOR
-        if (request.asset == null)
+        if (resource == null)
+        {
             Debug.LogError($"{nameof(type)} null");
+            return null;
+        }
 #endif
-
-        return GameObject.Instantiate(request.asset as GameObject);
+        return GameObject.Instantiate(resource as GameObject);
     }
 }

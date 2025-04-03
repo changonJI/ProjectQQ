@@ -4,6 +4,6 @@ public class GameSceneManager : MonoBehaviour
 {
     private void Start()
     {
-        UIDialogue.CreateUI();
+        UIDialogue.Instantiate();
     }
 }
