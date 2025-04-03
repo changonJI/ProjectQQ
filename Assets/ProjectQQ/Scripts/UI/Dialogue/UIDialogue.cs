@@ -1,6 +1,6 @@
 namespace QQ
 {
-    public class UIDialogue : UI<UIDialogue>
+    public sealed class UIDialogue : UI<UIDialogue>
     {
         protected override UIDepth depth => UIDepth.Fixed1;
 
