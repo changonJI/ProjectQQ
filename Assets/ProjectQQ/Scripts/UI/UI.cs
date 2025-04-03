@@ -9,8 +9,8 @@ namespace QQ
         protected static T instance;
 
         private RectTransform myTransform;
-        protected GameObject myGameObject;
         private Canvas canvas;
+        protected GameObject myGameObject;
 
         protected abstract UIDepth depth { get; }
         public virtual Layer layer => Layer.UI;
