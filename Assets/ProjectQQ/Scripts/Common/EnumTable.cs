@@ -9,6 +9,12 @@ namespace QQ
         Popup,
     }
 
+    public enum UIType
+    {
+        Main = 0,
+        Back = 1,
+    }
+
     public enum Layer
     {
         Default = 0,

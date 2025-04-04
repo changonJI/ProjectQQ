@@ -1,40 +1,46 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace QQ
 {
+    /// <summary>
+    /// UI 정보 클래스
+    /// </summary>
     [RequireComponent(typeof(Canvas), typeof(GraphicRaycaster))]
-    public abstract class UI<T> : MonoBehaviour where T : UI<T>
+    public abstract class UI : MonoBehaviour
     {
-        protected static T instance;
+        //protected static T instance;
 
         private RectTransform myTransform;
         private Canvas canvas;
         protected GameObject myGameObject;
 
-        protected abstract UIDepth depth { get; }
+        // UIType
+        public abstract UIType uiType { get; }
+        // UIRoot 위치
+        public abstract UIDepth uiDepth { get; }
+        // RectTransform Layer
         public virtual Layer layer => Layer.UI;
-
-        private bool isStart;
+        // 기본값 false. Init 된 이후 start() 타면 true로 변경
+        private bool isStart;   
+        // UI 활성화 상태 체크
         public bool isActive { get; private set; }
 
-
-        public static async void Instantiate()
-        {
-            if (instance == null)
-            {
-                await ResManager.Instantiate(typeof(T));
-            }
-
-            instance.SetActive(true);
-        }
+        // UIRoot 에 추가될때 Action
+        public static event System.Action<UI> OnCreateAction;
+        public static event System.Action<UI> OnFocusAction;
+        public static event System.Action<UI> OnLostFocusAction;
 
         protected virtual void Awake()
         {
-            instance = this as T;
             myGameObject = gameObject;
             myTransform = GetComponent<RectTransform>();
             canvas = GetComponent<Canvas>();
+
+            OnCreateAction?.Invoke(this);
+
+            UIRoot.Instance.SetUI(this, myGameObject, uiDepth, (int)layer);
 
             OnInit();
         }
@@ -65,7 +71,8 @@ namespace QQ
             if (!isStart)
                 return;
 
-            myTransform.SetAsLastSibling(); // 하이라키창 최하단으로 내리기(UI상 맨앞에 오도록)
+            // 하이라키창 최하단으로 내리기(UI상 맨앞에 오도록)
+            myTransform.SetAsLastSibling(); 
 
             OnFocus();
         }
@@ -96,10 +103,21 @@ namespace QQ
         {
             LostFocus();
 
-            instance = null;
             myGameObject = null;
             myTransform = null;
             canvas = null;
+        }
+
+        public virtual void Close()
+        {
+            if (uiType == UIType.Back && isActive)
+            {
+                SetActive(false);
+            }
+            else if(uiType == UIType.Main)
+            {
+                return;
+            }
         }
 
         public void SetActive(bool isActive)
@@ -113,9 +131,56 @@ namespace QQ
                 canvas.enabled = isActive;
 
             if (isActive)
+            {
                 Focus();
+                OnFocusAction?.Invoke(this);
+            }
             else
+            {
                 LostFocus();
+                OnLostFocusAction?.Invoke(this);
+            }
+
+        }
+    }
+
+    /// <summary>
+    /// UI 제네릭 생성 클래스
+    /// </summary>
+    public abstract class UI<T> : UI where T : UI<T>
+    {
+        protected static T instance;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            instance = this as T;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
+            instance = null;
+        }
+
+        public static void Instantiate()
+        {
+            InstantiateUI().Forget();
+        }
+
+        private static async UniTask<T> InstantiateUI()
+        {
+            if (instance == null)
+            {
+                await ResManager.Instantiate(typeof(T));
+                // 인스턴싱 이후 awake 진입
+            }
+
+            instance.SetActive(true);
+
+            return instance;
         }
     }
 }

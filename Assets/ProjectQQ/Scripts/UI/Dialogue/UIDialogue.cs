@@ -2,7 +2,8 @@ namespace QQ
 {
     public sealed class UIDialogue : UI<UIDialogue>
     {
-        protected override UIDepth depth => UIDepth.Fixed1;
+        public override UIType uiType => UIType.Back;
+        public override UIDepth uiDepth => UIDepth.Fixed1;
 
         protected override void OnFocus()
         {
@@ -18,6 +19,7 @@ namespace QQ
 
         protected override void OnStart()
         {
+            
         }
     }
 }
