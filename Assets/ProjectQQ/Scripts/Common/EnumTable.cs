@@ -1,5 +1,11 @@
 namespace QQ
 {
+    public enum TableType
+    {
+        None = 0,
+        Language = 1,
+    }
+
     public enum UIDepth
     {
         HUD = 0,

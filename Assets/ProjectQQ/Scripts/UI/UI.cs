@@ -10,8 +10,6 @@ namespace QQ
     [RequireComponent(typeof(Canvas), typeof(GraphicRaycaster))]
     public abstract class UI : MonoBehaviour
     {
-        //protected static T instance;
-
         private RectTransform myTransform;
         private Canvas canvas;
         protected GameObject myGameObject;
