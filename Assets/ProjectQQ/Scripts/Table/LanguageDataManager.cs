@@ -28,8 +28,12 @@ namespace QQ
             for (int i = 0; i < rows.Length; i++)
             {
                 string[] columns = rows[i].Split('\t');
-                LanguageData data = new LanguageData();
 
+                // key값 비어있으면 넘김
+                if (string.IsNullOrEmpty(columns[0]))
+                    continue;
+
+                LanguageData data = new LanguageData();
                 data.SetData(columns.ToList());
 
                 if (!dic_Data.ContainsKey(data.ID))
