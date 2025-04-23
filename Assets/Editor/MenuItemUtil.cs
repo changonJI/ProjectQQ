@@ -12,7 +12,7 @@ public static class MenuItemUtil
     [MenuItem("Util/OpenGameScene " + alt + shift + "1", false, 0)]
     private static void OpenGameScene()
     {
-        EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity");
+        EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
     }
     #endregion
 
