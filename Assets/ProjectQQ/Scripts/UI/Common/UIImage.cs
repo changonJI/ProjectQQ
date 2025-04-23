@@ -15,21 +15,6 @@ namespace QQ
         [SerializeField] private bool flipX;
         [SerializeField] private bool flipY;
 
-//        protected override void Awake()
-//        {
-//            graphic = GetComponent<Graphic>();
-//        }
-
-//#if UNITY_EDITOR
-//        protected override void OnValidate()
-//        {
-//            if (graphic != null)
-//            {
-//                graphic.SetVerticesDirty();
-//            }
-//        }
-//#endif
-
         public void ModifyMesh(Mesh mesh) { }
 
         public void ModifyMesh(VertexHelper vh)
