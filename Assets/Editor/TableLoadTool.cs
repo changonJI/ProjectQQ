@@ -97,7 +97,7 @@ namespace QQ
                     if (GUILayout.Button("Load And Save Data"))
                     {
                         ActiveBtnTableLocalLoad = false;
-                        LoadAndSaveData(sheetInfos[i].type, GetGoogleSheetAddress(sheetInfos[i].address, 
+                        LoadAndSaveData(sheetInfos[i].type, TableDataManager.GetGoogleSheetAddress(sheetInfos[i].address, 
                                                        sheetInfos[i].range,
                                                        sheetInfos[i].sheetID)).Forget();
                     }
@@ -116,7 +116,7 @@ namespace QQ
 
         public async UniTaskVoid TableLoadData()
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(GetGoogleSheetAddress(tableInfoURL, "A2:D2", "0")))
+            using (UnityWebRequest www = UnityWebRequest.Get(TableDataManager.GetGoogleSheetAddress(tableInfoURL, "A2:D2", "0")))
             {
                 www.timeout = 60;
 
@@ -195,22 +195,8 @@ namespace QQ
         }
 
         /// <summary>
-        /// 복사해온 URL 에서 edit?usp=sharing 제거후 제거된 부분에 export?format=tsv&range=시트 범위&gid=시트ID값
+        /// IDataManager를 구현하는 모든 테이블을 찾아 로컬 테이블 리스트에 추가
         /// </summary>
-        /// <param name="address">https:// ~ /</param>
-        /// <param name="range">구글 시트 Range</param>
-        /// <param name="sheetID">시트 고유 ID</param>
-        /// <returns></returns>
-        public static string GetGoogleSheetAddress(string address, string range, string sheetID)
-        {
-            if (address.Contains("edit?usp=sharing"))
-            {
-                return address.Replace("edit?usp=sharing", $"export?format=tsv&range={range}&gid={sheetID}");
-            }
-            else
-                return StringBuilderPool.Get(address, "/export?format=tsv&range={range}&gid={sheetID}");
-        }
-
         private void GetTableAssembly()
         {
             isLocalTableLoading = true;
