@@ -16,12 +16,12 @@ namespace QQ
 
         public void SaveData(string str_Data)
         {
-            TableData.SaveData(nameof(LanguageData), str_Data);
+            TableDataManager.SaveData(nameof(LanguageData), str_Data);
         }
 
         public void LoadData()
         {
-            string str_Data = TableData.LoadData(nameof(LanguageData));
+            string str_Data = TableDataManager.LoadData(nameof(LanguageData));
 
             string[] rows = str_Data.Split('\n');
 
