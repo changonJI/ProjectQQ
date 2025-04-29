@@ -168,17 +168,18 @@ namespace QQ
             InstantiateUI().Forget();
         }
 
-        private static async UniTask<T> InstantiateUI()
+        private static async UniTaskVoid InstantiateUI()
         {
             if (instance == null)
             {
                 await ResManager.Instantiate(typeof(T));
-                // 인스턴싱 이후 awake 진입
             }
 
+#if UNITY_EDITOR
+            if (instance == null)
+                Debug.LogError($"{typeof(T)} type이 UI에 추가되어 있지 않거나, resource 가 존재하지 않음");
+#endif
             instance.SetActive(true);
-
-            return instance;
         }
     }
 }
