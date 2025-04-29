@@ -1,23 +1,17 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace QQ
 {
     public sealed class MainSceneManager : MonoBehaviour
     {
-        private void Start()
+        private void Awake()
         {
             LanguageDataManager.Instance.LoadData();
         }
 
-        public void TestSceneLoad()
+        private void Start()
         {
-            SceneManager.LoadScene("GameScene");
-        }
-
-        public void Test()
-        {
-            Debug.Log("Test");
+            UIMainScene.Instantiate();
         }
     }
 }
