@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -66,9 +67,10 @@ namespace QQ {
         {
             SetParent(obj.transform, depth);
             SetLayer(obj, layer);
+            SetOffset(obj.GetComponent<RectTransform>());
         }
 
-        public void SetParent(Transform obj, UIDepth depth)
+        private void SetParent(Transform obj, UIDepth depth)
         {
             switch (depth)
             {
@@ -90,7 +92,7 @@ namespace QQ {
             }
         }
 
-        public void SetLayer(GameObject obj, int layer)
+        private void SetLayer(GameObject obj, int layer)
         {
             obj.layer = layer; 
             
@@ -100,14 +102,22 @@ namespace QQ {
             }
         }
 
+        private void SetOffset(RectTransform rect)
+        {
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
         /// <summary>
         /// 씬전환시 UI 초기화
         /// </summary>
-        public void ClearUI()
+        public async UniTask ClearUI()
         {
-            for (int i = 0; i < uiList.Count; i++)
+            foreach(var ui in uiList)
             {
-                Destroy(uiList[i]);
+                Destroy(ui.gameObject);
+
+                await UniTask.Yield();
             }
 
             uiList.Clear();
