@@ -6,7 +6,12 @@ namespace QQ
 {
     public class LoadingSceneManager : MonoBehaviour
     {
+        public const string mainSceneName = "MainScene";
+        public const string gameSceneName = "GameScene";
+        public const string loadingSceneName = "LoadingScene";
+
         public static string nextScene;
+
         private static float fakeTime = 0.5f;
 
         [SerializeField] private UIProgressBar progressBar;
@@ -34,9 +39,13 @@ namespace QQ
 
             progressBar.Init();
 
+            // UIRoot 초기화
+            await UIRoot.Instance.ClearUI();
+
             while (!op.isDone)
             {
-                await UniTask.Yield(); // 프레임마다 대기
+                // 프레임마다 대기
+                await UniTask.Yield();
 
                 if (op.progress < 0.9f)
                 {
@@ -45,11 +54,10 @@ namespace QQ
                 else
                 {
                     fakeTimer += Time.unscaledDeltaTime * fakeTime;
-                    Debug.Log($"Loading : {fakeTimer}");
-
+                    
                     progressBar.CurValue = Mathf.Lerp(0.9f, 1f, fakeTimer);
 
-                    if(progressBar.CurValue >= 1f)
+                    if (progressBar.CurValue >= 1f)
                     {
                         op.allowSceneActivation = true;
                         return;
@@ -57,6 +65,5 @@ namespace QQ
                 }
             }
         }
-
     }
 }
