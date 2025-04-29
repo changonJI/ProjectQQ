@@ -1,77 +1,79 @@
-using QQ;
 using UnityEngine;
 
-public class UIProgressBar : MonoBehaviour
+namespace QQ
 {
-    [SerializeField] private UIImage ground;
-    [SerializeField] private float minValue = 0f;
-    [SerializeField] private float maxValue = 1f;
-    [SerializeField] private float curValue = 0f;
-    [Header("Reverses when the type is not filled")]
-    [SerializeField] private bool isReverse = false;
-
-    private Vector2 anchorMin = Vector2.zero;
-    private Vector2 anchorMax = Vector2.one;
-
-    private float nomalizedCurValue => Mathf.InverseLerp(minValue, maxValue, curValue);
-    public float CurValue
+    public class UIProgressBar : MonoBehaviour
     {
-        get 
+        [SerializeField] private UIImage ground;
+        [SerializeField] private float minValue = 0f;
+        [SerializeField] private float maxValue = 1f;
+        [SerializeField] private float curValue = 0f;
+        [Header("Reverses when the type is not filled")]
+        [SerializeField] private bool isReverse = false;
+
+        private Vector2 anchorMin = Vector2.zero;
+        private Vector2 anchorMax = Vector2.one;
+
+        private float nomalizedCurValue => Mathf.InverseLerp(minValue, maxValue, curValue);
+        public float CurValue
         {
-            return curValue; 
+            get
+            {
+                return curValue;
+            }
+
+            set
+            {
+                curValue = curValue = Mathf.Clamp(value, minValue, maxValue);
+                UpdateProgress();
+            }
         }
 
-        set 
-        { 
-            curValue = curValue = Mathf.Clamp(value, minValue, maxValue);
-            UpdateProgress();
-        }
-    }
-
-    public void Init(float min = 0f, float max = 1f)
-    {
-        minValue = min;
-        maxValue = max;
-    }
-
-    public void SetGroundColor(Color color)
-    {
-        ground.color = color;
-    }
-
-    public void UpdateProgress()
-    {
-        if (ground == null) return;
-
-        if(ground.type == UnityEngine.UI.Image.Type.Filled)
+        public void Init(float min = 0f, float max = 1f)
         {
-            ground.fillAmount = nomalizedCurValue;
+            minValue = min;
+            maxValue = max;
         }
-        else
+
+        public void SetGroundColor(Color color)
         {
-            if(isReverse)
-                anchorMin[0] = 1f - nomalizedCurValue;
+            ground.color = color;
+        }
+
+        public void UpdateProgress()
+        {
+            if (ground == null) return;
+
+            if (ground.type == UnityEngine.UI.Image.Type.Filled)
+            {
+                ground.fillAmount = nomalizedCurValue;
+            }
             else
-                anchorMax[0] = nomalizedCurValue;
+            {
+                if (isReverse)
+                    anchorMin[0] = 1f - nomalizedCurValue;
+                else
+                    anchorMax[0] = nomalizedCurValue;
+            }
+
+            ground.rectTransform.anchorMin = anchorMin;
+            ground.rectTransform.anchorMax = anchorMax;
+
+            ground.rectTransform.offsetMin = Vector2.zero;
+            ground.rectTransform.offsetMax = Vector2.zero;
         }
-
-        ground.rectTransform.anchorMin = anchorMin;
-        ground.rectTransform.anchorMax = anchorMax;
-
-        ground.rectTransform.offsetMin = Vector2.zero;
-        ground.rectTransform.offsetMax = Vector2.zero;
-    }
 
 #if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (ground == null)
+        private void OnValidate()
         {
-            ground = new GameObject("ground").AddComponent<UIImage>();
-            ground.transform.SetParent(transform);
+            if (ground == null)
+            {
+                ground = new GameObject("ground").AddComponent<UIImage>();
+                ground.transform.SetParent(transform);
+            }
+
+            UpdateProgress();
         }
-        
-        UpdateProgress();
-    }
 #endif
+    }
 }
