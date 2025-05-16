@@ -5,18 +5,15 @@ namespace QQ
 {
     public static class ResManager
     {
-        private const string uiPath = "Prefabs/UI/Remote/";
-        
+        // Local
+        private const string uiLocalPath = "Prefabs/UI/Remote/";
+
         public static async UniTask<GameObject> Instantiate(System.Type type)
         {
-            var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(uiPath,type.Name));
-#if UNITY_EDITOR
-            if (resource == null)
-            {
-                Debug.LogError($"{nameof(type)} null");
-                return null;
-            }
-#endif
+            var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(uiLocalPath, type.Name));
+
+            return GameObject.Instantiate(resource as GameObject);
+        }
             return GameObject.Instantiate(resource as GameObject);
         }
     }

@@ -19,6 +19,7 @@ namespace QQ
     {
         Main = 0,
         Back = 1,
+        Destroy = 2,
     }
 
     public enum Layer
