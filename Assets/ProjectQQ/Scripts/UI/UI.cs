@@ -7,7 +7,7 @@ namespace QQ
     /// <summary>
     /// UI 정보 클래스
     /// </summary>
-    [RequireComponent(typeof(Canvas), typeof(GraphicRaycaster))]
+    [RequireComponent(typeof(Canvas), typeof(GraphicRaycaster), typeof(CanvasGroup))]
     public abstract class UI : MonoBehaviour
     {
         private RectTransform myTransform;
@@ -111,6 +111,11 @@ namespace QQ
             if (uiType == UIType.Back && isActive)
             {
                 SetActive(false);
+            }
+            else if(uiType == UIType.Destroy && isActive)
+            {
+                SetActive(false);
+                Destroy(this.gameObject);
             }
             else if(uiType == UIType.Main)
             {
