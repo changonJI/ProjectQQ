@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class UITweenColor : MonoBehaviour
 {
     private Image image;
+    [SerializeField] private Color startColor;
     [SerializeField] private Color EndColor;
     [SerializeField] private float duration = 1f;
     [SerializeField] private Ease ease = Ease.Linear;
@@ -17,6 +18,8 @@ public class UITweenColor : MonoBehaviour
 
         if (image == null)
             return;
+
+        image.color = startColor;
 
         image.DOColor(EndColor, duration)
             .SetEase(ease)
