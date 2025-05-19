@@ -29,7 +29,6 @@ namespace QQ
         public static event System.Action<UI> OnCreateAction;
         public static event System.Action<UI> OnFocusAction;
         public static event System.Action<UI> OnLostFocusAction;
-
         protected virtual void Awake()
         {
             myGameObject = gameObject;
@@ -51,8 +50,9 @@ namespace QQ
         protected virtual void Start()
         {
             OnStart();
-
             isStart = true;
+
+            SetActive(true);
         }
 
         /// <summary>
@@ -143,7 +143,6 @@ namespace QQ
                 LostFocus();
                 OnLostFocusAction?.Invoke(this);
             }
-
         }
     }
 
@@ -153,6 +152,12 @@ namespace QQ
     public abstract class UI<T> : UI where T : UI<T>
     {
         protected static T instance;
+
+        // UI 생성 후 콜백 메소드
+        private System.Action OnOkCallback;
+        private System.Action OnCloseCallback;
+        // UI 생성 후 파라미터
+        private object[] storedParams;
 
         protected override void Awake()
         {
@@ -168,23 +173,68 @@ namespace QQ
             instance = null;
         }
 
-        public static void Instantiate()
+        /// <summary>
+        ///  UI 생성 메소드
+        /// </summary>
+        public static void Instantiate(System.Action okAction = null, 
+                                       System.Action closeAction = null,
+                                       params object[] args)
         {
-            InstantiateUI().Forget();
+            InstantiateUI(okAction, closeAction, args).Forget();
         }
 
-        private static async UniTaskVoid InstantiateUI()
+        private static async UniTaskVoid InstantiateUI(System.Action okAction, 
+                                                       System.Action closeAction, 
+                                                       params object[] args)
         {
             if (instance == null)
             {
                 await ResManager.Instantiate(typeof(T));
             }
 
-#if UNITY_EDITOR
-            if (instance == null)
-                Debug.LogError($"{typeof(T)} type이 UI에 추가되어 있지 않거나, resource 가 존재하지 않음");
-#endif
-            instance.SetActive(true);
+            instance.OnOkCallback = okAction;
+            instance.OnCloseCallback = closeAction;
+            instance.storedParams = args;
+        }
+
+        protected void OnClickOk()
+        {
+            OnOkCallback?.Invoke();
+        }
+
+        protected void OnClickClose()
+        {
+            OnCloseCallback?.Invoke();
+        }
+
+        protected int GetParamToInt(int index)
+        {
+            if (storedParams.IsValidArrange(index))
+            {
+                return (int)storedParams[index];
+            }
+
+            return 0;
+        }
+
+        protected float GetParamToFloat(int index)
+        {
+            if (storedParams.IsValidArrange(index))
+            {
+                return (float)storedParams[index];
+            }
+
+            return 0f;
+        }
+
+        protected string GetParamToString(int index)
+        {
+            if (storedParams.IsValidArrange(index))
+            {
+                return storedParams[index].ToString();
+            }
+
+            return string.Empty;
         }
     }
 }
