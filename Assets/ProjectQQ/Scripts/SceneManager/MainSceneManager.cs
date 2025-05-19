@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace QQ
 {
@@ -16,19 +14,11 @@ namespace QQ
 
         private void Start()
         {
+            // InputManager 추가 필요
+            // SoundManager 추가 필요
+            // EffectManager 추가 필요
+            // PoolManager 추가 필요
             UIMainScene.Instantiate();
-
-            // 플레이어 데이터 확인, 없으면 이름 입력 팝업 띄우기 요청
-            if (true)
-            {   // 저장된 데이터 없는 경우
-                UIPopupManager.OpenPrompt(inputName =>
-                {
-                    // 이름 저장 로직 추가 필요
-#if UNITY_EDITOR
-                    Debug.Log($"이름 '{inputName}' 입력함");
-#endif
-                }, true);
-            }
         }
     }
 }
