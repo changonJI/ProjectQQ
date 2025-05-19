@@ -11,7 +11,8 @@ namespace QQ
     {
         private UIButton owner;
         SerializedProperty m_OnClickProperty;
-        SerializedProperty m_OnClickLongProperty;
+        //NOTE: Inspector창 등록이 아닌 코드 등록 방식 사용. UnityEvent에서 Action으로 수정
+        //SerializedProperty m_OnClickLongProperty;
 
         protected override void OnEnable()
         {
@@ -19,7 +20,7 @@ namespace QQ
             m_OnClickProperty = serializedObject.FindProperty("m_OnClick");
 
             owner = (UIButton)target;
-            m_OnClickLongProperty = serializedObject.FindProperty(nameof(owner.onLongClick));
+            //m_OnClickLongProperty = serializedObject.FindProperty(nameof(owner.OnLongClick));
         }
 
         public override void OnInspectorGUI()
@@ -31,8 +32,8 @@ namespace QQ
 
             EditorGUILayout.PropertyField(m_OnClickProperty);
 
-            // 추가
-            EditorGUILayout.PropertyField(m_OnClickLongProperty);
+            //// 추가
+            //EditorGUILayout.PropertyField(m_OnClickLongProperty);
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -1,15 +1,18 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace QQ
 {
+    /// <summary>
+    /// <see cref="UIButtonEditor"/>
+    /// </summary>
     [RequireComponent(typeof(Image))]
     [AddComponentMenu("UI/UIButton")]
     public class UIButton : Button
     {
-        public UnityEvent onLongClick;
+        public System.Action OnClick;
+        public System.Action OnLongClick;
 
         private bool isPressed = false;
         private float pressTime = 0f;
@@ -47,7 +50,7 @@ namespace QQ
         {
             if (pressTime >= longClickTime)
             {
-                onLongClick?.Invoke();
+                OnLongClick?.Invoke();
             }
             else
             {
