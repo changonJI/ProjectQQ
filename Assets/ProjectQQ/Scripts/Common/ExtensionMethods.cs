@@ -4,7 +4,7 @@ namespace QQ
 {
     public static class ExtensionMethods
     {
-        public static bool IsValidArrange(this object[] objects, int index)
+        public static bool IsValidRange(this object[] objects, int index)
         {
             if (objects == null)
             {
