@@ -209,7 +209,7 @@ namespace QQ
 
         protected int GetParamToInt(int index)
         {
-            if (storedParams.IsValidArrange(index))
+            if (storedParams.IsValidRange(index))
             {
                 return (int)storedParams[index];
             }
@@ -219,7 +219,7 @@ namespace QQ
 
         protected float GetParamToFloat(int index)
         {
-            if (storedParams.IsValidArrange(index))
+            if (storedParams.IsValidRange(index))
             {
                 return (float)storedParams[index];
             }
@@ -229,7 +229,7 @@ namespace QQ
 
         protected string GetParamToString(int index)
         {
-            if (storedParams.IsValidArrange(index))
+            if (storedParams.IsValidRange(index))
             {
                 return storedParams[index].ToString();
             }

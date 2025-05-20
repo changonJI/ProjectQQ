@@ -14,7 +14,5 @@ namespace QQ
 
             return GameObject.Instantiate(resource as GameObject);
         }
-            return GameObject.Instantiate(resource as GameObject);
-        }
     }
 }
