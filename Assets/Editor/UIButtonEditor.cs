@@ -13,6 +13,7 @@ namespace QQ
         SerializedProperty m_OnClickProperty;
         //NOTE: Inspector창 등록이 아닌 코드 등록 방식 사용. UnityEvent에서 Action으로 수정
         //SerializedProperty m_OnClickLongProperty;
+        SerializedProperty m_AudioClip;
 
         protected override void OnEnable()
         {
@@ -21,6 +22,7 @@ namespace QQ
 
             owner = (UIButton)target;
             //m_OnClickLongProperty = serializedObject.FindProperty(nameof(owner.OnLongClick));
+            m_AudioClip = serializedObject.FindProperty(nameof(owner.audioClip));
         }
 
         public override void OnInspectorGUI()
@@ -34,6 +36,7 @@ namespace QQ
 
             //// 추가
             //EditorGUILayout.PropertyField(m_OnClickLongProperty);
+            EditorGUILayout.PropertyField(m_AudioClip);
 
             serializedObject.ApplyModifiedProperties();
         }

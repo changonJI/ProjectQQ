@@ -15,12 +15,12 @@ namespace QQ
 
         public void OnClickAdd(System.Action action)
         {
-            button.OnClick += action;
+            button.OnClickAction += action;
         }
 
         public void OnClickRemove(System.Action action)
         {
-            button.OnClick -= action;
+            button.OnClickAction -= action;
         }
     }
 }
