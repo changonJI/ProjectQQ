@@ -54,7 +54,7 @@ namespace QQ
             }
             else
             {
-                onClick?.Invoke();
+                OnClick?.Invoke();
             }
 
             SetPress(false);
