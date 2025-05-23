@@ -72,7 +72,7 @@ namespace QQ
             }
 
             // 사운드 재생
-            SoundManager.Instance.PlaySFX(audioClip);
+            SoundManager.Instance.PlayUI(audioClip);
 
             SetPress(false);
         }

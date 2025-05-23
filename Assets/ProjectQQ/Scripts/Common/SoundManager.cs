@@ -86,7 +86,6 @@ namespace QQ
                 Debug.LogWarning($"Sound '{soundName}' not found!");
             }
         }
-
         public void PlaySFX(string soundName)
         {
             if (soundDictionary.ContainsKey(soundName))
@@ -99,6 +98,20 @@ namespace QQ
                 Debug.LogWarning($"Sound '{soundName}' not found!");
             }
         }
+
+        public void PlayUI(string soundName)
+        {
+            if (soundDictionary.ContainsKey(soundName))
+            {
+                AudioClip clip = soundDictionary[soundName];
+                uiSource.PlayOneShot(clip);
+            }
+            else
+            {
+                Debug.LogWarning($"Sound '{soundName}' not found!");
+            }
+        }
+
 
         private int SetPriority(SoundType type)
         {
