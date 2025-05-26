@@ -11,12 +11,26 @@ namespace QQ
     [AddComponentMenu("UI/UIButton")]
     public class UIButton : Button
     {
-        public System.Action OnClick;
-        public System.Action OnLongClick;
+        public string audioClip = "ButtonClick";
+
+        private System.Action OnClick;
+        private System.Action OnLongClick;
 
         private bool isPressed = false;
         private float pressTime = 0f;
         private float longClickTime = 1.0f;
+
+        public System.Action OnClickAction
+        {
+            get => OnClick;
+            set => OnClick += value;
+        }
+
+        public System.Action OnLongClickAction
+        {
+            get => OnLongClick;
+            set => OnLongClick += value;
+        }
 
         private void Update()
         {
@@ -56,6 +70,9 @@ namespace QQ
             {
                 OnClick?.Invoke();
             }
+
+            // 사운드 재생
+            SoundManager.Instance.PlayUI(audioClip);
 
             SetPress(false);
         }

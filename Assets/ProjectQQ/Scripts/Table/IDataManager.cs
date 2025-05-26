@@ -5,7 +5,15 @@ namespace QQ
     {
         TableType GetTableType();
         void Clear();
-        void SaveData(string data);
+
+        /// <summary>
+        /// 자동으로 실행되는 메쏘드
+        /// </summary>
+        void SaveData(TableType type, string data) 
+        {
+            TableDataManager.SaveData(type, data); 
+        }
+
         void LoadData();
     }
 }
