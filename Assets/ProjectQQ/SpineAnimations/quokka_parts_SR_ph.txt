@@ -1,0 +1,27 @@
+quokka_parts_SR_ph.png
+size:1401,523
+filter:Linear,Linear
+pma:true
+scale:0.5
+Body
+bounds:1072,198,323,327
+rotate:90
+Foot 1
+bounds:530,2,163,126
+Foot 2
+bounds:695,6,172,122
+Head
+bounds:2,9,526,512
+Leg1
+bounds:882,72,209,150
+offsets:0,0,209,173
+rotate:90
+Leg2
+bounds:1034,48,213,148
+offsets:0,0,213,180
+arm1
+bounds:1249,99,93,97
+arm2
+bounds:530,283,540,238
+lowerBody
+bounds:530,130,350,151
