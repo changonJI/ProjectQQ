@@ -1,9 +1,12 @@
 namespace QQ
 {
+    /// <summary>
+    /// TableType == DataClassName
+    /// </summary>
     public enum TableType
     {
         None = 0,
-        Language = 1,
+        LanguageData = 1,
     }
 
     public enum UIDepth

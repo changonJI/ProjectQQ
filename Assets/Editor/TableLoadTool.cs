@@ -184,7 +184,7 @@ namespace QQ
 
                     if (FIndTable(type) != null)
                     {
-                        FIndTable(type).SaveData(data);
+                        FIndTable(type).SaveData(type, data);
                     }
                     else
                         Debug.LogError($"{type}에 해당하는 Assembly 없음");
