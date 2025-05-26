@@ -66,7 +66,6 @@ namespace QQ
             localTables = ListPool<IDataManager>.Get();
 
             GetTableAssembly();
-
         }
 
         private void OnGUI()
