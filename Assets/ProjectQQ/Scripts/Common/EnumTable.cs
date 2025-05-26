@@ -1,9 +1,12 @@
 namespace QQ
 {
+    /// <summary>
+    /// TableType == DataClassName
+    /// </summary>
     public enum TableType
     {
         None = 0,
-        Language = 1,
+        LanguageData = 1,
     }
 
     public enum UIDepth
@@ -26,5 +29,18 @@ namespace QQ
     {
         Default = 0,
         UI = 5,
+    }
+
+    public enum ResType
+    {
+        UI = 0,
+        Sound = 1,
+    }
+
+    public enum SoundType
+    {
+        BGM = 0,
+        SFX = 1,
+        UI = 2,
     }
 }

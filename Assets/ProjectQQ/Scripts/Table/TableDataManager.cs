@@ -21,11 +21,11 @@ namespace QQ
         /// <summary>
         /// CSV 파일을 암호화 하여 저장합니다.
         /// </summary>
-        /// <param name="saveFileName">nameof(ClassName)</param>
+        /// <param name="saveFileName">nameof(TableType)</param>
         /// <param name="str_Data">구글시트에서 받아온 데이터 string 값</param>
-        public static void SaveData(string saveFileName, string str_Data)
+        public static void SaveData(TableType saveFileName, string str_Data)
         {
-            string _path = StringBuilderPool.Get(path, saveFileName,".csv");
+            string _path = StringBuilderPool.Get(path, saveFileName.ToString(),".csv");
 
             File.WriteAllText(_path, Encrypt(str_Data));
 
@@ -39,18 +39,22 @@ namespace QQ
         /// <summary>
         /// CSV 파일을 복호화 하여 불러옵니다.
         /// </summary>
-        /// <param name="loadFileName">nameof(ClassName)</param>
+        /// <param name="loadFileName">nameof(TableType)</param>
         /// <returns></returns>
-        public static string LoadData(string loadFileName)
+        public static string[] LoadData(TableType loadFileName)
         {
-            string _path = StringBuilderPool.Get(path, loadFileName, ".csv");
+            string _path = StringBuilderPool.Get(path, loadFileName.ToString(), ".csv");
 
             string csvData = File.ReadAllText(_path);
 
 #if (UNITY_EDITOR)
-            Debug.Log($"CSV File load at : {_path}");
+                Debug.Log($"CSV File load at : {_path}");
 #endif
-            return Decrypt(csvData);
+            string decryptData = Decrypt(csvData);
+
+            string[] rows = decryptData.Split('\n');
+
+            return rows;
         }
 
         public static async UniTaskVoid LoadTableData()
