@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace QQ {
-    public sealed class UIRoot : DontDestorySingleton<UIRoot>
+    public sealed class UIRoot : DontDestroySingleton<UIRoot>
     {
         [SerializeField] Canvas canvasHud;
         [SerializeField] Canvas canvasFixed;

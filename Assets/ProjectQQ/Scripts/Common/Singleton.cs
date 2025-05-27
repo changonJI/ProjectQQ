@@ -65,7 +65,7 @@ namespace QQ
         }
     }
 
-    public class DontDestorySingleton<T> : MonoBehaviour where T : DontDestorySingleton<T>
+    public class DontDestroySingleton<T> : MonoBehaviour where T : DontDestroySingleton<T>
     {
         private static T instance = null;
         public static T Instance

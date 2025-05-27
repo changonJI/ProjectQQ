@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace QQ
 {
-    public class SoundManager : DontDestorySingleton<SoundManager>
+    public class SoundManager : DontDestroySingleton<SoundManager>
     {
         [SerializeField] private AudioSource bgmSource;
         [SerializeField] private AudioSource uiSource;
