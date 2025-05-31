@@ -7,6 +7,7 @@ namespace QQ
         public void Init();
     }
 
+    [DisallowMultipleComponent]
     public abstract class BaseGameObject : MonoBehaviour, IBaseGameObjectSet
     {
         public abstract ObjectType Type { get; }
