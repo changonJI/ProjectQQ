@@ -123,6 +123,11 @@ namespace QQ
             }
         }
 
+        public void Release(GameObject releaseObject)
+        {
+            Release(releaseObject.GetComponent<BaseGameObject>());
+        }
+
         public void DestroyAll()
         {
             foreach (var pool in objectPools.Values)
@@ -140,14 +145,25 @@ namespace QQ
         {
             return () =>
             {
-                GameObject obj = new GameObject(StringBuilderPool.Get(objectType.ToString(), GetAllObjectCount(objectType).ToString()));
+                Type componentType = GetComponentType(objectType);
+
+                GameObject obj = ResManager.InstantiateSync(PrefabType.Object, componentType);
                 obj.SetActive(false);
+#if UNITY_EDITOR
+                obj.name = StringBuilderPool.Get(objectType.ToString(), GetAllObjectCount(objectType).ToString());
+#endif
 
                 // 부모 설정하기
                 obj.transform.SetParent(GetParentTransform(objectType));
 
-                Type componentType = GetComponentType(objectType);
-                return (BaseGameObject)obj.AddComponent(componentType);
+                // BaseGameObject 부착 확인
+                BaseGameObject baseGameObject = obj.GetComponent<BaseGameObject>();
+                if (null == baseGameObject)
+                {
+                    baseGameObject = obj.AddComponent(componentType) as BaseGameObject;
+                }
+
+                return baseGameObject;
             };
         }
 

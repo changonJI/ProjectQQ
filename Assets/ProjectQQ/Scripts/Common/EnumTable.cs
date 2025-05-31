@@ -64,6 +64,12 @@ namespace QQ
         SFX,
     }
 
+    public enum PrefabType
+    {
+        UI = 0,
+        Object,
+    }
+
     public enum ResType
     {
         UI = 0,
