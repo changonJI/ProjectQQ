@@ -82,7 +82,7 @@ namespace QQ
             return 0;
         }
 
-        public GameObject Get(ObjectType type)
+        public GameObject Get(ObjectType type, int id)
         {
             BaseGameObject baseObj = null;
             // 꺼내기
@@ -104,6 +104,7 @@ namespace QQ
             gameObject.SetActive(true);
 
             // 데이터 세팅
+            baseObj.SetData(id);
 
             return gameObject;
         }

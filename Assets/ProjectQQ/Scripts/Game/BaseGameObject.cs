@@ -5,6 +5,8 @@ namespace QQ
     public interface IBaseGameObjectSet
     {
         public void Init();
+
+        public void SetData(int id);
     }
 
     [DisallowMultipleComponent]
@@ -21,6 +23,7 @@ namespace QQ
         }
 
         public abstract void Init();
+        public abstract void SetData(int id);
 
         #region 유니티 생명주기 함수
         protected virtual void Awake()

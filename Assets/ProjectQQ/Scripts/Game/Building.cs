@@ -12,6 +12,15 @@ namespace QQ
 
         }
 
+        public override void SetData(int id)
+        {
+            // 데이터테이블에서 id에 해당하는 데이터 얻어오기
+            { }
+
+            // 데이터 오브젝트에 세팅
+            { }
+        }
+
         protected override void OnAwake() { }
         protected override void OnStart() { }
         protected override void OnEnabled() { }
