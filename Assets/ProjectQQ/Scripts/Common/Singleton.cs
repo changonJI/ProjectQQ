@@ -81,7 +81,7 @@ namespace QQ
                     }
                     else
                     {
-                        Debug.LogError($"___________DontDestroySIngleton_생성된 오브젝트 없음 : {typeof(T).Name}");
+                        LogHelper.LogError($"___________DontDestroySIngleton_생성된 오브젝트 없음 : {typeof(T).Name}");
                     }
                 }
 

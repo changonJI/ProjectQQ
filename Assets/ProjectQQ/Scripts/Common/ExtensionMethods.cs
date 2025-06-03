@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace QQ
 {
     public static class ExtensionMethods
@@ -8,9 +6,8 @@ namespace QQ
         {
             if (objects == null)
             {
-#if UNITY_EDITOR
-                Debug.LogError("objects is null");
-#endif
+                LogHelper.LogError("objects is null");
+
                 return false;
             }
 
@@ -20,9 +17,8 @@ namespace QQ
             }
             else
             {
-#if UNITY_EDITOR
-                Debug.LogError("Over Arrange");
-#endif
+                LogHelper.LogError("Over Arrange");
+
                 return false;
             }
                 

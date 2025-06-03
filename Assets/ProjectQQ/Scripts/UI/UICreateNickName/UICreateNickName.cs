@@ -45,7 +45,7 @@ namespace QQ
         {
             if (inputField.text.Length > limitTxt)
             {
-                Debug.LogError("글자 초과. 팝업 띄울것. 다시 입력하세요");
+                LogHelper.LogError("글자 초과. 팝업 띄울것. 다시 입력하세요");
             }
             else
             {

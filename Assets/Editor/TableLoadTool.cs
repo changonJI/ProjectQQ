@@ -131,7 +131,7 @@ namespace QQ
                 {
                     ActiveBtnTableLocalLoad = true;
 
-                    Debug.LogError(www.error);
+                    LogHelper.LogError(www.error);
                 }
                 else
                 {
@@ -175,7 +175,7 @@ namespace QQ
                 if (www.result == UnityWebRequest.Result.ConnectionError ||
                     www.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    Debug.LogError(www.error);
+                    LogHelper.LogError(www.error);
                 }
                 else
                 {
@@ -186,7 +186,7 @@ namespace QQ
                         FIndTable(type).SaveData(type, data);
                     }
                     else
-                        Debug.LogError($"{type}에 해당하는 Assembly 없음");
+                        LogHelper.LogError($"{type}에 해당하는 Assembly 없음");
                 }
 
                 ActiveBtnTableSave = true;
