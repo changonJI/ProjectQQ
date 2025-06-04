@@ -178,23 +178,19 @@ namespace ProjectQQ.Scripts.etc.SpineTestTool
                 }
             }
 			
-            skeletonAnimation.skeletonDataAsset = choosenSkeleton;
-            skeletonAnimation.AnimationName = "idle";
-            skeletonAnimation.Initialize(true);
-
-            RefreshSkinDropdown(choosenSkeleton);
-        }
-        
-        private void RefreshSkinDropdown(SkeletonDataAsset choosenSkeleton)
-        {
-            skinDropdown.ClearOptions();
-			
             List<string> skinNames = new List<string>();
             foreach (var VARIABLE in choosenSkeleton.GetSkeletonData(true).Skins)
             {
                 skinNames.Add(VARIABLE.Name);
             }
+            
+            skinDropdown.ClearOptions();
             skinDropdown.AddOptions(skinNames);
+            
+            skeletonAnimation.skeletonDataAsset = choosenSkeleton;
+            skeletonAnimation.AnimationName = "idle";
+            skeletonAnimation.initialSkinName = skinNames[0];
+            skeletonAnimation.Initialize(true);
         }
 
         public void OnSkinDropdownValueChanged()
