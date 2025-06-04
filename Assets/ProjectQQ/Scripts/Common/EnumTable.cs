@@ -16,6 +16,8 @@ namespace QQ
         Fixed2,
         Fixed3,
         Popup,
+        Toast,
+        Indicator = 9999,
     }
 
     public enum UIType

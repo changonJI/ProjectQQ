@@ -83,7 +83,7 @@ namespace QQ
             }
             else
             {
-                Debug.LogWarning($"Sound '{soundName}' not found!");
+                LogHelper.LogWarning($"Sound '{soundName}' not found!");
             }
         }
         public void PlaySFX(string soundName)
@@ -95,7 +95,7 @@ namespace QQ
             }
             else
             {
-                Debug.LogWarning($"Sound '{soundName}' not found!");
+                LogHelper.LogWarning($"Sound '{soundName}' not found!");
             }
         }
 
@@ -108,7 +108,7 @@ namespace QQ
             }
             else
             {
-                Debug.LogWarning($"Sound '{soundName}' not found!");
+                LogHelper.LogWarning($"Sound '{soundName}' not found!");
             }
         }
 

@@ -29,9 +29,9 @@ namespace QQ
 
             File.WriteAllText(_path, Encrypt(str_Data));
 
-#if (UNITY_EDITOR)
-            Debug.Log($"CSV File Saved at : {_path}");
+            LogHelper.Log($"CSV File Saved at : {_path}");
 
+#if (UNITY_EDITOR)
             AssetDatabase.Refresh();
 #endif
         }
@@ -47,9 +47,8 @@ namespace QQ
 
             string csvData = File.ReadAllText(_path);
 
-#if (UNITY_EDITOR)
-                Debug.Log($"CSV File load at : {_path}");
-#endif
+            LogHelper.Log($"CSV File load at : {_path}");
+
             string decryptData = Decrypt(csvData);
 
             string[] rows = decryptData.Split('\n');

@@ -364,17 +364,17 @@ MonoBehaviour:
   - controls:
     - animationName: idle
       loop: 1
-      key: 97
+      key: 15
       useCustomMixDuration: 0
       mixDuration: 0
     - animationName: roll
       loop: 0
-      key: 32
+      key: 1
       useCustomMixDuration: 0
       mixDuration: 0
     - animationName: run
       loop: 1
-      key: 100
+      key: 18
       useCustomMixDuration: 0
       mixDuration: 0
   boundAnimationsText: {fileID: 1292707993}

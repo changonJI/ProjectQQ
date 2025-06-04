@@ -190,11 +190,24 @@ namespace QQ
             if (instance == null)
             {
                 await ResManager.Instantiate(typeof(T));
+
+                instance.OnOkCallback = okAction;
+                instance.OnCloseCallback = closeAction;
+                instance.storedParams = args;
+            }
+            else
+                instance.Focus();
+        }
+
+        public static void CloseUI()
+        {
+            if (instance == null)
+            {
+                LogHelper.LogError($"{typeof(T)} instance is null. Cannot close UI.");
+                return;
             }
 
-            instance.OnOkCallback = okAction;
-            instance.OnCloseCallback = closeAction;
-            instance.storedParams = args;
+            instance.Close();    
         }
 
         protected void OnClickOk()
