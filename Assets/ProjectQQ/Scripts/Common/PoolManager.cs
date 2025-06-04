@@ -126,5 +126,49 @@ namespace QQ
                     break;
             }
         }
+
+        public void DestroyAll()
+        {
+            foreach (var poolPair in monsterPools.Values)
+            {
+                // Destroy All Object in List
+                foreach (var obj in poolPair.list)
+                {
+                    if (obj != null)
+                    {
+                        Destroy(obj);
+                    }
+                }
+                poolPair.list.Clear();
+                // Clear queue
+                poolPair.queue.Clear();
+            }
+
+            foreach (var poolPair in itemPools.Values)
+            {
+                foreach (var obj in poolPair.list)
+                {
+                    if (obj != null)
+                    {
+                        Destroy(obj);
+                    }
+                }
+                poolPair.list.Clear();
+                poolPair.queue.Clear();
+            }
+
+            foreach (var poolPair in sfxPools.Values)
+            {
+                foreach (var obj in poolPair.list)
+                {
+                    if (obj != null)
+                    {
+                        Destroy(obj);
+                    }
+                }
+                poolPair.list.Clear();
+                poolPair.queue.Clear();
+            }
+        }
     }
 }
