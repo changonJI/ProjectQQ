@@ -5,19 +5,20 @@ using UnityEngine;
 
 namespace QQ
 {
-    using ObjectPool = Dictionary<string, Queue<BaseGameObject>>;
-
     public class PoolManager : DontDestroySingleton<PoolManager>
     {
         [SerializeField] private Transform monsterRoot;
         [SerializeField] private Transform itemRoot;
         [SerializeField] private Transform sfxRoot;
 
-        protected ObjectPool monsterPools = new();
-        protected ObjectPool itemPools = new();
-        protected ObjectPool sfxPools = new();
+        // List: all Objects created by PoolManager
+        // Queue: inactive Objects that are ready for reuse
+        protected readonly Dictionary<string, (List<BaseGameObject> list, Queue<BaseGameObject> queue)> monsterPools = new Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject> queue)>(dicCapacity);
+        protected readonly Dictionary<string, (List<BaseGameObject> list, Queue<BaseGameObject> queue)> itemPools = new Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)>(dicCapacity);
+        protected readonly Dictionary<string, (List<BaseGameObject> list, Queue<BaseGameObject> queue)> sfxPools = new Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)>(dicCapacity);
 
-        private const int defaultCapacity = 2048;
+        private const int dicCapacity = 256;
+        private const int poolCapacity = 2048;
 
         private async UniTask<BaseGameObject> CreateBaseGameObject(ObjectType objType, string prefabName)
         {
@@ -27,50 +28,59 @@ namespace QQ
             if (baseGameObj == null)
             {
                 baseGameObj = AddComponenetBaseGameObject(ref obj, objType);
+                LogHelper.LogError($"오브젝트 프리팹 {prefabName}에 Object 스크립트 컴포넌트 추가 필요!!!");
             }
+
+            baseGameObj.Init();
 
             return baseGameObj;
         }
 
-
         public async UniTask<GameObject> GetObject(ObjectType objType, string prefabName)
         {
-            ObjectPool pool = GetPoolByType(objType);
+            Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(objType);
             GameObject obj = null;
-            if (!pool.TryGetValue(prefabName, out Queue<BaseGameObject> queue))
+
+
+            if (!pool.TryGetValue(prefabName, out (List<BaseGameObject> list, Queue<BaseGameObject> queue) poolPair))
             {
-                queue = new Queue<BaseGameObject>();
-                pool.Add(prefabName, queue);
+                poolPair = (new List<BaseGameObject>(poolCapacity), new Queue<BaseGameObject>(poolCapacity));
+                pool.Add(prefabName, poolPair);
             }
 
-            if (0 == queue.Count)
+            Queue<BaseGameObject> queue = poolPair.Item2;
+
+            if (0 == poolPair.queue.Count && poolCapacity > poolPair.list.Count)
             {
+                // Create Object Instance
                 BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName);
                 obj = baseGameObj.gameObject;
                 obj.name = prefabName;
                 SetParent(obj.transform, objType);
+
+                poolPair.list.Add(baseGameObj);
             }
             else
             {
-                obj = queue.Dequeue().gameObject;
+                obj = poolPair.queue.Dequeue().gameObject;
             }
 
             obj?.SetActive(true);
             return obj;
         }
 
-        public void ReturnObject(GameObject obj)
+        public void ReleaseObject(GameObject obj)
         {
             obj.SetActive(false);
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
-            ObjectPool pool = GetPoolByType(baseGameObj.Type);
-            if (pool.TryGetValue(obj.name, out Queue<BaseGameObject> queue))
+            Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(baseGameObj.Type);
+            if (pool.TryGetValue(obj.name, out (List<BaseGameObject> list, Queue<BaseGameObject> queue) poolPair))
             {
-                queue.Enqueue(baseGameObj);
+                poolPair.queue.Enqueue(baseGameObj);
             }
         }
 
-        ObjectPool GetPoolByType(ObjectType objType)
+        Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> GetPoolByType(ObjectType objType)
         {
             return objType switch
             {
@@ -83,13 +93,20 @@ namespace QQ
 
         BaseGameObject AddComponenetBaseGameObject(ref GameObject obj, ObjectType objType)
         {
-            return objType switch
+            BaseGameObject baseGameObj = objType switch
             {
                 ObjectType.Monster => obj.AddComponent<Character>(),
                 ObjectType.Item => obj.AddComponent<Item>(),
                 ObjectType.SFX => obj.AddComponent<SFX>(),
-                _ => throw new ArgumentException("Max Size must be greater than 0", "maxSize")
+                _ => null
             };
+
+            if (null == baseGameObj)
+            {
+                LogHelper.LogError("objType에 맞는 BaseGameObject 클래스가 없음");
+            }
+
+            return baseGameObj;
         }
 
         private void SetParent(Transform obj, ObjectType objType)
@@ -107,6 +124,50 @@ namespace QQ
                 case ObjectType.Item:
                     obj.SetParent(itemRoot);
                     break;
+            }
+        }
+
+        public void DestroyAll()
+        {
+            foreach (var poolPair in monsterPools.Values)
+            {
+                // Destroy All Object in List
+                foreach (var obj in poolPair.list)
+                {
+                    if (obj != null)
+                    {
+                        Destroy(obj);
+                    }
+                }
+                poolPair.list.Clear();
+                // Clear queue
+                poolPair.queue.Clear();
+            }
+
+            foreach (var poolPair in itemPools.Values)
+            {
+                foreach (var obj in poolPair.list)
+                {
+                    if (obj != null)
+                    {
+                        Destroy(obj);
+                    }
+                }
+                poolPair.list.Clear();
+                poolPair.queue.Clear();
+            }
+
+            foreach (var poolPair in sfxPools.Values)
+            {
+                foreach (var obj in poolPair.list)
+                {
+                    if (obj != null)
+                    {
+                        Destroy(obj);
+                    }
+                }
+                poolPair.list.Clear();
+                poolPair.queue.Clear();
             }
         }
     }
