@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,9 +18,13 @@ namespace QQ
         /// 키 누른 후 활성화시킬 오브젝트
         /// </summary>
         [SerializeField] private GameObject objectActiveAfterKeyPress;
+        
+        private bool isAnyKeyPressed = false;
 
         protected override void OnInit()
         {
+            objectActiveBeforeKeyPress.SetActive(true);
+            objectActiveAfterKeyPress.SetActive(false);
         }
 
         protected override void OnStart()
@@ -36,29 +41,29 @@ namespace QQ
 
         private void Update()
         {
-            // 키보드 아무 키 입력 받은 경우 버튼 노출 (마우스 대응X)
-            if (true == Keyboard.current.anyKey.wasPressedThisFrame)
+            if (isAnyKeyPressed) return;
+
+            foreach (var key in Keyboard.current.allKeys)
             {
-                ShowMenu();
+                if (key.wasPressedThisFrame)
+                {
+                    ShowMenu();
+                    break;
+                }
             }
         }
 
         public void LoadGameScene()
         {
+            Debug.Log("LoadGameScene");
             LoadingSceneManager.LoadScene(LoadingSceneManager.gameSceneName);
         }
 
         public void ShowMenu()
         {
-            if (default != objectActiveBeforeKeyPress)
-            {
-                objectActiveBeforeKeyPress.SetActive(false);
-            }
-
-            if (default != objectActiveAfterKeyPress)
-            {
-                objectActiveAfterKeyPress.SetActive(true);
-            }
+            isAnyKeyPressed = true;
+            objectActiveBeforeKeyPress.SetActive(false);
+            objectActiveAfterKeyPress.SetActive(true);
         }
     }
 }
