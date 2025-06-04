@@ -49,8 +49,11 @@ namespace QQ
             }
             else
             {
-                //PlayerPrefs.SetString("NickName", inputField.text);
-                Close();
+                UIPopupConfirm.Instantiate(
+                    okAction: CancelNickName,
+                    closeAction: ConfirmNickName,
+                    "변경 할 수 없습니다.", "취소", "확인"
+                );
             }
         }
 
@@ -75,6 +78,19 @@ namespace QQ
         public void OnDeSelect(string input)
         {
             inputField.text = string.Empty;
+        }
+
+        private void ConfirmNickName()
+        {
+            GameManager.Instance.SavePlayerData(PlayerDataType.UserName, inputField.text);
+            UIPopupConfirm.CloseUI();
+            UIMainScene.Instantiate();
+            Close();
+        }
+
+        private void CancelNickName()
+        {
+            UIPopupConfirm.CloseUI();
         }
     }
 

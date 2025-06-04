@@ -45,4 +45,17 @@ namespace QQ
         SFX = 1,
         UI = 2,
     }
+
+    public enum PlayerDataType
+    {
+        UserName = 0,
+        FirstPlay = 1
+    }
+
+    public enum SceneType
+    {
+        MainScene = 0,
+        LoadingScene = 1,
+        GameScene = 2
+    }
 }

@@ -25,7 +25,7 @@ namespace QQ
         protected override void OnFocus()
         {
             SetTitle(GetParamToString(0));
-
+            
             btnOk.SetText(GetParamToString(1));
             btnCancel.SetText(GetParamToString(2));
 
