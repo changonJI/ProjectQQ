@@ -8,6 +8,7 @@ namespace QQ
         // Local
         private const string uiLocalPath = "Prefabs/UI/Remote/";
         private const string soundLocalPath = "Sounds/";
+        private const string objectLocalPath = "Prefabs/object/";
 
         public static AudioClip soundLoad(string fileName)
         {
@@ -19,6 +20,13 @@ namespace QQ
         public static async UniTask<GameObject> Instantiate(System.Type type)
         {
             var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(uiLocalPath, type.Name));
+
+            return GameObject.Instantiate(resource as GameObject);
+        }
+
+        public static async UniTask<GameObject> Instantiate(ResType type, string name)
+        {
+            var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(objectLocalPath, name));
 
             return GameObject.Instantiate(resource as GameObject);
         }

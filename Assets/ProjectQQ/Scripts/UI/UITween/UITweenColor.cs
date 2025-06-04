@@ -2,9 +2,10 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITweenColor : MonoBehaviour
+public class UITweenColor : UITween
 {
     private Image image;
+
     [SerializeField] private Color startColor;
     [SerializeField] private Color EndColor;
     [SerializeField] private float duration = 1f;
@@ -12,7 +13,7 @@ public class UITweenColor : MonoBehaviour
     [SerializeField] private bool isLoop = false;
     [SerializeField] private LoopType loopType = LoopType.Restart;
 
-    private void Start()
+    protected override void Awake()
     {
         image = GetComponent<Image>();
 
@@ -21,8 +22,8 @@ public class UITweenColor : MonoBehaviour
 
         image.color = startColor;
 
-        image.DOColor(EndColor, duration)
+        Init(image.DOColor(EndColor, duration)
             .SetEase(ease)
-            .SetLoops(isLoop ? -1 : 0, loopType);
+            .SetLoops(isLoop ? -1 : 0, loopType));
     }
 }
