@@ -4,6 +4,7 @@ using Spine;
 using Spine.Unity;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using AnimationState = Spine.AnimationState;
 
 namespace ProjectQQ.Scripts.etc.SpineTestTool
@@ -33,7 +34,8 @@ namespace ProjectQQ.Scripts.etc.SpineTestTool
             [SpineAnimation]
             public string animationName;
             public bool loop;
-            public KeyCode key;
+            public Key key;
+            // public KeyCode key;
 
             [Space]
             public bool useCustomMixDuration;
@@ -128,27 +130,70 @@ namespace ProjectQQ.Scripts.etc.SpineTestTool
         
         void Update () 
         {
+            // AnimationState animationState = skeletonAnimation.AnimationState;
+            //
+            // // For each track
+            // for (int trackIndex = 0; trackIndex < trackControls.Count; trackIndex++) {
+            //
+            //     // For each control in the track
+            //     foreach (AnimationControl control in trackControls[trackIndex].controls) {
+            //
+            //         // Check each control, and play the appropriate animation.
+            //         if (Input.GetKeyDown(control.key)) {
+            //             TrackEntry trackEntry;
+            //             if (!string.IsNullOrEmpty(control.animationName)) {
+            //                 trackEntry = animationState.SetAnimation(trackIndex, control.animationName, control.loop);
+            //             } else {
+            //                 float mix = control.useCustomMixDuration ? control.mixDuration : animationState.Data.DefaultMix;
+            //                 trackEntry = animationState.SetEmptyAnimation(trackIndex, mix);
+            //             }
+            //
+            //             if (trackEntry != null) {
+            //                 if (control.useCustomMixDuration)
+            //                     trackEntry.SetMixDuration(control.mixDuration, 0f); // use SetMixDuration(mixDuration, delay) to update delay correctly
+            //
+            //                 if (useOverrideAttachmentThreshold)
+            //                     trackEntry.MixAttachmentThreshold = attachmentThreshold;
+            //
+            //                 if (useOverrideDrawOrderThreshold)
+            //                     trackEntry.MixDrawOrderThreshold = drawOrderThreshold;
+            //             }
+            //
+            //             // Don't parse more than one animation per track.
+            //             break;
+            //         }
+            //     }
+            // }
+            
+            if (Keyboard.current == null)
+                return;
+
             AnimationState animationState = skeletonAnimation.AnimationState;
 
-            // For each track
-            for (int trackIndex = 0; trackIndex < trackControls.Count; trackIndex++) {
-
-                // For each control in the track
-                foreach (AnimationControl control in trackControls[trackIndex].controls) {
-
-                    // Check each control, and play the appropriate animation.
-                    if (Input.GetKeyDown(control.key)) {
+            for (int trackIndex = 0; trackIndex < trackControls.Count; trackIndex++)
+            {
+                foreach (AnimationControl control in trackControls[trackIndex].controls)
+                {
+                    // 키가 존재하고 눌렸는지 확인
+                    var keyControl = Keyboard.current[control.key];
+                    if (keyControl != null && keyControl.wasPressedThisFrame)
+                    {
                         TrackEntry trackEntry;
-                        if (!string.IsNullOrEmpty(control.animationName)) {
+
+                        if (!string.IsNullOrEmpty(control.animationName))
+                        {
                             trackEntry = animationState.SetAnimation(trackIndex, control.animationName, control.loop);
-                        } else {
+                        }
+                        else
+                        {
                             float mix = control.useCustomMixDuration ? control.mixDuration : animationState.Data.DefaultMix;
                             trackEntry = animationState.SetEmptyAnimation(trackIndex, mix);
                         }
 
-                        if (trackEntry != null) {
+                        if (trackEntry != null)
+                        {
                             if (control.useCustomMixDuration)
-                                trackEntry.SetMixDuration(control.mixDuration, 0f); // use SetMixDuration(mixDuration, delay) to update delay correctly
+                                trackEntry.SetMixDuration(control.mixDuration, 0f);
 
                             if (useOverrideAttachmentThreshold)
                                 trackEntry.MixAttachmentThreshold = attachmentThreshold;
@@ -157,8 +202,7 @@ namespace ProjectQQ.Scripts.etc.SpineTestTool
                                 trackEntry.MixDrawOrderThreshold = drawOrderThreshold;
                         }
 
-                        // Don't parse more than one animation per track.
-                        break;
+                        break; // 한 트랙에서 하나만 재생
                     }
                 }
             }
