@@ -119,23 +119,6 @@ public class GameManager : DontDestroySingleton<GameManager>
     }
 
     /// <summary>
-    /// 비동기 씬 로드
-    /// </summary>
-    public static void LoadSceneAsync(SceneType scene, Action<bool> onComplete = null)
-    {
-        if (SceneExists(scene.ToString()))
-        {
-            AsyncOperation operation = SceneManager.LoadSceneAsync(scene.ToString());
-            operation.completed += _ => onComplete?.Invoke(true);
-        }
-        else
-        {
-            Debug.LogError($"[SceneLoader] 씬 '{scene}' 이(가) Build Settings에 존재하지 않습니다.");
-            onComplete?.Invoke(false);
-        }
-    }
-
-    /// <summary>
     /// 씬 존재 여부 확인
     /// </summary>
     private static bool SceneExists(string sceneName)
