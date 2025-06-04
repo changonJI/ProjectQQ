@@ -29,12 +29,5 @@ namespace QQ
         protected override void OnFixedUpdate() { }
         protected override void OnLateUpdate() { }
         protected override void OnDestroyed() { }
-
-
-
-        protected override void Cleanup() { }
-        protected override void OnGetFromPool() { }
-        protected override void OnReturnToPool() { }
-        protected override void OnDestroyFromPool() { }
     }
 }

@@ -14,6 +14,13 @@ namespace QQ
     {
         public abstract ObjectType Type { get; }
 
+        private bool isLoaded = false;
+        public bool IsLoaded
+        {
+            get { return isLoaded; }
+            set { isLoaded = value; }
+        }
+
         /// <summary>
         /// BaseGameObject 생성시 항상 Init() 동작
         /// </summary>
@@ -24,6 +31,10 @@ namespace QQ
 
         public abstract void Init();
         public abstract void SetData(int id);
+        public void SetParent(Transform transform)
+        {
+            gameObject.transform.SetParent(transform);
+        }
 
         #region 유니티 생명주기 함수
         protected virtual void Awake()
@@ -73,37 +84,6 @@ namespace QQ
             OnDestroyed();
         }
         abstract protected void OnDestroyed();
-
-        #endregion
-
-        #region 풀 호출 함수
-        /// <summary>풀에서 오브젝트를 꺼낼 때 호출</summary>
-        public virtual void GetFromPool()
-        {
-            Cleanup();          // 이벤트 초기화, 값 초기화 등
-            OnGetFromPool();
-        }
-
-        /// <summary>풀로 오브젝트를 반납할 때 호출</summary>
-        public virtual void ReturnToPool()
-        {
-            Cleanup();          // 이벤트 초기화, 값 초기화 등
-            OnReturnToPool();   // 상태 정리 등
-        }
-
-        /// <summary>오브젝트가 풀에서 완전히 파괴될 때 호출</summary>
-        public virtual void DestroyFromPool()
-        {
-            Cleanup();
-            OnDestroyFromPool();
-        }
-
-        // 자식 클래스에서 오버라이드할 메서드
-        /// <summary> 초기화, 이벤트 구독 해제 등 </summary>
-        protected abstract void Cleanup();
-        protected abstract void OnGetFromPool();
-        protected abstract void OnReturnToPool();
-        protected abstract void OnDestroyFromPool();
 
         #endregion
     }

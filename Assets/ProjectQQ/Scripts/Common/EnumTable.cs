@@ -60,21 +60,14 @@ namespace QQ
         Npc,
         Building,   // 맵에 배치된 오브젝트
         Item,
-        Projectile,     // 투사체
         SFX,
-    }
-
-    public enum PrefabType
-    {
-        UI = 0,
-        Object,
     }
 
     public enum ResType
     {
         UI = 0,
         Sound = 1,
-        Sprite = 2,
+        Object = 2,
     }
 
     public enum SoundType

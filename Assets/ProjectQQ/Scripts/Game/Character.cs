@@ -6,7 +6,7 @@ namespace QQ
     {
         public override ObjectType Type => ObjectType.Monster;
 
-        /// <summary> »ı¼ºÀÚ È£Ãâ ÇÔ¼ö </summary>
+        /// <summary> ìƒì„±ì í˜¸ì¶œ í•¨ìˆ˜ </summary>
         public override void Init()
         {
 
@@ -14,10 +14,10 @@ namespace QQ
 
         public override void SetData(int id)
         {
-            // µ¥ÀÌÅÍÅ×ÀÌºí¿¡¼­ id¿¡ ÇØ´çÇÏ´Â µ¥ÀÌÅÍ ¾ò¾î¿À±â
+            // ë°ì´í„°í…Œì´ë¸”ì—ì„œ idì— í•´ë‹¹í•˜ëŠ” ë°ì´í„° ì–»ì–´ì˜¤ê¸°
             { }
 
-            // µ¥ÀÌÅÍ ¿ÀºêÁ§Æ®¿¡ ¼¼ÆÃ
+            // ë°ì´í„° ì˜¤ë¸Œì íŠ¸ì— ì„¸íŒ…
             { }
         }
 
@@ -29,12 +29,5 @@ namespace QQ
         protected override void OnFixedUpdate() { }
         protected override void OnLateUpdate() { }
         protected override void OnDestroyed() { }
-
-
-
-        protected override void Cleanup() { }
-        protected override void OnGetFromPool() { }
-        protected override void OnReturnToPool() { }
-        protected override void OnDestroyFromPool() { }
     }
 }

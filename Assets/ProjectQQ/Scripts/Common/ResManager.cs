@@ -17,20 +17,16 @@ namespace QQ
             return resource;
         }
 
-        public static GameObject InstantiateSync(PrefabType prefabType, System.Type type)
-        {
-            var resource = prefabType switch
-            {
-                PrefabType.Object => Resources.Load<GameObject>(StringBuilderPool.Get(objectLocalPath, type.Name)),
-                _ => null
-            };
-
-            return GameObject.Instantiate(resource);
-        }
-
         public static async UniTask<GameObject> Instantiate(System.Type type)
         {
             var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(uiLocalPath, type.Name));
+
+            return GameObject.Instantiate(resource as GameObject);
+        }
+
+        public static async UniTask<GameObject> Instantiate(ResType type, string name)
+        {
+            var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(objectLocalPath, name));
 
             return GameObject.Instantiate(resource as GameObject);
         }
