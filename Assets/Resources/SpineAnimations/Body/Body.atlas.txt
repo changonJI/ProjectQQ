@@ -1,0 +1,28 @@
+Body.png
+size:1070,542
+filter:Linear,Linear
+pma:true
+scale:0.5
+Body
+bounds:516,217,323,327
+rotate:90
+Foot 1
+bounds:942,25,163,126
+rotate:90
+Foot 2
+bounds:818,16,172,122
+rotate:90
+Head
+bounds:2,14,526,512
+rotate:90
+Leg1
+bounds:666,6,209,150
+offsets:0,0,209,173
+rotate:90
+Leg2
+bounds:516,2,213,148
+offsets:0,0,213,180
+rotate:90
+lowerBody
+bounds:845,190,350,151
+rotate:90

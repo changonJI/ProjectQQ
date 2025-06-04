@@ -1,0 +1,9 @@
+pistol.png
+size:639,242
+filter:Linear,Linear
+pma:true
+scale:0.5
+Pistol/arm1
+bounds:544,143,93,97
+Pistol/arm2
+bounds:2,2,540,238

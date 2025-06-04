@@ -1,0 +1,12 @@
+M4.png
+size:886,253
+filter:Linear,Linear
+pma:true
+scale:0.5
+M4/M4
+bounds:2,3,665,248
+M4/arm1-1
+bounds:780,90,104,161
+M4/arm1-2
+bounds:669,2,249,109
+rotate:90
