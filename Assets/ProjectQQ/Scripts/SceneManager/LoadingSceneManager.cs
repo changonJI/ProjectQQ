@@ -15,23 +15,28 @@ namespace QQ
         private static float fakeTime = 0.5f;
 
         [SerializeField] private UIProgressBar progressBar;
-
-        private void Start()
-        {
-            LoadSceneAsync().Forget();
-        }
-
+        
         public static void LoadScene(string sceneName)
         {
             nextScene = sceneName;
+
+            UIIndicator.Instantiate();
+
             SceneManager.LoadScene("LoadingScene");
         }
 
-        private async UniTask LoadSceneAsync()
+        private void Start()
+        {
+            UIIndicator.CloseUI();
+
+            LoadSceneAsync(nextScene).Forget();
+        }
+
+        private async UniTask LoadSceneAsync(string sceneName)
         {
             await UniTask.Yield(); // 초기화 작업 대체
 
-            AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+            AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
 
             op.allowSceneActivation = false;
 

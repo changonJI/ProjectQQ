@@ -51,9 +51,8 @@ namespace QQ
             }
             else
             {
-#if UNITY_EDITOR
-                UnityEngine.Debug.LogError($"LanguageDat is Null : {id}");
-#endif
+                LogHelper.LogError($"LanguageDat is Null : {id}");
+
                 return default;
             }
         }

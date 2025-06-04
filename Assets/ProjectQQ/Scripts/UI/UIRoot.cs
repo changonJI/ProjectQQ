@@ -14,6 +14,8 @@ namespace QQ {
         [SerializeField] RectTransform depthFixed2;
         [SerializeField] RectTransform depthFixed3;
         [SerializeField] RectTransform depthPopup;
+        [SerializeField] RectTransform depthToast;
+        [SerializeField] RectTransform depthIndicator;
 
         private List<UI> uiList;
         private List<UI> escapeUIList;
@@ -89,6 +91,12 @@ namespace QQ {
                 case UIDepth.Popup:
                     obj.SetParent(depthPopup);
                     break;
+                case UIDepth.Toast:
+                    obj.SetParent(depthToast);
+                    break;
+                case UIDepth.Indicator:
+                    obj.SetParent(depthIndicator);
+                    break;
             }            
         }
 
@@ -118,6 +126,9 @@ namespace QQ {
         {
             foreach(var ui in uiList)
             {
+                if(ui.uiDepth == UIDepth.Indicator)
+                    continue; // UIIndicator´Â À¯Áö
+
                 Destroy(ui.gameObject);
 
                 await UniTask.Yield();

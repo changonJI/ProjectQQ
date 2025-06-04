@@ -22,5 +22,11 @@ namespace QQ
         {
             button.OnClickAction -= action;
         }
+
+        public void OnClickClear()
+        {
+            button.OnClickAction = null;
+        }
+
     }
 }
