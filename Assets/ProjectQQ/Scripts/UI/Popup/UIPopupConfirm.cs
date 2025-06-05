@@ -19,22 +19,28 @@ namespace QQ
 
         protected override void OnStart()
         {
-            
-        }
-
-        protected override void OnFocus()
-        {
             SetTitle(GetParamToString(0));
-            
             btnOk.SetText(GetParamToString(1));
             btnCancel.SetText(GetParamToString(2));
-
             btnOk.OnClickAdd(OnClickOk);
             btnCancel.OnClickAdd(OnClickClose);
         }
 
+        protected override void OnFocus()
+        {
+            
+        }
+
         protected override void OnLostFocus()
         {
+            
+        }
+
+        protected override void OnDestory()
+        {
+            SetTitle(string.Empty);
+            btnOk.SetText(string.Empty);
+            btnCancel.SetText(string.Empty);
             btnOk.OnClickRemove(OnClickOk);
             btnCancel.OnClickRemove(OnClickClose);
         }

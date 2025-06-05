@@ -41,6 +41,14 @@ namespace QQ
         {
         }
 
+        protected override void OnDestory()
+        {
+
+            inputField.onValueChanged.RemoveListener(OnChanged);
+            inputField.onEndEdit.RemoveListener(OnEndEdit);
+            inputField.onSelect.RemoveListener(OnSelect);
+        }
+
         public void OnClickConfirm()
         {
             if (inputField.text.Length > limitTxt)

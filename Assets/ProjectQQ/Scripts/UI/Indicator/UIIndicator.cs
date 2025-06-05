@@ -5,20 +5,14 @@ namespace QQ {
 
         public override UIDepth uiDepth => UIDepth.Indicator;
 
-        protected override void OnFocus()
-        {
-        }
+        protected override void OnFocus() {}
 
-        protected override void OnInit()
-        {
-        }
+        protected override void OnInit() {}
 
-        protected override void OnLostFocus()
-        {
-        }
+        protected override void OnLostFocus() {}
 
-        protected override void OnStart()
-        {
-        }
+        protected override void OnStart() {}
+
+        protected override void OnDestory() {}
     }
 }

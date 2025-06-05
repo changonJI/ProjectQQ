@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,6 +36,11 @@ namespace QQ
 
         protected override void OnLostFocus()
         {
+        }
+
+        protected override void OnDestory()
+        {
+            
         }
 
         private void Update()
