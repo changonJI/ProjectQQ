@@ -7,6 +7,8 @@ namespace QQ
     {
         None = 0,
         LanguageData = 1,
+        PlayerStatData = 4,
+        MonsterData = 12,
     }
 
     public enum UIDepth

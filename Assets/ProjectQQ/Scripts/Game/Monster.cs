@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace QQ
 {
-    public class Character : BaseGameObject
+    public class Monster : BaseGameObject
     {
         public override ObjectType Type => ObjectType.Monster;
 

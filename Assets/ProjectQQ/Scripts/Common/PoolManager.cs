@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -95,7 +94,7 @@ namespace QQ
         {
             BaseGameObject baseGameObj = objType switch
             {
-                ObjectType.Monster => obj.AddComponent<Character>(),
+                ObjectType.Monster => obj.AddComponent<Monster>(),
                 ObjectType.Item => obj.AddComponent<Item>(),
                 ObjectType.SFX => obj.AddComponent<SFX>(),
                 _ => null

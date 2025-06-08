@@ -1,16 +1,10 @@
+using Spine.Unity;
 using UnityEngine;
 
 namespace QQ
 {
-    public interface IBaseGameObjectSet
-    {
-        public void Init();
-
-        public void SetData(int id);
-    }
-
     [DisallowMultipleComponent]
-    public abstract class BaseGameObject : MonoBehaviour, IBaseGameObjectSet
+    public abstract class BaseGameObject : MonoBehaviour
     {
         public abstract ObjectType Type { get; }
 
@@ -21,6 +15,8 @@ namespace QQ
             set { isLoaded = value; }
         }
 
+        [SerializeField] private SkeletonAnimation skeletonAnimation;
+
         /// <summary>
         /// BaseGameObject 생성시 항상 Init() 동작
         /// </summary>
@@ -30,10 +26,16 @@ namespace QQ
         }
 
         public abstract void Init();
+
         public abstract void SetData(int id);
+
         public void SetParent(Transform transform)
         {
             gameObject.transform.SetParent(transform);
+        }
+
+        public void SetSkeletonAnimation()
+        {
         }
 
         #region 유니티 생명주기 함수
@@ -41,6 +43,7 @@ namespace QQ
         {
             OnAwake();
         }
+
         abstract protected void OnAwake();
 
         protected virtual void Start()

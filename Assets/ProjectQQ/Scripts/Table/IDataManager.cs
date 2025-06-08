@@ -14,6 +14,10 @@ namespace QQ
             TableDataManager.SaveData(type, data); 
         }
 
+        /*
+        * 1. TableDataManager.LoadData() 에 매개변수값 Enum TableType 입력
+        * 2. foreach 에서 해당하는 Data Struct값에 data 셋하고 Manager의 Dictionary에 저장하기
+        */
         void LoadData();
     }
 }
