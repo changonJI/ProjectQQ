@@ -93,4 +93,20 @@ namespace QQ
         LoadingScene = 1,
         GameScene = 2
     }
+
+    public enum MonsterType
+    {
+        None = 0,
+        Normal = 1, // 일반 몬스터
+        MiniBoss = 2, // 미니 보스 몬스터
+        Boss = 3,   // 보스 몬스터
+        Event = 4,  // 이벤트 몬스터
+    }
+
+    public enum MonsterAtkType
+    {
+        None = 0,
+        Melee = 1, // 근접 공격
+        Ranged = 2, // 원거리 공격
+    }
 }
