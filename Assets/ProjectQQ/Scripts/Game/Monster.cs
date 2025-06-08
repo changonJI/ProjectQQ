@@ -1,24 +1,22 @@
-using UnityEngine;
-
 namespace QQ
 {
     public class Monster : BaseGameObject
     {
         public override ObjectType Type => ObjectType.Monster;
 
+        private MonsterData monsterData;
+
         /// <summary> 생성자 호출 함수 </summary>
         public override void Init()
         {
-
+            monsterData = new MonsterData();
         }
 
         public override void SetData(int id)
         {
-            // 데이터테이블에서 id에 해당하는 데이터 얻어오기
-            { }
+            var data = MonsterDataManager.Instance.Get(id);
 
-            // 데이터 오브젝트에 세팅
-            { }
+            monsterData.Set(data);
         }
 
         protected override void OnAwake() { }
