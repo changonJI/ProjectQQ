@@ -19,7 +19,7 @@ namespace QQ
         private const int dicCapacity = 256;
         private const int poolCapacity = 2048;
 
-        private async UniTask<BaseGameObject> CreateBaseGameObject(ObjectType objType, string prefabName)
+        private async UniTask<BaseGameObject> CreateBaseGameObject(GameObjectType objType, string prefabName)
         {
             GameObject obj = await ResManager.Instantiate(ResType.Object, prefabName);
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
@@ -35,7 +35,7 @@ namespace QQ
             return baseGameObj;
         }
 
-        public async UniTask<GameObject> GetObject(ObjectType objType, string prefabName)
+        public async UniTask<GameObject> GetObject(GameObjectType objType, string prefabName)
         {
             Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(objType);
             GameObject obj = null;
@@ -79,24 +79,24 @@ namespace QQ
             }
         }
 
-        Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> GetPoolByType(ObjectType objType)
+        Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> GetPoolByType(GameObjectType objType)
         {
             return objType switch
             {
-                ObjectType.Monster => monsterPools,
-                ObjectType.Item => itemPools,
-                ObjectType.SFX => sfxPools,
+                GameObjectType.Monster => monsterPools,
+                GameObjectType.Item => itemPools,
+                GameObjectType.SFX => sfxPools,
                 _ => null
             };
         }
 
-        BaseGameObject AddComponenetBaseGameObject(ref GameObject obj, ObjectType objType)
+        BaseGameObject AddComponenetBaseGameObject(ref GameObject obj, GameObjectType objType)
         {
             BaseGameObject baseGameObj = objType switch
             {
-                ObjectType.Monster => obj.AddComponent<Monster>(),
-                ObjectType.Item => obj.AddComponent<Item>(),
-                ObjectType.SFX => obj.AddComponent<SFX>(),
+                GameObjectType.Monster => obj.AddComponent<Monster>(),
+                GameObjectType.Item => obj.AddComponent<Item>(),
+                GameObjectType.SFX => obj.AddComponent<SFX>(),
                 _ => null
             };
 
@@ -108,19 +108,19 @@ namespace QQ
             return baseGameObj;
         }
 
-        private void SetParent(Transform obj, ObjectType objType)
+        private void SetParent(Transform obj, GameObjectType objType)
         {
             switch (objType)
             {
-                case ObjectType.Monster:
+                case GameObjectType.Monster:
                     obj.SetParent(monsterRoot);
                     break;
 
-                case ObjectType.SFX:
+                case GameObjectType.SFX:
                     obj.SetParent(sfxRoot);
                     break;
 
-                case ObjectType.Item:
+                case GameObjectType.Item:
                     obj.SetParent(itemRoot);
                     break;
             }
