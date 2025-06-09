@@ -1,8 +1,10 @@
+using UnityEngine.InputSystem;
+
 namespace QQ
 {
     public class Actor : BaseGameObject
     {
-        public override ObjectType Type => ObjectType.Actor;
+        public override GameObjectType Type => GameObjectType.Actor;
 
         private PlayerStatData playerStatData;
 
@@ -48,6 +50,23 @@ namespace QQ
 
         protected override void OnUpdate()
         {
+            //TODO : 임시 테스트용 코드. 추후에 FSM, InputManager 추가되면 제거
+            if (Keyboard.current == null) return;
+            if (Keyboard.current.qKey.wasPressedThisFrame)
+            {
+                LogHelper.LogError("Q 눌름");
+                SetCurAnimation(AnimState.Idle);
+            }
+            else if (Keyboard.current.wKey.wasPressedThisFrame)
+            {
+                LogHelper.LogError("w 눌름");
+                SetCurAnimation(AnimState.Roll);
+            }
+            else if (Keyboard.current.eKey.wasPressedThisFrame)
+            {
+                LogHelper.LogError("e 눌름");
+                SetCurAnimation(AnimState.Run);
+            }
         }
     }
 }

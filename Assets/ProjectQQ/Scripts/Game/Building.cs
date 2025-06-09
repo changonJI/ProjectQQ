@@ -4,7 +4,7 @@ namespace QQ
 {
     public class Building : BaseGameObject
     {
-        public override ObjectType Type => ObjectType.Building;
+        public override GameObjectType Type => GameObjectType.Building;
 
         /// <summary> 생성자 호출 함수 </summary>
         public override void Init()

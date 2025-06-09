@@ -2,7 +2,7 @@ namespace QQ
 {
     public class Monster : BaseGameObject
     {
-        public override ObjectType Type => ObjectType.Monster;
+        public override GameObjectType Type => GameObjectType.Monster;
 
         private MonsterData monsterData;
 

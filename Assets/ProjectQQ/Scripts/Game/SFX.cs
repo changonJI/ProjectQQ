@@ -4,7 +4,7 @@ namespace QQ
 {
     public class SFX : BaseGameObject
     {
-        public override ObjectType Type => ObjectType.SFX;
+        public override GameObjectType Type => GameObjectType.SFX;
 
         /// <summary> 생성자 호출 함수 </summary>
         public override void Init()
