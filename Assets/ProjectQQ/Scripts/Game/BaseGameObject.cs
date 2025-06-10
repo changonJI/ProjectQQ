@@ -55,19 +55,12 @@ namespace QQ
         private void SetLayer(SkeletonAnimation anim, AnimSlotType animSlot)
         {
             var mesh = anim.transform.GetComponent<MeshRenderer>();
-            mesh.sortingLayerID = SortingLayer.NameToID(SortingLayerName.Object.ToString());
 
+            // sorting layer 설정
+            mesh.sortingLayerID = SortingLayer.NameToID(SortingLayerName.Object.ToString());
+            // order in layer 설정
             mesh.sortingOrder = animSlot == AnimSlotType.Body ? (int)OrderInSortingLayer.OBJBody
                                                               : (int)OrderInSortingLayer.OBJWeapon;
-        }
-
-        /// <summary>
-        /// Skeleton의 customSkin 변수 초기화
-        /// </summary>
-        private void InitSkin()
-        {
-            skinBody = new Skin("BodySkin");
-            skinWeapon = new Skin("WeaponSkin");
         }
 
         /// <summary>
@@ -75,6 +68,7 @@ namespace QQ
         /// </summary>
         private void InitAnimation()
         {
+            // Body SkeletonAnimation 초기화
             if (animBody != null)
             {
                 // 초기화 안할시 skeletionanimation.skeleton이 null
@@ -97,7 +91,8 @@ namespace QQ
                 LogHelper.LogError("animBody is not assigned.");
             }
 
-            if (animWeapon != null)
+            // Weapon SkeletonAnimation 초기화, Actor만 적용
+            if (animWeapon != null && Type == GameObjectType.Actor)
             {
                 // 초기화 안할시 skeletionanimation.skeleton이 null
                 animWeapon.Initialize(false);
@@ -119,7 +114,119 @@ namespace QQ
                 LogHelper.LogError("animWeapon is not assigned.");
             }
 
+            // 애니메이션 초기화
             SetCurAnimation(AnimState.Idle);
+        }
+
+        /// <summary>
+        /// Skeleton의 customSkin 변수 초기화. InitAnimation() 이후 호출할것.(Skeleton.skeleton이 null일 수 있음)
+        /// </summary>
+        private void InitSkin()
+        {
+            // skin temp 변수 생성
+            skinBody = new Skin("BodySkin");
+            skinWeapon = new Skin("WeaponSkin");
+
+            var findSkinBody = animBody.skeleton.Data.FindSkin("default");
+            if (findSkinBody != null)
+            {
+                skinBody.AddSkin(findSkinBody);
+                animBody.skeleton.SetSkin(skinBody);
+            }
+            else
+            {
+                LogHelper.LogError("Default skin not found for Body.");
+            }
+
+            if (Type == GameObjectType.Actor)
+            {
+                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("default");
+
+                if (findSkinWeapon != null)
+                {
+                    skinWeapon.AddSkin(findSkinWeapon);
+                    animWeapon.skeleton.SetSkin(skinWeapon);
+                }
+                else
+                {
+                    LogHelper.LogError("Default skin not found for Body.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 현재 스킨을 설정하는 코드.
+        /// </summary>
+        /// <param name="skinName"></param>
+        public void SetCurSkin(string skinName)
+        {
+            // 현재 스킨과 비교하여 다를 경우에만 스킨을 변경
+            if (animBody.skeleton.Skin.Name != skinName)
+            {
+                // 커스텀 스킨 초기화
+                skinBody.Clear();
+                // 기존 skeleton의 skin 추가
+                skinBody.AddSkin(animBody.skeleton.Data.FindSkin(skinName));
+
+                // skeleton에 스킨 적용
+                animBody.skeleton.SetSkin(skinBody);
+                animBody.skeleton.SetSlotsToSetupPose();
+                animBody.AnimationState.Apply(animBody.skeleton);
+            }
+        }
+
+        /// <summary>
+        /// Body,Weapon의 해당 slot에서 Attachment을 설정하는 코드
+        /// </summary>
+        /// <param name="type">AnimSlotType</param>
+        /// <param name="slotName">Spine Slot Name</param>
+        /// <param name="attachmentName">Spine AtachemntName</param>
+        public void SetCurAttachment(AnimSlotType type, string slotName, string attachmentName)
+        {
+            SetAttachment(type == AnimSlotType.Body ? animBody : animWeapon, slotName, attachmentName);
+        }
+
+        /// <summary>
+        /// SetCurAttachment()에서 호출되는 코드.
+        /// </summary>
+        /// <param name="anim">Body or Weapon Skeleton</param>
+        /// <param name="slotName">Spine Slot Name</param>
+        /// <param name="attachmentName">Spine AtachemntName</param>
+        private void SetAttachment(SkeletonAnimation anim, string slotName, string attachmentName)
+        {
+            var slot = anim.skeleton.Data.FindSlot(slotName);
+            if (slot == null)
+            {
+                LogHelper.LogError($"Slot '{slotName}' not found in skeleton data.");
+                return;
+            }
+
+            var attach = anim.skeleton.GetAttachment(slot.Name, attachmentName);
+            if (attach == null)
+            {
+                LogHelper.LogError($"Attachment '{attachmentName}' not found in slot '{slotName}'.");
+                return;
+            }
+
+            anim.skeleton.SetAttachment(slotName, attachmentName);
+            anim.skeleton.SetSlotsToSetupPose();
+            anim.AnimationState.Apply(animBody.skeleton);
+        }
+
+        /// <summary>
+        /// SetAnimation을 실행하는 코드
+        /// </summary>
+        /// <param name="state">현재 상태값</param>
+        /// <param name="timeScale">시간값</param>
+        public void SetCurAnimation(AnimState state, float timeScale = 1f)
+        {
+            if (curAnimState == state)
+                return;
+
+            SetAnimation(AnimSlotType.Body, GetAnimName(state), GetAnimLoop(state), timeScale);
+            SetAnimation(AnimSlotType.Weapon, GetAnimName(state), GetAnimLoop(state), timeScale);
+
+            curAnimState = state;
         }
 
         /// <summary>
@@ -158,22 +265,6 @@ namespace QQ
                     LogHelper.LogError($"Animation '{animName}' not found in Weapon animations.");
                 }
             }
-        }
-
-        /// <summary>
-        /// SetAnimation을 실행하는 코드
-        /// </summary>
-        /// <param name="state">현재 상태값</param>
-        /// <param name="timeScale">시간값</param>
-        public void SetCurAnimation(AnimState state, float timeScale = 1f)
-        {
-            if (curAnimState == state)
-                return;
-
-            SetAnimation(AnimSlotType.Body, GetAnimName(state), GetAnimLoop(state), timeScale);
-            SetAnimation(AnimSlotType.Weapon, GetAnimName(state), GetAnimLoop(state), timeScale);
-
-            curAnimState = state;
         }
 
         /// <summary>
