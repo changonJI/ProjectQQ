@@ -29,6 +29,8 @@ namespace QQ
         public static event System.Action<UI> OnCreateAction;
         public static event System.Action<UI> OnFocusAction;
         public static event System.Action<UI> OnLostFocusAction;
+        public static event System.Action<UI> OnDestroyAction;
+
         protected virtual void Awake()
         {
             myGameObject = gameObject;
@@ -70,7 +72,7 @@ namespace QQ
                 return;
 
             // 하이라키창 최하단으로 내리기(UI상 맨앞에 오도록)
-            myTransform.SetAsLastSibling(); 
+            myTransform.SetAsLastSibling();
 
             OnFocus();
         }
@@ -101,10 +103,18 @@ namespace QQ
         {
             LostFocus();
 
+            OnDestroyAction?.Invoke(this);
+
+            OnDestory();
+
             myGameObject = null;
             myTransform = null;
             canvas = null;
         }
+        /// <summary>
+        /// OnDestroy 이후 실행 메소드
+        /// </summary>
+        protected abstract void OnDestory();
 
         public virtual void Close()
         {
@@ -183,20 +193,22 @@ namespace QQ
             InstantiateUI(okAction, closeAction, args).Forget();
         }
 
-        private static async UniTaskVoid InstantiateUI(System.Action okAction, 
+        private static async UniTask<T> InstantiateUI(System.Action okAction, 
                                                        System.Action closeAction, 
                                                        params object[] args)
         {
             if (instance == null)
             {
                 await ResManager.Instantiate(typeof(T));
-
+                
                 instance.OnOkCallback = okAction;
                 instance.OnCloseCallback = closeAction;
                 instance.storedParams = args;
             }
-            else
-                instance.Focus();
+                
+            instance.SetActive(true);
+
+            return instance;
         }
 
         public static void CloseUI()

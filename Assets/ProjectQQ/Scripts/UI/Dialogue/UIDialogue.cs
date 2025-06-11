@@ -38,13 +38,9 @@ namespace QQ
 
         protected override void OnStart()
         {
-        }
-
-        protected override void OnFocus()
-        {
-            btnNext.OnClickAdd(OnClickOk);
+            btnNext.OnClickAdd(OnClickNext);
             btnNext.SetText("Test");
-            btnSkip.OnClickAdd(OnClickOk);
+            btnSkip.OnClickAdd(OnClickSkip);
             btnSkip.SetText("Test");
 
             chapterIndex = GetParamToInt(0);
@@ -54,14 +50,23 @@ namespace QQ
             InitUI();
         }
 
-        protected override void OnLostFocus()
+        protected override void OnFocus()
         {
-            btnNext.OnClickRemove(OnClickOk);
+            
+        }
+
+        protected override void OnDestory()
+        {
+            btnNext.OnClickRemove(OnClickNext);
             btnNext.SetText(string.Empty);
-            btnSkip.OnClickRemove(OnClickOk);
+            btnSkip.OnClickRemove(OnClickSkip);
             btnSkip.SetText(string.Empty);
 
             chapterIndex = 0;
+        }
+
+        protected override void OnLostFocus()
+        {
         }
 
         /// <summary>

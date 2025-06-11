@@ -30,10 +30,16 @@ namespace QQ {
             UI.OnCreateAction += OnCreateAction;
             UI.OnFocusAction += OnFocusAction;
             UI.OnLostFocusAction += OnLostFocusAction;
+            UI.OnDestroyAction += OnDestroyAction;
         }
 
         void OnDestroy()
         {
+            UI.OnCreateAction -= OnCreateAction;
+            UI.OnFocusAction -= OnFocusAction;
+            UI.OnLostFocusAction -= OnLostFocusAction;
+            UI.OnDestroyAction -= OnDestroyAction;
+
             depthHud = null;
             depthFixed1 = null;
             depthFixed2= null;
@@ -53,6 +59,7 @@ namespace QQ {
         {
             uiList.Add(ui);
         }
+
         private void OnFocusAction(UI ui)
         {
             if (ui.uiType == UIType.Back)
@@ -63,6 +70,11 @@ namespace QQ {
         {
             if (ui.uiType == UIType.Back)
                 escapeUIList.Remove(ui);
+        }
+
+        public void OnDestroyAction(UI ui)
+        {
+            uiList.Remove(ui);
         }
 
         public void SetUI(UI ui, GameObject obj, UIDepth depth, int layer)

@@ -5,7 +5,7 @@ namespace QQ
     /// </summary>
     public abstract class UIPopup<T> : UI<T> where T : UIPopup<T>
     {
-        public override UIType uiType => UIType.Back;
+        public override UIType uiType => UIType.Destroy;
         public override UIDepth uiDepth => UIDepth.Popup;
 
         protected bool isBackGroundClose = false;

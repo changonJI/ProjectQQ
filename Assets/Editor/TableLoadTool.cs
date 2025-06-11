@@ -11,7 +11,7 @@ namespace QQ
 {
     public class TableLoadTool : EditorWindow
     {
-        private const string tableInfoURL = "https://docs.google.com/spreadsheets/d/1olWDigkJMlbBc2eDZrFEG93oQJJ1n9OnsdghVSHp2_s/edit?usp=sharing";
+        private const string tableInfoURL = "https://docs.google.com/spreadsheets/d/1nU5HWuWUUNNVqjZQv9zfUHahbEy45P1fZetfD7LDvEQ/edit?usp=sharing";
         
         // 구글 시트 정보
         private List<SheetInfo> sheetInfos;
@@ -70,11 +70,6 @@ namespace QQ
 
         private void OnGUI()
         {
-            if (GUILayout.Button("TEST"))
-            {
-                LanguageDataManager.Instance.LoadData();
-            }
-
             GUILayout.Label($"Current State <<isLocalTableLoading : {isLocalTableLoading}>> <<IsReady : {isReady}>> <<IsTableLoading :{isSheetTableLoading}>>", EditorStyles.boldLabel);
 
             GUI.enabled = ActiveBtnTableLocalLoad;
