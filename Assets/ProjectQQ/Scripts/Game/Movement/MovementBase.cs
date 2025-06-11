@@ -40,9 +40,13 @@ namespace QQ
             OnStart();
         }
 
-        protected virtual void Update()
+        protected virtual void OnDestroy()
         {
             InputManager.Instance.OnMoveInput -= HandleMoveInput;
+        }
+
+        protected virtual void Update()
+        {
             OnUpdate();
         }
 
