@@ -1,4 +1,4 @@
-Body.png
+Parts_Body.png
 size:1070,542
 filter:Linear,Linear
 pma:true
@@ -23,6 +23,6 @@ LegR
 bounds:516,2,213,148
 offsets:0,0,213,180
 rotate:90
-Lowerbody
+LowerBody
 bounds:845,190,350,151
 rotate:90
