@@ -308,8 +308,8 @@ namespace QQ
         #region 유니티 생명주기 함수
         protected virtual void Awake()
         {
-            InitSkin();
             InitAnimation();
+            InitSkin();
 
             OnAwake();
         }
