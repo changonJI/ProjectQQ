@@ -5,9 +5,23 @@ namespace QQ
     public class PlayerMovement : MovementBase
     {
         protected override void OnInit() { }
-        protected override void OnStart() { }
+
+        protected override void OnStart()
+        {
+            InputManager.Instance.OnMoveInput += HandleMoveInput;
+        }
+
+        protected override void OnDestroyed()
+        {
+            InputManager.Instance.OnMoveInput -= HandleMoveInput;
+        }
+
         protected override void OnUpdate() { }
         protected override void OnFixedUpdate() { }
-        protected override void OnMoveHandled() { }
+
+        void HandleMoveInput(Vector2 dir)
+        {
+            vec2Direction = dir;
+        }
     }
 }

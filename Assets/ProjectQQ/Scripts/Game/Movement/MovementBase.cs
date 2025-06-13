@@ -36,13 +36,12 @@ namespace QQ
 
         protected virtual void Start()
         {
-            InputManager.Instance.OnMoveInput += HandleMoveInput;
             OnStart();
         }
 
         protected virtual void OnDestroy()
         {
-            InputManager.Instance.OnMoveInput -= HandleMoveInput;
+            OnDestroyed();
         }
 
         protected virtual void Update()
@@ -57,13 +56,6 @@ namespace QQ
             OnFixedUpdate();
         }
 
-        void HandleMoveInput(Vector2 dir)
-        {
-            vec2Direction = dir;
-
-            OnMoveHandled();
-        }
-
         #endregion
 
         protected virtual void Move(Vector2 dir, float velocity)
@@ -74,8 +66,8 @@ namespace QQ
 
         protected abstract void OnInit();
         protected abstract void OnStart();
+        protected abstract void OnDestroyed();
         protected abstract void OnUpdate();
         protected abstract void OnFixedUpdate();
-        protected abstract void OnMoveHandled();
     }
 }
