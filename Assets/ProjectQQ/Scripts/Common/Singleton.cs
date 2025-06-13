@@ -33,38 +33,6 @@ namespace QQ
         }
     }
 
-    public class SingletonMono<T> : MonoBehaviour where T : class, new()
-    {
-        private static T instance = null;
-
-        public static T Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new T();
-                }
-
-                return instance;
-            }
-        }
-
-        protected SingletonMono()
-        {
-        }
-
-        ~SingletonMono()
-        {
-            instance = null;
-        }
-
-        public bool IsValid()
-        {
-            return instance != null;
-        }
-    }
-
     public class DontDestroySingleton<T> : MonoBehaviour where T : DontDestroySingleton<T>
     {
         private static T instance = null;
