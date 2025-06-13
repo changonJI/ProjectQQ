@@ -140,7 +140,7 @@ namespace QQ
 
             if (Type == GameObjectType.Actor)
             {
-                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("default");
+                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("weapon0");
 
                 if (findSkinWeapon != null)
                 {
