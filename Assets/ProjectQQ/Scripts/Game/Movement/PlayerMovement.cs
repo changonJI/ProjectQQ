@@ -8,18 +8,18 @@ namespace QQ
 
         protected override void OnStart()
         {
-            InputManager.Instance.OnMoveInput += HandleMoveInput;
+            InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
         }
 
         protected override void OnDestroyed()
         {
-            InputManager.Instance.OnMoveInput -= HandleMoveInput;
+            InputManager.Instance.RemoveMoveInputEvent(HandleMoveInput);
         }
 
         protected override void OnUpdate() { }
         protected override void OnFixedUpdate() { }
 
-        void HandleMoveInput(Vector2 dir)
+        private void HandleMoveInput(Vector2 dir)
         {
             vec2Direction = dir;
         }
