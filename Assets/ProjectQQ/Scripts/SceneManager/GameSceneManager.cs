@@ -15,7 +15,13 @@ namespace QQ
 
         void Start()
         {
+            // 배경 로드
+            ResManager.Instantiate(ResType.Stage, "Stage1");
 
+            // 플레이어 로드
+            ResManager.Instantiate(ResType.Object, "Actor");
+
+            // 몬스터 로드
         }
 
         void Update()

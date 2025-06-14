@@ -98,6 +98,7 @@ namespace QQ
         UI = 0,
         Sound = 1,
         Object = 2,
+        Stage = 3,
     }
     public enum InputContext : byte
     {
