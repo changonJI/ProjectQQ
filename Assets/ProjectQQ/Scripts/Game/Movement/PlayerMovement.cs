@@ -21,7 +21,7 @@ namespace QQ
 
         private void HandleMoveInput(Vector2 dir)
         {
-            vec2Direction = dir;
+            moveDirection = dir;
         }
     }
 }

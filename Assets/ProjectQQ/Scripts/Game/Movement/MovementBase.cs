@@ -18,7 +18,8 @@ namespace QQ
     {
         private Rigidbody2D rigidBody;
         [SerializeField] protected float speedBase;
-        [SerializeField] protected Vector2 vec2Direction;
+        [SerializeField] protected Vector2 moveDirection;
+        [SerializeField] protected Vector2 lastMoveDirection;
 
         public float Velocity => speedBase;
 
@@ -51,7 +52,11 @@ namespace QQ
 
         protected virtual void FixedUpdate()
         {
-            Move(vec2Direction, Velocity);
+            if (Vector2.zero != moveDirection)
+            {
+                Move(moveDirection, Velocity);
+                lastMoveDirection = moveDirection;
+            }
 
             OnFixedUpdate();
         }
