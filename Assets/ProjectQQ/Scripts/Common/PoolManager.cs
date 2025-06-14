@@ -133,9 +133,9 @@ namespace QQ
                 // Destroy All Object in List
                 foreach (var obj in poolPair.list)
                 {
-                    if (obj != null)
+                    if (obj != null && obj.gameObject != null)
                     {
-                        Destroy(obj);
+                        Destroy(obj.gameObject);
                     }
                 }
                 poolPair.list.Clear();
@@ -147,9 +147,9 @@ namespace QQ
             {
                 foreach (var obj in poolPair.list)
                 {
-                    if (obj != null)
+                    if (obj != null && obj.gameObject != null)
                     {
-                        Destroy(obj);
+                        Destroy(obj.gameObject);
                     }
                 }
                 poolPair.list.Clear();
@@ -160,9 +160,9 @@ namespace QQ
             {
                 foreach (var obj in poolPair.list)
                 {
-                    if (obj != null)
+                    if (obj != null && obj.gameObject != null)
                     {
-                        Destroy(obj);
+                        Destroy(obj.gameObject);
                     }
                 }
                 poolPair.list.Clear();
