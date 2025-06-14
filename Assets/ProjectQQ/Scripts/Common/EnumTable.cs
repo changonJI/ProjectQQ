@@ -99,6 +99,12 @@ namespace QQ
         Sound = 1,
         Object = 2,
     }
+    public enum InputContext : byte
+    {
+        Player = 0,
+        UI,
+
+    }
     #endregion
 
     #region GameObject
