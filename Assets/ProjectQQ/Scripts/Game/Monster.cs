@@ -1,3 +1,6 @@
+using QQ.FSM;
+using UnityEngine;
+
 namespace QQ
 {
     public class Monster : BaseGameObject
@@ -5,6 +8,13 @@ namespace QQ
         public override GameObjectType Type => GameObjectType.Monster;
 
         private MonsterData monsterData;
+        
+        public MonsterMovement MonsterMovement { get; private set; }
+        public MonsterStateContext StateContext { get; private set; }
+        
+        private StatusEffectController.StatusEffect currentStatus = StatusEffectController.StatusEffect.None;
+        
+        public Transform TargetTransform { get; private set; }
 
         /// <summary> 생성자 호출 함수 </summary>
         public override void Init()
@@ -19,13 +29,44 @@ namespace QQ
             monsterData.Set(data);
         }
 
-        protected override void OnAwake() { }
-        protected override void OnStart() { }
+        protected override void OnAwake()
+        {
+            StateContext = new MonsterStateContext(this);
+            MonsterMovement = GetComponent<MonsterMovement>();
+        }
+
+        protected override void OnStart()
+        {
+            StateContext.ChangeState(StateContext.MonsterIdleState);
+            TryFindPlayer();
+        }
+
         protected override void OnEnabled() { }
         protected override void OnDisabled() { }
-        protected override void OnUpdate() { }
-        protected override void OnFixedUpdate() { }
+
+        protected override void OnUpdate()
+        {
+            TryFindPlayer();
+            StateContext.Update();
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            MonsterMovement.Tick();
+        }
         protected override void OnLateUpdate() { }
         protected override void OnDestroyed() { }
+
+        public void TryFindPlayer()
+        {
+            if (TargetTransform == null)
+            {
+                var player = FindObjectOfType<Actor>();
+                if (player != null) //  && !player.IsDead
+                {
+                    TargetTransform = player.transform;
+                }
+            }
+        }
     }
 }

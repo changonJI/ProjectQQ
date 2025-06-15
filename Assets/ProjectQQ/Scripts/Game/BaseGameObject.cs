@@ -1,6 +1,7 @@
 using Spine;
 using Spine.Unity;
 using System.Collections.Generic;
+using QQ.FSM;
 using UnityEngine;
 
 namespace QQ
@@ -28,6 +29,13 @@ namespace QQ
         [SerializeField] private SkeletonAnimation animWeapon;
         private Skin skinWeapon;
         private readonly Dictionary<string, Spine.Animation> dicAnimWeapon = new Dictionary<string, Spine.Animation>();
+        #endregion
+
+        #region Status
+
+        protected StatusEffectController status;
+        protected bool IsStunned => status.HasStatus(StatusEffectController.StatusEffect.Stunned);
+
         #endregion
 
         /// <summary>
@@ -140,7 +148,7 @@ namespace QQ
 
             if (Type == GameObjectType.Actor)
             {
-                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("default");
+                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("Gatiling");
 
                 if (findSkinWeapon != null)
                 {
@@ -308,8 +316,10 @@ namespace QQ
         #region 유니티 생명주기 함수
         protected virtual void Awake()
         {
-            InitSkin();
+            status = new StatusEffectController();
+            
             InitAnimation();
+            InitSkin();
 
             OnAwake();
         }

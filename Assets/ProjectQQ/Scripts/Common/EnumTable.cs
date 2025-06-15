@@ -135,6 +135,8 @@ namespace QQ
         Idle = 1,
         Roll = 2,
         Run = 3,
+        Hit = 4,
+        Die = 5,
     }
     #endregion
 }

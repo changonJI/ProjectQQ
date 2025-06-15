@@ -13,65 +13,24 @@ namespace QQ
     /// <summary>
     /// 기본 이동
     /// </summary>
-    [DisallowMultipleComponent]
     public abstract class MovementBase : MonoBehaviour
     {
-        private Rigidbody2D rigidBody;
-        [SerializeField] protected float speedBase;
-        [SerializeField] protected Vector2 vec2Direction;
+        protected Rigidbody2D rigidBody;
 
-        public float Velocity => speedBase;
+        [SerializeField] protected float baseSpeed = 5f;
 
-        #region Unity Method
         protected virtual void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
-            if (null == rigidBody)
-            {
-                LogHelper.LogError($"MovementBase {gameObject.name} 리지드바디2D가 없음");
-            }
-
-            OnInit();
         }
 
-        protected virtual void Start()
+        public virtual void Move(Vector2 direction)
         {
-            InputManager.Instance.OnMoveInput += HandleMoveInput;
-            OnStart();
+            if (direction == Vector2.zero) return;
+
+            Vector2 delta = direction.normalized * (baseSpeed * Time.fixedDeltaTime);
+            rigidBody.MovePosition(rigidBody.position + delta);
         }
-
-        protected virtual void OnDestroy()
-        {
-            InputManager.Instance.OnMoveInput -= HandleMoveInput;
-        }
-
-        protected virtual void Update()
-        {
-            OnUpdate();
-        }
-
-        protected virtual void FixedUpdate()
-        {
-            Move(vec2Direction, Velocity);
-
-            OnFixedUpdate();
-        }
-
-        void HandleMoveInput(Vector2 dir)
-        {
-            vec2Direction = dir;
-
-            OnMoveHandled();
-        }
-
-        #endregion
-
-        protected virtual void Move(Vector2 dir, float velocity)
-        {
-            Vector2 vec2DeltaMovement = dir * velocity * Time.fixedDeltaTime;
-            rigidBody.MovePosition(rigidBody.position + vec2DeltaMovement);
-        }
-
         protected abstract void OnInit();
         protected abstract void OnStart();
         protected abstract void OnUpdate();
