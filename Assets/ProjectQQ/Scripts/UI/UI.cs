@@ -105,7 +105,7 @@ namespace QQ
 
             OnDestroyAction?.Invoke(this);
 
-            OnDestory();
+            OnExit();
 
             myGameObject = null;
             myTransform = null;
@@ -114,7 +114,7 @@ namespace QQ
         /// <summary>
         /// OnDestroy 이후 실행 메소드
         /// </summary>
-        protected abstract void OnDestory();
+        protected abstract void OnExit();
 
         public virtual void Close()
         {
@@ -122,7 +122,7 @@ namespace QQ
             {
                 SetActive(false);
             }
-            else if(uiType == UIType.Destroy && isActive)
+            else if(uiType == UIType.Destroy)
             {
                 SetActive(false);
                 Destroy(this.gameObject);

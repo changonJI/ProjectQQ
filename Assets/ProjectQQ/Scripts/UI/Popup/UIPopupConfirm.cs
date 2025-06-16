@@ -36,7 +36,7 @@ namespace QQ
             
         }
 
-        protected override void OnDestory()
+        protected override void OnExit()
         {
             SetTitle(string.Empty);
             btnOk.SetText(string.Empty);

@@ -13,6 +13,6 @@ namespace QQ {
 
         protected override void OnStart() {}
 
-        protected override void OnDestory() {}
+        protected override void OnExit() {}
     }
 }
