@@ -42,7 +42,7 @@ namespace QQ
         {
             string path = GetResourcePath(type, name);
 
-            var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(path, name));
+            var resource = await Resources.LoadAsync<GameObject>(path);
 
             return GameObject.Instantiate(resource as GameObject);
         }
