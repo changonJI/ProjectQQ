@@ -7,6 +7,8 @@ namespace QQ.FSM
         private readonly Actor actor;
         private readonly PlayerStateContext context;
 
+        public bool IsInputBlocked => true;
+
         public PlayerKnockbackState(Actor actor, PlayerStateContext playerStateContext)
         {
             this.actor = actor;
@@ -19,7 +21,7 @@ namespace QQ.FSM
             // knockbackDir = actor.LastHitDirection.normalized;
             // actor.ForceMove(knockbackDir * knockbackPower);
 
-            LogHelper.Log("아얏");
+            LogHelper.Log("Enter PlayerKnockbackState : 아얏");
             actor.SetCanAttack(false);
             // actor.SetCurAnimation(AnimState.Hit);
         }
@@ -27,7 +29,7 @@ namespace QQ.FSM
         public void Update()
         {
             // 복귀: 입력 방향 보고 상태 결정
-            if (actor.MoveDirection == Vector2.zero)
+            if (actor.PlayerMovement.MoveDirection == Vector2.zero)
                 context.ChangeState(context.PlayerIdleState);
             else
                 context.ChangeState(context.PlayerMoveState);
@@ -35,8 +37,8 @@ namespace QQ.FSM
 
         public void Exit()
         {
-            actor.StopForceMove();
             actor.SetCanAttack(true);
         }
+
     }
 }

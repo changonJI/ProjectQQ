@@ -5,5 +5,7 @@ namespace QQ.FSM
         void Enter();
         void Update();
         void Exit();
+        
+        bool IsInputBlocked { get; }
     }
 }

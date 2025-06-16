@@ -4,16 +4,9 @@ namespace QQ.FSM
 {
     public class MonsterMovement : MovementBase
     {
-        private Vector2 moveDir;
-
         public void SetDirection(Vector2 dir)
         {
-            moveDir = dir;
-        }
-
-        public void Tick()
-        {
-            // Move(moveDir);
+            MoveDirection = dir;
         }
 
         protected override void OnInit()

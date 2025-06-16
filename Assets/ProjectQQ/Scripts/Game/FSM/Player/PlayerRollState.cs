@@ -7,11 +7,14 @@ namespace QQ.FSM
         private readonly Actor actor;
         private readonly PlayerStateContext context;
         
+        public bool IsInputBlocked => true;
+        
         // 임시
         private float rollDuration = 0.5f; // 롤 시간
         private float elapsedTime;
-        private float rollSpeed = 12f;
+        private float rollSpeed = 1f;
         private Vector2 rollDirection;
+        private bool isRolling = false;
 
         public PlayerRollState(Actor actor, PlayerStateContext playerStateContext)
         {
@@ -22,9 +25,12 @@ namespace QQ.FSM
         public void Enter()
         {
             // todo : 구르기 임시 계산
+            
+            isRolling = true;
+            
             elapsedTime = 0f;
-            rollDirection = actor.MoveDirection.normalized;
-            actor.ForceMove(rollDirection * rollSpeed);
+            rollDirection = actor.PlayerMovement.MoveDirection.normalized;
+            actor.PlayerMovement.SetMoveDirection(rollDirection * rollSpeed);
             
             actor.SetCurAnimation(AnimState.Roll, 1.0f); // roll 애니메이션 재생
             actor.SetCanAttack(false);
@@ -37,7 +43,7 @@ namespace QQ.FSM
             if (elapsedTime >= rollDuration)
             {
                 // 롤 종료 후 다시 상태 전환
-                if (actor.MoveDirection == Vector2.zero)
+                if (actor.PlayerMovement.MoveDirection == Vector2.zero)
                     context.ChangeState(context.PlayerIdleState);
                 else
                     context.ChangeState(context.PlayerMoveState);
@@ -46,8 +52,8 @@ namespace QQ.FSM
 
         public void Exit()
         {
-            actor.StopForceMove();
             actor.SetCanAttack(true);
         }
+
     }
 }

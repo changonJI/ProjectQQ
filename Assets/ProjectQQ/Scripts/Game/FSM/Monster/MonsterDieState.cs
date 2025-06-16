@@ -4,6 +4,8 @@ namespace QQ.FSM
     {
         private readonly Monster monster;
 
+        public bool IsInputBlocked { get; }
+
         public MonsterDieState(Monster monster, MonsterStateContext monsterStateContext)
         {
             this.monster = monster;

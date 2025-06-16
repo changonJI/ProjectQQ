@@ -3,6 +3,7 @@ namespace QQ.FSM
     public class PlayerStateContext
     {
         private IState currentState;
+        public IState CurrentState => currentState;
         
         public IState PlayerIdleState { get; private set; }
         public IState PlayerMoveState { get; private set; }

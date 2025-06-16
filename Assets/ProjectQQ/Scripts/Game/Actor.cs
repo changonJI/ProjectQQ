@@ -10,12 +10,11 @@ namespace QQ
         public override GameObjectType Type => GameObjectType.Actor;
 
         private PlayerStatData playerStatData;
-        private PlayerMovement playerMovement;
+        public PlayerMovement PlayerMovement { get; private set; }
         
         public PlayerStateContext StateContext { get; private set; }
         
         // 플레이어 데이터 임시
-        public Vector2 MoveDirection { get; private set; }
         [SerializeField] private int maxHp = 10;
         private int currentHp;
         public Vector2 LastHitDirection { get; private set; }
@@ -44,7 +43,7 @@ namespace QQ
         protected override void OnAwake()
         {
             StateContext = new PlayerStateContext(this);
-            playerMovement = GetComponent<PlayerMovement>();
+            PlayerMovement = GetComponent<PlayerMovement>();
         }
 
         protected override void OnDestroyed()
@@ -95,24 +94,16 @@ namespace QQ
 
         private void OnMoveInput(Vector2 dir)
         {
-            MoveDirection = dir;
+            PlayerMovement.SetMoveDirection(dir);
         }
 
         private void OnRollInput()
         {
-            if (StateContext == null) return;
+            if (StateContext.CurrentState is PlayerRollState)
+                return;
             
-            StateContext.ChangeState(StateContext.PlayerRollState);
-        }
-
-        public void ForceMove(Vector2 velocity)
-        {
-            // playerMovement.han(velocity);
-        }
-
-        public void StopForceMove()
-        {
-            // playerMovement.ClearOverrideVelocity();
+            if (StateContext != null)
+                StateContext.ChangeState(StateContext.PlayerRollState);
         }
 
         public void PerformAttack()

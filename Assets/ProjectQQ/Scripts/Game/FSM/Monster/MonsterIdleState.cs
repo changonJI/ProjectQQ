@@ -7,6 +7,8 @@ namespace QQ.FSM
         private readonly Monster monster;
         private readonly MonsterStateContext monsterStateContext;
 
+        public bool IsInputBlocked { get; }
+
         public MonsterIdleState(Monster monster, MonsterStateContext monsterStateContext)
         {
             this.monster = monster;

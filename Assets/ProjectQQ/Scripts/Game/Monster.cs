@@ -52,7 +52,6 @@ namespace QQ
 
         protected override void OnFixedUpdate()
         {
-            MonsterMovement.Tick();
         }
         protected override void OnLateUpdate() { }
         protected override void OnDestroyed() { }

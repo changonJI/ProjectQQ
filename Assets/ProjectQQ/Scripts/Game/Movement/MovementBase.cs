@@ -18,9 +18,10 @@ namespace QQ
     {
         private Rigidbody2D rigidBody;
         [SerializeField] protected float speedBase;
-        [SerializeField] protected Vector2 moveDirection;
+        // [SerializeField] protected Vector2 moveDirection;
         [SerializeField] protected Vector2 lastMoveDirection;
 
+        public Vector2 MoveDirection { get; protected set; }
         public float Velocity => speedBase;
 
         #region Unity Method
@@ -52,10 +53,10 @@ namespace QQ
 
         protected virtual void FixedUpdate()
         {
-            if (Vector2.zero != moveDirection)
+            if (Vector2.zero != MoveDirection)
             {
-                Move(moveDirection, Velocity);
-                lastMoveDirection = moveDirection;
+                Move(MoveDirection, Velocity);
+                lastMoveDirection = MoveDirection;
             }
 
             OnFixedUpdate();
@@ -67,6 +68,11 @@ namespace QQ
         {
             Vector2 vec2DeltaMovement = dir * velocity * Time.fixedDeltaTime;
             rigidBody.MovePosition(rigidBody.position + vec2DeltaMovement);
+        }
+
+        public void SetMoveDirection(Vector2 dir)
+        {
+            MoveDirection = dir;
         }
 
         protected abstract void OnInit();
