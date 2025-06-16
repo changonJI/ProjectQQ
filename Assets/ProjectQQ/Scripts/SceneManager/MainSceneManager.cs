@@ -18,15 +18,7 @@ namespace QQ
             // SoundManager 추가 필요
             // EffectManager 추가 필요
             // PoolManager 추가 필요
-
-            if (GameManager.Instance.GetStringPlayerData(PlayerDataType.UserName) == string.Empty)
-            {
-                UICreateNickName.Instantiate();
-            }
-            else
-            {
-                UIMainScene.Instantiate();
-            }
+            UIMainScene.Instantiate();
         }
         
     }
