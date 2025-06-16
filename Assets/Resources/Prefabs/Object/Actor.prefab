@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c7603266e526449b06efd7f9a10d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animBody: {fileID: 6459364869743838848}
-  animWeapon: {fileID: 2416582305446141315}
+  animBody: {fileID: 5235672656272409726}
+  animWeapon: {fileID: 1684545007562061898}
 --- !u!114 &3204212863539191713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &1116808496983559128
+--- !u!1 &1636994554962477832
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,24 +101,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1678194357137759267}
-  - component: {fileID: 3122341001756368672}
-  - component: {fileID: 7167498933924821446}
-  - component: {fileID: 2416582305446141315}
+  - component: {fileID: 511418730354550009}
+  - component: {fileID: 212237989391898566}
+  - component: {fileID: 7904260706296563224}
+  - component: {fileID: 5235672656272409726}
   m_Layer: 0
-  m_Name: Spine GameObject (Gatling)
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1678194357137759267
+--- !u!4 &511418730354550009
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1116808496983559128}
+  m_GameObject: {fileID: 1636994554962477832}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -127,21 +127,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7271472961206861449}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3122341001756368672
+--- !u!33 &212237989391898566
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1116808496983559128}
+  m_GameObject: {fileID: 1636994554962477832}
   m_Mesh: {fileID: 0}
---- !u!23 &7167498933924821446
+--- !u!23 &7904260706296563224
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1116808496983559128}
+  m_GameObject: {fileID: 1636994554962477832}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -158,7 +158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 95fb69713ca3c204faf0281706b75b3d, type: 2}
+  - {fileID: 2100000, guid: 83a72b50afbf1f14eae0ca6baae96286, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -180,20 +180,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2416582305446141315
+--- !u!114 &5235672656272409726
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1116808496983559128}
+  m_GameObject: {fileID: 1636994554962477832}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: d88ff8e3dcaa3a14cba4d149416b08fd, type: 2}
-  initialSkinName: Gatling
+  skeletonDataAsset: {fileID: 11400000, guid: abbde918ae951f0449ff2ae929978cc8, type: 2}
+  initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
@@ -283,11 +283,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7654669328025053704}
-  - {fileID: 1678194357137759267}
+  - {fileID: 511418730354550009}
+  - {fileID: 2621339328637278973}
   m_Father: {fileID: 7997102368759212300}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3568289260792995820
+--- !u!1 &7214405568801423225
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,24 +295,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7654669328025053704}
-  - component: {fileID: 252176365879513517}
-  - component: {fileID: 2896088652963583213}
-  - component: {fileID: 6459364869743838848}
+  - component: {fileID: 2621339328637278973}
+  - component: {fileID: 1053188288965223030}
+  - component: {fileID: 1723809796495752082}
+  - component: {fileID: 1684545007562061898}
   m_Layer: 0
-  m_Name: Spine GameObject (quokka_parts_SR_ph)
+  m_Name: weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7654669328025053704
+--- !u!4 &2621339328637278973
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3568289260792995820}
+  m_GameObject: {fileID: 7214405568801423225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -321,21 +321,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7271472961206861449}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &252176365879513517
+--- !u!33 &1053188288965223030
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3568289260792995820}
+  m_GameObject: {fileID: 7214405568801423225}
   m_Mesh: {fileID: 0}
---- !u!23 &2896088652963583213
+--- !u!23 &1723809796495752082
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3568289260792995820}
+  m_GameObject: {fileID: 7214405568801423225}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -352,7 +352,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd55d2709c96df540b5d4546bb3e713d, type: 2}
+  - {fileID: 2100000, guid: 5df4bcc50bc524e4ab131499a1d4d2c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -374,20 +374,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6459364869743838848
+--- !u!114 &1684545007562061898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3568289260792995820}
+  m_GameObject: {fileID: 7214405568801423225}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 49f46936494e76b4889523be94a5e38f, type: 2}
-  initialSkinName: 
+  skeletonDataAsset: {fileID: 11400000, guid: 7d5660d14c60b9c4daeb46edb363f0c8, type: 2}
+  initialSkinName: Weapon0
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
