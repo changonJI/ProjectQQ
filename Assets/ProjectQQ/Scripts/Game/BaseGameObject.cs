@@ -135,12 +135,12 @@ namespace QQ
             }
             else
             {
-                LogHelper.LogError("Default skin not found for Body.");
+                LogHelper.LogError("default skin not found for Body.");
             }
 
             if (Type == GameObjectType.Actor)
             {
-                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("weapon0");
+                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("Weapon0");
 
                 if (findSkinWeapon != null)
                 {
@@ -149,7 +149,7 @@ namespace QQ
                 }
                 else
                 {
-                    LogHelper.LogError("Default skin not found for Body.");
+                    LogHelper.LogError("weapon0 skin not found for weapon.");
                 }
             }
         }
