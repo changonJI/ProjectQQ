@@ -21,17 +21,17 @@ namespace QQ
     public enum MonsterType : byte
     {
         None = 0,
-        Normal = 1, // ÀÏ¹Ý ¸ó½ºÅÍ
-        MiniBoss = 2, // ¹Ì´Ï º¸½º ¸ó½ºÅÍ
-        Boss = 3,   // º¸½º ¸ó½ºÅÍ
-        Event = 4,  // ÀÌº¥Æ® ¸ó½ºÅÍ
+        Normal = 1, // ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+        MiniBoss = 2, // ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Boss = 3,   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Event = 4,  // ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½
     }
 
     public enum MonsterAtkType : byte
     {
         None = 0,
-        Melee = 1, // ±ÙÁ¢ °ø°Ý
-        Ranged = 2, // ¿ø°Å¸® °ø°Ý
+        Melee = 1, // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Ranged = 2, // ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
     #endregion
 
@@ -58,6 +58,14 @@ namespace QQ
     {
         Default = 0,
         UI = 5,
+    }
+
+    public enum UIDialouguePos : byte
+    {
+        None = 0,
+        Left = 1,  
+        Right = 2,  
+        Center = 3, 
     }
     #endregion
 
@@ -99,12 +107,14 @@ namespace QQ
         Sound = 1,
         Object = 2,
         Stage = 3,
+        Texture = 4,
     }
     public enum InputContext : byte
     {
         Player = 0,
         UI,
 
+        Texture = 3,
     }
     #endregion
 
@@ -115,7 +125,7 @@ namespace QQ
         Actor,
         Monster,
         Npc,
-        Building,   // ¸Ê¿¡ ¹èÄ¡µÈ ¿ÀºêÁ§Æ®
+        Building,   // ï¿½Ê¿ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         Item,
         SFX,
     }
@@ -132,8 +142,8 @@ namespace QQ
     public enum AnimSlotType : byte
     {
         None = 0,
-        Body = 1, // ¸öÅë
-        Weapon = 2, // ¹«±â
+        Body = 1, // ï¿½ï¿½ï¿½ï¿½
+        Weapon = 2, // ï¿½ï¿½ï¿½ï¿½
     }
 
     public enum AnimState : byte

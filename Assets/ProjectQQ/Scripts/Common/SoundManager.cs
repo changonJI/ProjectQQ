@@ -32,8 +32,9 @@ namespace QQ
             //TODO: sounddata테이블 에서 string값 가져와서 읽어야됨
             //LoadSound().Forget();
 
-            var sound = ResManager.soundLoad("Jump");
-            var sound2 = ResManager.soundLoad("ButtonClick");
+            var sound = ResManager.LoadResource<AudioClip>(ResType.Sound, "Jump");
+            var sound2 = ResManager.LoadResource<AudioClip>(ResType.Sound, "ButtonClick");
+            
             soundDictionary.Add("Jump", sound);
             soundDictionary.Add("ButtonClick", sound2);
         }
