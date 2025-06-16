@@ -55,7 +55,7 @@ namespace QQ
             
         }
 
-        protected override void OnDestory()
+        protected override void OnExit()
         {
             btnNext.OnClickRemove(OnClickNext);
             btnNext.SetText(string.Empty);
