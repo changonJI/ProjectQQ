@@ -57,6 +57,10 @@ namespace QQ {
 
         public void OnCreateAction(UI ui)
         {
+            //NOTE: Indicator는 uiList에서 제외. 추가시 씬전환할때 ClearUI에서 충돌
+            if (ui.uiDepth == UIDepth.Indicator)
+                return;
+
             uiList.Add(ui);
         }
 
@@ -74,7 +78,8 @@ namespace QQ {
 
         public void OnDestroyAction(UI ui)
         {
-            uiList.Remove(ui);
+            if(uiList.Contains(ui))
+                uiList.Remove(ui);
         }
 
         public void SetUI(UI ui, GameObject obj, UIDepth depth, int layer)
@@ -136,12 +141,10 @@ namespace QQ {
         /// </summary>
         public async UniTask ClearUI()
         {
-            foreach(var ui in uiList)
-            {
-                if(ui.uiDepth == UIDepth.Indicator)
-                    continue; // UIIndicator는 유지
-
-                Destroy(ui.gameObject);
+            for(int i = 0; i < uiList.Count; i++)
+            {                
+                if (uiList[i] != null)
+                    Destroy(uiList[i].gameObject);
 
                 await UniTask.Yield();
             }

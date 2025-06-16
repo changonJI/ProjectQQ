@@ -49,8 +49,8 @@ namespace QQ
 
         protected override void OnDestroyed()
         {
-            InputManager.Instance.OnMoveInput -= OnMoveInput;
-            InputManager.Instance.OnRoll -= OnRollInput;
+            InputManager.Instance.RemoveMoveInputEvent(OnMoveInput);
+            InputManager.Instance.RemoveRollInputEvent(OnRollInput);
         }
 
         protected override void OnDisabled()
@@ -63,7 +63,6 @@ namespace QQ
 
         protected override void OnFixedUpdate()
         {
-            playerMovement.Move(MoveDirection);
         }
 
         protected override void OnLateUpdate()
@@ -73,8 +72,8 @@ namespace QQ
         protected override void OnStart()
         {
             StateContext.ChangeState(StateContext.PlayerIdleState);
-            InputManager.Instance.OnMoveInput += OnMoveInput;
-            InputManager.Instance.OnRoll += OnRollInput;
+            InputManager.Instance.AddMoveInputEvent(OnMoveInput);
+            InputManager.Instance.AddRollInputEvent(OnRollInput);
         }
 
         protected override void OnUpdate()
@@ -108,12 +107,12 @@ namespace QQ
 
         public void ForceMove(Vector2 velocity)
         {
-            playerMovement.SetOverrideVelocity(velocity);
+            // playerMovement.han(velocity);
         }
 
         public void StopForceMove()
         {
-            playerMovement.ClearOverrideVelocity();
+            // playerMovement.ClearOverrideVelocity();
         }
 
         public void PerformAttack()

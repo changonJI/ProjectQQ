@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,27 +10,42 @@ namespace QQ
 
         public override UIDepth uiDepth => UIDepth.Fixed1;
 
-        /// <summary>
-        /// 키 누르기 전 활성화되어있는 오브젝트
-        /// </summary>
-        [SerializeField] private GameObject objectActiveBeforeKeyPress;
-        /// <summary>
-        /// 키 누른 후 활성화시킬 오브젝트
-        /// </summary>
-        [SerializeField] private GameObject objectActiveAfterKeyPress;
-        
-        private bool isAnyKeyPressed = false;
+        [SerializeField] private TextMeshProUGUI txtTitle;
+        [SerializeField] private UIButtonAndText btnNewGame;
+        [SerializeField] private UIButtonAndText btnContinue;
+        [SerializeField] private UIButtonAndText btnTraining;
+        [SerializeField] private UIButtonAndText btnSetting;
+        [SerializeField] private UIButtonAndText btnExit;
 
         protected override void OnInit()
         {
-            objectActiveBeforeKeyPress.SetActive(true);
-            objectActiveAfterKeyPress.SetActive(false);
+            btnNewGame.OnClickClear();
+            btnContinue.OnClickClear();
+            btnTraining.OnClickClear();
+            btnSetting.OnClickClear();
+            btnExit.OnClickClear();
+
+            txtTitle.text = string.Empty;
         }
 
         protected override void OnStart()
         {
+            btnNewGame.OnClickAdd(OnClickNewGame);
+            btnNewGame.SetText("Test");
+            btnContinue.OnClickAdd(OnClickContinue);
+            btnContinue.SetText("Test");
+            btnTraining.OnClickAdd(OnClickTraining);
+            btnTraining.SetText("Test");
+            btnSetting.OnClickAdd(OnClickSetting);
+            btnSetting.SetText("Test");
+            btnExit.OnClickAdd(OnClickExit);
+            btnExit.SetText("Exit Game");
+
+            txtTitle.text = "Project QQ_test";
+
+            Init();
         }
-        
+
         protected override void OnFocus()
         {
         }
@@ -38,36 +54,66 @@ namespace QQ
         {
         }
 
-        protected override void OnDestory()
+        protected override void OnExit()
         {
-            
+            btnNewGame.OnClickRemove(OnClickNewGame);
+            btnNewGame.SetText(string.Empty);
+            btnContinue.OnClickRemove(OnClickContinue);
+            btnContinue.SetText(string.Empty);
+            btnTraining.OnClickRemove(OnClickTraining);
+            btnTraining.SetText(string.Empty);
+            btnSetting.OnClickRemove(OnClickSetting);
+            btnSetting.SetText(string.Empty);
+            btnExit.OnClickRemove(OnClickExit);
+            btnExit.SetText(string.Empty);
+
+            txtTitle.text = string.Empty;
         }
 
         private void Update()
         {
-            if (isAnyKeyPressed) return;
-
             foreach (var key in Keyboard.current.allKeys)
             {
                 if (key.wasPressedThisFrame)
                 {
-                    ShowMenu();
                     break;
                 }
             }
         }
 
-        public void LoadGameScene()
+        private void Init()
+        {
+            if (GameManager.Instance.GetStringPlayerData(PlayerDataType.UserName) == string.Empty)
+            {
+                UICreateNickName.Instantiate();
+            }
+        }
+
+        private void OnClickNewGame()
         {
             Debug.Log("LoadGameScene");
             LoadingSceneManager.LoadScene(LoadingSceneManager.gameSceneName);
         }
 
-        public void ShowMenu()
+        private void OnClickContinue()
         {
-            isAnyKeyPressed = true;
-            objectActiveBeforeKeyPress.SetActive(false);
-            objectActiveAfterKeyPress.SetActive(true);
+            Debug.Log("Continue");
+        }
+
+        private void OnClickTraining()
+        {
+            Debug.Log("Training");
+        }
+
+        private void OnClickSetting()
+        {
+            Debug.Log("Setting");
+        }
+
+        private void OnClickExit()
+        {
+            Debug.Log("Exit Game");
+            Application.Quit();
         }
     }
 }

@@ -1,41 +1,64 @@
-using QQ.FSM;
 using UnityEngine;
 
 namespace QQ
 {
     public class PlayerMovement : MovementBase
     {
+        private bool isRollStart = false;
         protected override void OnInit() { }
-        protected override void OnStart() { }
+
+        protected override void OnStart()
+        {
+            InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
+        }
+
+        protected override void OnDestroyed()
+        {
+            InputManager.Instance.RemoveMoveInputEvent(HandleMoveInput);
+        }
+
         protected override void OnUpdate() { }
-        protected override void OnFixedUpdate() { }
-        protected override void OnMoveHandled() { }
-        private Vector2? overrideVelocity = null;
-        
-        public void SetOverrideVelocity(Vector2 velocity)
+        protected override void OnFixedUpdate()
         {
-            overrideVelocity = velocity;
+            if (true == isRollStart)
+            {
+                Roll(lastMoveDirection);
+                isRollStart = false;
+            }
         }
 
-        public void ClearOverrideVelocity()
+        private void HandleMoveInput(Vector2 dir)
         {
-            overrideVelocity = null;
+            moveDirection = dir;
+        }
+        private void HandleRollInput()
+        {
+            isRollStart = true;
         }
 
-        public override void Move(Vector2 direction)
+        private void Roll(Vector2 dir)
         {
-            Vector2 moveVec;
-            
-            if (overrideVelocity != null)
+            // float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            string strDir = "";
+            if (0 < dir.x)
             {
-                moveVec = overrideVelocity.Value * Time.fixedDeltaTime;
+                strDir = "오른쪽 ";
             }
-            else
+            else if (0 > dir.x)
             {
-                moveVec = direction.normalized * (baseSpeed * Time.fixedDeltaTime);
+                strDir = "왼쪽 ";
             }
 
-            rigidBody.MovePosition(rigidBody.position + moveVec);
+            if (0 < dir.y)
+            {
+                strDir += "위";
+            }
+            else if (0 > dir.y)
+            {
+                strDir += "아래";
+            }
+
+            LogHelper.Log($"데구룽~ 방향 {strDir}");
         }
     }
 }

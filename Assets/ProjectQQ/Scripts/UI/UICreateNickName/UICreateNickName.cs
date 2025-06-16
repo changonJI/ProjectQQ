@@ -41,7 +41,7 @@ namespace QQ
         {
         }
 
-        protected override void OnDestory()
+        protected override void OnExit()
         {
 
             inputField.onValueChanged.RemoveListener(OnChanged);

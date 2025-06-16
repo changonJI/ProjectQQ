@@ -13,7 +13,7 @@ namespace QQ.FSM
 
         public void Tick()
         {
-            Move(moveDir);
+            // Move(moveDir);
         }
 
         protected override void OnInit()
@@ -26,17 +26,17 @@ namespace QQ.FSM
             
         }
 
+        protected override void OnDestroyed()
+        {
+            
+        }
+
         protected override void OnUpdate()
         {
             
         }
 
         protected override void OnFixedUpdate()
-        {
-            
-        }
-
-        protected override void OnMoveHandled()
         {
             
         }

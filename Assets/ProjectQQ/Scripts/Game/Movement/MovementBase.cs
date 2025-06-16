@@ -13,28 +13,66 @@ namespace QQ
     /// <summary>
     /// 기본 이동
     /// </summary>
+    [DisallowMultipleComponent]
     public abstract class MovementBase : MonoBehaviour
     {
-        protected Rigidbody2D rigidBody;
+        private Rigidbody2D rigidBody;
+        [SerializeField] protected float speedBase;
+        [SerializeField] protected Vector2 moveDirection;
+        [SerializeField] protected Vector2 lastMoveDirection;
 
-        [SerializeField] protected float baseSpeed = 5f;
+        public float Velocity => speedBase;
 
+        #region Unity Method
         protected virtual void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
+            if (null == rigidBody)
+            {
+                LogHelper.LogError($"MovementBase {gameObject.name} 리지드바디2D가 없음");
+            }
+
+            OnInit();
         }
 
-        public virtual void Move(Vector2 direction)
+        protected virtual void Start()
         {
-            if (direction == Vector2.zero) return;
-
-            Vector2 delta = direction.normalized * (baseSpeed * Time.fixedDeltaTime);
-            rigidBody.MovePosition(rigidBody.position + delta);
+            OnStart();
         }
+
+        protected virtual void OnDestroy()
+        {
+            OnDestroyed();
+        }
+
+        protected virtual void Update()
+        {
+            OnUpdate();
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            if (Vector2.zero != moveDirection)
+            {
+                Move(moveDirection, Velocity);
+                lastMoveDirection = moveDirection;
+            }
+
+            OnFixedUpdate();
+        }
+
+        #endregion
+
+        protected virtual void Move(Vector2 dir, float velocity)
+        {
+            Vector2 vec2DeltaMovement = dir * velocity * Time.fixedDeltaTime;
+            rigidBody.MovePosition(rigidBody.position + vec2DeltaMovement);
+        }
+
         protected abstract void OnInit();
         protected abstract void OnStart();
+        protected abstract void OnDestroyed();
         protected abstract void OnUpdate();
         protected abstract void OnFixedUpdate();
-        protected abstract void OnMoveHandled();
     }
 }
