@@ -12,6 +12,9 @@ namespace QQ
 
         public static string nextScene;
 
+        // 중복 씬 로드 방지용
+        private static bool canLoad = false;
+
         private static float fakeTime = 0.5f;
 
         [SerializeField] private UIProgressBar progressBar;
@@ -25,16 +28,43 @@ namespace QQ
             SceneManager.LoadScene("LoadingScene");
         }
 
-        private void Start()
+        private void Awake()
         {
-            UIIndicator.CloseUI();
-
-            LoadSceneAsync(nextScene).Forget();
+            // 초기화 작업
+            canLoad = true;
+            progressBar.Init(0f, 1f);
         }
 
-        private async UniTask LoadSceneAsync(string sceneName)
+        private void Start()
         {
-            await UniTask.Yield(); // 초기화 작업 대체
+            OnStart().Forget();
+        }
+
+        private async UniTaskVoid OnStart()
+        {
+            // fakeTime
+            await UniTask.WaitForSeconds(0.5f);
+
+            UIIndicator.CloseUI();
+
+            // CloseUI 대기
+            await UniTask.Yield();
+
+            UIDialogue.Instantiate(okAction: () => LoadSceneAsync(gameSceneName).Forget());
+
+        }
+
+        private async UniTaskVoid LoadSceneAsync(string sceneName)
+        {
+            // Indicator On
+            UIIndicator.Instantiate();
+
+            if (!canLoad) return;
+
+            canLoad = false;
+
+            // 초기화 작업 대체
+            await UniTask.Yield(); 
 
             AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
 
@@ -43,9 +73,6 @@ namespace QQ
             float fakeTimer = 0f;
 
             progressBar.Init();
-
-            // UIRoot 초기화
-            await UIRoot.Instance.ClearUI();
 
             while (!op.isDone)
             {
@@ -65,6 +92,12 @@ namespace QQ
                     if (progressBar.CurValue >= 1f)
                     {
                         op.allowSceneActivation = true;
+
+                        // UIRoot 초기화
+                        await UIRoot.Instance.ClearUI();
+
+                        UIIndicator.CloseUI();
+
                         return;
                     }
                 }

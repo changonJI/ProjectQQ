@@ -420,7 +420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3129354679615855447}
   - component: {fileID: 1861089217567428224}
-  - component: {fileID: 3088837394705188881}
+  - component: {fileID: 1642196403454268915}
   m_Layer: 5
   m_Name: imgL
   m_TagString: Untagged
@@ -455,7 +455,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3746300588222477129}
   m_CullTransparentMesh: 1
---- !u!114 &3088837394705188881
+--- !u!114 &1642196403454268915
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -464,29 +464,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 3746300588222477129}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a17131abef94b6442bc036a15c39dd8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.9817288, b: 1, a: 0.29803923}
-  m_RaycastTarget: 0
+  m_Color: {r: 0, g: 0.083200455, b: 1, a: 1}
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 43e480880d9b35440bb90d5e17759a23, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
-  flipX: 0
-  flipY: 0
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &4217034961835985076
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,7 +605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4246275961490887217}
   - component: {fileID: 2723141654585119139}
-  - component: {fileID: 7372169014788686346}
+  - component: {fileID: 8834247253036604474}
   m_Layer: 5
   m_Name: imgR
   m_TagString: Untagged
@@ -645,7 +640,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5105885128949577645}
   m_CullTransparentMesh: 1
---- !u!114 &7372169014788686346
+--- !u!114 &8834247253036604474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -654,29 +649,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 5105885128949577645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a17131abef94b6442bc036a15c39dd8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5238683, g: 1, b: 0, a: 0.29803923}
-  m_RaycastTarget: 0
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 43e480880d9b35440bb90d5e17759a23, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
-  flipX: 0
-  flipY: 0
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &6185522665048065997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,9 +1000,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   btnSkip: {fileID: 8152648189313251168}
   imgBg: {fileID: 1710235416897224481}
-  imgL: {fileID: 3088837394705188881}
-  imgC: {fileID: 3971779915939651113}
-  imgR: {fileID: 7372169014788686346}
+  imgL: {fileID: 1642196403454268915}
+  imgC: {fileID: 8760495151889167678}
+  imgR: {fileID: 8834247253036604474}
   txtTalk: {fileID: 6821537556254348612}
   btnNext: {fileID: 3939771155606633896}
 --- !u!1 &8127269332216210908
@@ -1198,7 +1188,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3565846287190911859}
   - component: {fileID: 3016947064501343266}
-  - component: {fileID: 3971779915939651113}
+  - component: {fileID: 8760495151889167678}
+  - component: {fileID: 3254815600175471131}
   m_Layer: 5
   m_Name: imgC
   m_TagString: Untagged
@@ -1233,7 +1224,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9010713865064214735}
   m_CullTransparentMesh: 1
---- !u!114 &3971779915939651113
+--- !u!114 &8760495151889167678
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1242,29 +1233,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 9010713865064214735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a17131abef94b6442bc036a15c39dd8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.08962262, b: 0.08962262, a: 0.29803923}
-  m_RaycastTarget: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 43e480880d9b35440bb90d5e17759a23, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
-  flipX: 0
-  flipY: 0
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!114 &3254815600175471131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9010713865064214735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af862348e78f00841b7da4e7d88b16b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endAlpha: 0
+  duration: 1
+  ease: 1
+  isLoop: 0
+  loopType: 0
 --- !u!1 &9037144090544775789
 GameObject:
   m_ObjectHideFlags: 0
@@ -1324,7 +1327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
