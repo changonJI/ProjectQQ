@@ -143,7 +143,6 @@ namespace QQ {
         {
             for(int i = uiList.Count - 1; i >= 0; i--)
             {
-                Debug.Log($"{uiList[i].name}");
                 if (uiList[i] != null)
                     Destroy(uiList[i].gameObject);
 
