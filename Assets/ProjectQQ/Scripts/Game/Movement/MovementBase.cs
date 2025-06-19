@@ -2,11 +2,8 @@ using UnityEngine;
 
 namespace QQ
 {
-    // TODO
-    // * �̵� ���� 8�������� �����ؾ� ��
-
     /// <summary>
-    /// �⺻ �̵�
+    /// Component for moving an object
     /// </summary>
     [DisallowMultipleComponent]
     public abstract class MovementBase : MonoBehaviour
@@ -15,7 +12,6 @@ namespace QQ
         [SerializeField] protected Vector2 lastMoveDirection;
         protected bool isMoveLock = false;
         public Vector2 MoveDirection => moveDirection;
-
         protected BaseGameObject owner;
 
         public void Init(BaseGameObject obj)
@@ -46,7 +42,7 @@ namespace QQ
 
         protected virtual void FixedUpdate()
         {
-            // �̵���Ű��
+            // only triggers movement if a direction was given
             if (false == isMoveLock && Vector2.zero != moveDirection)
             {
                 Move(moveDirection, owner.Speed);
@@ -61,7 +57,7 @@ namespace QQ
             Vector2 vec2DeltaMovement = Time.fixedDeltaTime * velocity * dir;
             owner.RigidBody.MovePosition(owner.RigidBody.position + vec2DeltaMovement);
 
-            // ������ ������ ���� ����
+            // refresh last move direction on movement
             lastMoveDirection = dir;
         }
 
