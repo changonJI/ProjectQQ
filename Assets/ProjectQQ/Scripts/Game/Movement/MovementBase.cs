@@ -3,18 +3,19 @@ using UnityEngine;
 namespace QQ
 {
     // TODO
-    // * ÀÌµ¿ °¢µµ 8¹æÇâÀ¸·Î ÅëÁ¦ÇØ¾ß ÇÔ
+    // * ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ 8ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ï¿½
 
     /// <summary>
-    /// ±âº» ÀÌµ¿
+    /// ï¿½âº» ï¿½Ìµï¿½
     /// </summary>
     [DisallowMultipleComponent]
     public abstract class MovementBase : MonoBehaviour
     {
-        // [SerializeField] protected Vector2 moveDirection;
+        [SerializeField] protected Vector2 moveDirection;
         [SerializeField] protected Vector2 lastMoveDirection;
+        protected bool isMoveLock = false;
+        public Vector2 MoveDirection => moveDirection;
 
-        public Vector2 MoveDirection { get; protected set; }
         protected BaseGameObject owner;
 
         public void Init(BaseGameObject obj)
@@ -45,27 +46,28 @@ namespace QQ
 
         protected virtual void FixedUpdate()
         {
-            if (Vector2.zero != MoveDirection)
+            // ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½ï¿½
+            if (false == isMoveLock && Vector2.zero != moveDirection)
             {
-                Move(MoveDirection, owner.Speed);
+                Move(moveDirection, owner.Speed);
             }
 
             OnFixedUpdate();
         }
 
         #endregion
-
         protected virtual void Move(Vector2 dir, float velocity)
         {
             Vector2 vec2DeltaMovement = Time.fixedDeltaTime * velocity * dir;
             owner.RigidBody.MovePosition(owner.RigidBody.position + vec2DeltaMovement);
 
-            lastMoveDirection = MoveDirection;
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            lastMoveDirection = dir;
         }
 
         public void SetMoveDirection(Vector2 dir)
         {
-            MoveDirection = dir;
+            moveDirection = dir;
         }
 
         protected abstract void OnInit();

@@ -101,7 +101,6 @@ namespace QQ
 
         private void OnMoveInput(Vector2 dir)
         {
-            PlayerMovement.SetMoveDirection(dir);
         }
 
         private void OnRollInput()
