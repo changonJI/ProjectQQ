@@ -30,7 +30,6 @@ namespace QQ.FSM
             
             elapsedTime = 0f;
             rollDirection = actor.PlayerMovement.MoveDirection.normalized;
-            actor.PlayerMovement.SetMoveDirection(rollDirection * rollSpeed);
             
             actor.SetCurAnimation(AnimState.Roll, 1.0f); // roll 애니메이션 재생
             actor.SetCanAttack(false);

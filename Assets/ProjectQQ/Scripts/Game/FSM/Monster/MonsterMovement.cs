@@ -6,7 +6,6 @@ namespace QQ.FSM
     {
         public void SetDirection(Vector2 dir)
         {
-            MoveDirection = dir;
         }
 
         protected override void OnInit()

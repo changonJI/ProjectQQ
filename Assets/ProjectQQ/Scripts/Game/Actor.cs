@@ -24,6 +24,7 @@ namespace QQ
         private float attackInterval = 1.0f;
         private float attackTimer;
         private bool canAttack = true; // 공격 가능 여부
+        public override float Speed { get => playerStatData.baseSpeed; }
 
         public override void Init()
         {
@@ -43,7 +44,13 @@ namespace QQ
         protected override void OnAwake()
         {
             StateContext = new PlayerStateContext(this);
-            PlayerMovement = GetComponent<PlayerMovement>();
+            RigidBody = GetComponent<Rigidbody2D>();
+            if (null == RigidBody)
+            {
+                LogHelper.LogError($"MovementBase {gameObject.name} 리지드바디2D가 없음");
+            }
+            PlayerMovement = gameObject.AddComponent<PlayerMovement>();
+            PlayerMovement.Init(this);
         }
 
         protected override void OnDestroyed()
@@ -94,7 +101,6 @@ namespace QQ
 
         private void OnMoveInput(Vector2 dir)
         {
-            PlayerMovement.SetMoveDirection(dir);
         }
 
         private void OnRollInput()

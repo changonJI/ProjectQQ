@@ -1,38 +1,31 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace QQ
 {
     // TODO
-    // * ÀÌµ¿ °¢µµ 8¹æÇâÀ¸·Î ÅëÁ¦ÇØ¾ß ÇÔ
-    // ~ °í·ÁÇØ¾ßÇÒ °Í
-    // ÀÏ½ÃÀûÀÎ ÀÌµ¿¼Óµµ Áõ°¡, °¨¼Ò È¿°ú(ÁßÃ¸°¡´É) ¸¸µé¾î¾ßÇÒµí
-    // 
-
+    // * ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ 8ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½ï¿½
 
     /// <summary>
-    /// ±âº» ÀÌµ¿
+    /// ï¿½âº» ï¿½Ìµï¿½
     /// </summary>
     [DisallowMultipleComponent]
     public abstract class MovementBase : MonoBehaviour
     {
-        private Rigidbody2D rigidBody;
-        [SerializeField] protected float speedBase;
-        // [SerializeField] protected Vector2 moveDirection;
+        [SerializeField] protected Vector2 moveDirection;
         [SerializeField] protected Vector2 lastMoveDirection;
+        protected bool isMoveLock = false;
+        public Vector2 MoveDirection => moveDirection;
 
-        public Vector2 MoveDirection { get; protected set; }
-        public float Velocity => speedBase;
+        protected BaseGameObject owner;
+
+        public void Init(BaseGameObject obj)
+        {
+            owner = obj;
+        }
 
         #region Unity Method
         protected virtual void Awake()
         {
-            rigidBody = GetComponent<Rigidbody2D>();
-            if (null == rigidBody)
-            {
-                LogHelper.LogError($"MovementBase {gameObject.name} ¸®Áöµå¹Ùµð2D°¡ ¾øÀ½");
-            }
-
             OnInit();
         }
 
@@ -53,26 +46,28 @@ namespace QQ
 
         protected virtual void FixedUpdate()
         {
-            if (Vector2.zero != MoveDirection)
+            // ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½ï¿½
+            if (false == isMoveLock && Vector2.zero != moveDirection)
             {
-                Move(MoveDirection, Velocity);
-                lastMoveDirection = MoveDirection;
+                Move(moveDirection, owner.Speed);
             }
 
             OnFixedUpdate();
         }
 
         #endregion
-
         protected virtual void Move(Vector2 dir, float velocity)
         {
-            Vector2 vec2DeltaMovement = dir * velocity * Time.fixedDeltaTime;
-            rigidBody.MovePosition(rigidBody.position + vec2DeltaMovement);
+            Vector2 vec2DeltaMovement = Time.fixedDeltaTime * velocity * dir;
+            owner.RigidBody.MovePosition(owner.RigidBody.position + vec2DeltaMovement);
+
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            lastMoveDirection = dir;
         }
 
         public void SetMoveDirection(Vector2 dir)
         {
-            MoveDirection = dir;
+            moveDirection = dir;
         }
 
         protected abstract void OnInit();

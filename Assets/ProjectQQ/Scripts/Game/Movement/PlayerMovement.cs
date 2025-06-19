@@ -9,12 +9,12 @@ namespace QQ
 
         protected override void OnStart()
         {
-            // InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
+            InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
         }
 
         protected override void OnDestroyed()
         {
-            // InputManager.Instance.RemoveMoveInputEvent(HandleMoveInput);
+            InputManager.Instance.RemoveMoveInputEvent(HandleMoveInput);
         }
 
         protected override void OnUpdate() { }
@@ -29,7 +29,7 @@ namespace QQ
 
         private void HandleMoveInput(Vector2 dir)
         {
-            MoveDirection = dir;
+            moveDirection = dir;
         }
         
         public void HandleRollInput()

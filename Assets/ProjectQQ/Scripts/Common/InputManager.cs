@@ -33,7 +33,7 @@ namespace QQ
         public void AddMoveInputEvent(Action<Vector2> action)
         {
             // action 중복 등록 방지
-            if (null == OnMoveInput || OnMoveInput.GetInvocationList().Contains(action))
+            if (null == OnMoveInput || false == OnMoveInput.GetInvocationList().Contains(action))
             {
                 OnMoveInput += action;
             }
@@ -47,7 +47,7 @@ namespace QQ
         public void AddRollInputEvent(Action action)
         {
             // action 중복 등록 방지
-            if (null == OnRollInput || OnRollInput.GetInvocationList().Contains(action))
+            if (null == OnRollInput || false == OnRollInput.GetInvocationList().Contains(action))
             {
                 OnRollInput += action;
             }
