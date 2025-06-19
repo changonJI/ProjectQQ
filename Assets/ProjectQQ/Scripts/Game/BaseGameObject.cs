@@ -18,6 +18,9 @@ namespace QQ
             set { isLoaded = value; }
         }
 
+        public virtual float Speed { get; set; }
+        public Rigidbody2D RigidBody { get; protected set; }
+
         #region animation 관련 변수
         // 현재 애니메이션 상태값
         private AnimState curAnimState;
