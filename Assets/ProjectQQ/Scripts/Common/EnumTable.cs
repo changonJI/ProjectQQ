@@ -109,7 +109,7 @@ namespace QQ
         Stage = 3,
         Texture = 4,
     }
-    public enum InputContext : byte
+    public enum InputMap : byte // 키 입력 상황
     {
         Player = 0,
         UI,

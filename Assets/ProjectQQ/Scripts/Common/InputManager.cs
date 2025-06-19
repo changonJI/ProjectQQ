@@ -8,7 +8,7 @@ namespace QQ
     public class InputManager : DontDestroySingleton<InputManager>
     {
         private PlayerInputActions inputActions;
-        private InputContext currentInputMap;
+        private InputMap currentInputMap;
 
         // 게임 플레이 인풋
         private event Action<Vector2> OnMoveInput;
@@ -42,19 +42,19 @@ namespace QQ
             inputActions.Disable();
         }
 
-        public void SwitchInputMap(InputContext context)
+        public void SwitchInputMap(InputMap context)
         {
             inputActions.Disable();
 
             switch (context)
             {
-                case InputContext.Player:
+                case InputMap.Player:
                     {
                         inputActions.Player.Enable();
                     }
                     break;
 
-                case InputContext.UI:
+                case InputMap.UI:
                     {
                         inputActions.UI.Enable();
                     }
