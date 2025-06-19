@@ -10,11 +10,13 @@ namespace QQ
         protected override void OnStart()
         {
             InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
+            InputManager.Instance.AddRollInputEvent(HandleRollInput);
         }
 
         protected override void OnDestroyed()
         {
             InputManager.Instance.RemoveMoveInputEvent(HandleMoveInput);
+            InputManager.Instance.RemoveRollInputEvent(HandleRollInput);
         }
 
         protected override void OnUpdate() { }
