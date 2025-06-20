@@ -49,8 +49,7 @@ namespace QQ
             {
                 LogHelper.LogError($"MovementBase {gameObject.name} 리지드바디2D가 없음");
             }
-            PlayerMovement = gameObject.AddComponent<PlayerMovement>();
-            PlayerMovement.Init(this);
+            PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
         }
 
         protected override void OnDestroyed()

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace QQ
 {
     public static class ExtensionMethods
@@ -22,6 +24,14 @@ namespace QQ
                 return false;
             }
                 
+        }
+
+        public static T AddComponent<T>(this GameObject obj, BaseGameObject owner) where T : MonoBehaviour, IOwnable 
+        {
+            T component = obj.AddComponent<T>();
+            component.Init(owner);
+
+            return component;
         }
     }
 

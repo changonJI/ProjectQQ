@@ -6,12 +6,12 @@ namespace QQ
     /// Component for moving an object
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class MovementBase : MonoBehaviour
+    public abstract class MovementBase : MonoBehaviour, IOwnable
     {
         [SerializeField] protected Vector2 moveDirection;
         [SerializeField] protected Vector2 lastMoveDirection;
         public Vector2 MoveDirection => moveDirection;
-        protected BaseGameObject owner;
+        public BaseGameObject Owner { get; private set; }
 
         public bool IsMoveLock { get; private set; } = false;
         public void LockMovement() => IsMoveLock = true;
@@ -19,7 +19,7 @@ namespace QQ
 
         public void Init(BaseGameObject obj)
         {
-            owner = obj;
+            Owner = obj;
         }
 
         #region Unity Method
@@ -48,7 +48,7 @@ namespace QQ
             // only triggers movement if a direction was given
             if (false == IsMoveLock && Vector2.zero != moveDirection)
             {
-                Move(moveDirection, owner.Speed);
+                Move(moveDirection, Owner.Speed);
             }
 
             OnFixedUpdate();
@@ -58,7 +58,7 @@ namespace QQ
         protected virtual void Move(Vector2 dir, float velocity)
         {
             Vector2 vec2DeltaMovement = Time.fixedDeltaTime * velocity * dir;
-            owner.RigidBody.MovePosition(owner.RigidBody.position + vec2DeltaMovement);
+            Owner.RigidBody.MovePosition(Owner.RigidBody.position + vec2DeltaMovement);
 
             // refresh last move direction on movement
             lastMoveDirection = dir;
