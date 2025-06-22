@@ -92,7 +92,9 @@ namespace QQ
         {
             GameManager.Instance.SavePlayerData(PlayerDataType.UserName, inputField.text);
             UIPopupConfirm.CloseUI();
-            UIMainScene.Instantiate();
+
+            Debug.Log("LoadGameScene");
+            LoadingSceneManager.LoadScene(LoadingSceneManager.gameSceneName);
             Close();
         }
 
