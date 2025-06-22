@@ -1,9 +1,8 @@
 namespace QQ.FSM
 {
-    public class PlayerStateContext
+    public class PlayerStateContext : BaseStateContext
     {
         private IState currentState;
-        public IState CurrentState => currentState;
         
         public IState PlayerIdleState { get; private set; }
         public IState PlayerMoveState { get; private set; }
@@ -17,22 +16,7 @@ namespace QQ.FSM
             PlayerMoveState = new PlayerMoveState(actor, this);
             PlayerRollState = new PlayerRollState(actor, this);
             PlayerKnockbackState = new PlayerKnockbackState(actor, this);
-            PlayerDieState = new PlayerDieState(actor); 
-        }
-
-        public void ChangeState(IState newState)
-        {
-            if (currentState != null)
-            {
-                currentState.Exit();
-            }
-            currentState = newState;
-            currentState.Enter();
-        }
-
-        public void Update()
-        {
-            currentState?.Update();
+            PlayerDieState = new PlayerDieState(actor);
         }
     }
 }

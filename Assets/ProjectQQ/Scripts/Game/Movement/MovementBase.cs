@@ -48,6 +48,7 @@ namespace QQ
             // only triggers movement if a direction was given
             if (false == IsMoveLock && Vector2.zero != moveDirection)
             {
+                LogHelper.Log(Owner.Speed);
                 Move(moveDirection, Owner.Speed);
             }
 
@@ -62,11 +63,6 @@ namespace QQ
 
             // refresh last move direction on movement
             lastMoveDirection = dir;
-        }
-
-        public void SetMoveDirection(Vector2 dir)
-        {
-            moveDirection = dir;
         }
 
         protected abstract void OnInit();

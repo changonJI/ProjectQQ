@@ -1,5 +1,6 @@
 using System;
 using QQ.FSM;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,11 +25,14 @@ namespace QQ
         private float attackInterval = 1.0f;
         private float attackTimer;
         private bool canAttack = true; // 공격 가능 여부
-        public override float Speed { get => playerStatData.baseSpeed; }
+        
+        // public override float Speed { get => playerStatData.baseSpeed; }
+        public override float Speed { get => 1f; } // 테스트용 임시 코드
 
         public override void Init()
         {
             playerStatData = new PlayerStatData();
+            StateContext = new PlayerStateContext(this);
             
             currentHp = maxHp;
             IsDead = false;
@@ -43,19 +47,22 @@ namespace QQ
 
         protected override void OnAwake()
         {
-            StateContext = new PlayerStateContext(this);
             RigidBody = GetComponent<Rigidbody2D>();
             if (null == RigidBody)
             {
                 LogHelper.LogError($"MovementBase {gameObject.name} 리지드바디2D가 없음");
             }
+            
             PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
+            
+            PlayerMovement.OnMove += ChangeMoveState;
+            PlayerMovement.OnRoll += ChangeRollState;
         }
 
         protected override void OnDestroyed()
         {
-            InputManager.Instance.RemoveMoveInputEvent(OnMoveInput);
-            InputManager.Instance.RemoveRollInputEvent(OnRollInput);
+            PlayerMovement.OnMove -= ChangeMoveState;
+            PlayerMovement.OnRoll -= ChangeRollState;
         }
 
         protected override void OnDisabled()
@@ -77,16 +84,14 @@ namespace QQ
         protected override void OnStart()
         {
             StateContext.ChangeState(StateContext.PlayerIdleState);
-            InputManager.Instance.AddMoveInputEvent(OnMoveInput);
-            InputManager.Instance.AddRollInputEvent(OnRollInput);
         }
 
         protected override void OnUpdate()
         {
             if (status.HasStatus(StatusEffectController.StatusEffect.Stunned)) return;
-            
-            StateContext.Update();
 
+            StateContext.Update();
+            
             if (canAttack)
             {
                 attackTimer += Time.deltaTime;
@@ -98,18 +103,34 @@ namespace QQ
             }
         }
 
-        private void OnMoveInput(Vector2 dir)
+        #region FSM
+        
+        private void ChangeMoveState(Vector2 dir)
         {
+            if(dir != Vector2.zero)
+                StateContext.ChangeState(StateContext.PlayerMoveState);
+            else
+                StateContext.ChangeState(StateContext.PlayerIdleState);
         }
 
-        private void OnRollInput()
+        private void ChangeRollState()
         {
-            if (StateContext.CurrentState is PlayerRollState)
-                return;
-            
-            if (StateContext != null)
-                StateContext.ChangeState(StateContext.PlayerRollState);
+            StateContext.ChangeState(StateContext.PlayerRollState);
         }
+
+        private void ChangeKnockBackState()
+        {
+            StateContext.ChangeState(StateContext.PlayerKnockbackState);
+        }
+
+        private void ChangeDieState()
+        {
+            StateContext.ChangeState(StateContext.PlayerDieState);
+        }
+
+        #endregion
+
+        #region 공격 + 피격 (수정 예정)
 
         public void PerformAttack()
         {
@@ -142,7 +163,7 @@ namespace QQ
 
             // FSM 상태 전이
             LastHitDirection = (transform.position - transformPosition).normalized;
-            StateContext.ChangeState(StateContext.PlayerKnockbackState);
+            ChangeKnockBackState();
         }
 
         private void OnDie()
@@ -150,10 +171,12 @@ namespace QQ
             if (IsDead) return;
 
             IsDead = true;
-            StateContext.ChangeState(StateContext.PlayerDieState);
+            ChangeDieState();
 
             // 죽음 관련 처리: 이펙트, 사운드, UI, 파괴
             Debug.Log($"{name} 사망 처리 완료");
         }
+
+        #endregion
     }
 }

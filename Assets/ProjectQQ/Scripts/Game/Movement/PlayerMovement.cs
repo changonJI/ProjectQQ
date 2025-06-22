@@ -1,16 +1,29 @@
+using System;
 using UnityEngine;
 
 namespace QQ
 {
     public class PlayerMovement : MovementBase
     {
-        private bool isRollStart = false;
+        public bool isRollStart { get; private set;}
+        
+        public Action<Vector2> OnMove;
+        public Action OnRoll;
+        
+        // 구르기 임시 코드
+        private readonly float rollDuration = 0.5f;
+        private readonly float rollSpeed = 5f;  // 원하는 롤 속도
+        private float elapsedTime;
+        private Vector2 rollDirection;
+        
         protected override void OnInit() { }
 
         protected override void OnStart()
         {
             InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
             InputManager.Instance.AddRollInputEvent(HandleRollInput);
+            
+            elapsedTime = 0f; // 구르기 임시 코드
         }
 
         protected override void OnDestroyed()
@@ -25,22 +38,37 @@ namespace QQ
             if (true == isRollStart)
             {
                 Roll(lastMoveDirection);
-                isRollStart = false;
             }
         }
 
         private void HandleMoveInput(Vector2 dir)
         {
+            if(IsMoveLock) return;
+            
             moveDirection = dir;
+            OnMove.Invoke(dir);
         }
-        
+
         public void HandleRollInput()
         {
+            if (IsMoveLock ||  isRollStart) return;
+            
             isRollStart = true;
+            OnRoll?.Invoke();
         }
 
         private void Roll(Vector2 dir)
         {
+            // 구르기 임시 코드
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= rollDuration)
+            {
+                isRollStart = false;
+                elapsedTime = 0f;
+                return;
+            }
+            
+            
             // float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             string strDir = "";
             if (0 < dir.x)

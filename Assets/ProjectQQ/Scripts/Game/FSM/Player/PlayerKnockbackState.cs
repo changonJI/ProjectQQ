@@ -7,8 +7,6 @@ namespace QQ.FSM
         private readonly Actor actor;
         private readonly PlayerStateContext context;
 
-        public bool IsInputBlocked => true;
-
         public PlayerKnockbackState(Actor actor, PlayerStateContext playerStateContext)
         {
             this.actor = actor;
@@ -17,13 +15,9 @@ namespace QQ.FSM
         
         public void Enter()
         {
-            // elapsedTime = 0f;
-            // knockbackDir = actor.LastHitDirection.normalized;
-            // actor.ForceMove(knockbackDir * knockbackPower);
-
+            actor.PlayerMovement.LockMovement();
             LogHelper.Log("Enter PlayerKnockbackState : ¾Æ¾æ");
             actor.SetCanAttack(false);
-            // actor.SetCurAnimation(AnimState.Hit);
         }
 
         public void Update()
@@ -37,6 +31,7 @@ namespace QQ.FSM
 
         public void Exit()
         {
+            actor.PlayerMovement.UnlockMovemnet();
             actor.SetCanAttack(true);
         }
 
