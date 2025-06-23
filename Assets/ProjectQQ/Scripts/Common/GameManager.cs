@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using QQ;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,6 +28,7 @@ public class GameManager : DontDestroySingleton<GameManager>
                 PlayerPrefs.SetInt(dataType.ToString(), iNum);
                 break;
         }
+        Debug.Log("저장~");
     }
     
     /// <summary>
@@ -97,6 +99,7 @@ public class GameManager : DontDestroySingleton<GameManager>
     public void GamePause(bool isPaused)
     {
         Time.timeScale = isPaused ? 0 : 1;
+        Debug.Log(isPaused ? "게임 멈춤!" : "게임 재시작ㄱ!");
     }
 
     #endregion
@@ -133,7 +136,19 @@ public class GameManager : DontDestroySingleton<GameManager>
         }
         return false;
     }
-
     #endregion
-    
+
+    public void GameStart(int chapter, int stage)
+    {
+        LogHelper.Log("게임시작했지요~??");
+    }
+
+    // 특정 챕터, 스테이지 로드
+    public void LoadStage(int chapter, int stage)
+    {
+        // 배경 로드
+        ResManager.Instantiate(ResType.Stage, "Stage1").Forget();
+        // BGM 세팅
+
+    }
 }

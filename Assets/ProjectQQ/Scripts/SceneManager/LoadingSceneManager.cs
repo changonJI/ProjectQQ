@@ -50,8 +50,7 @@ namespace QQ
             // CloseUI ´ë±â
             await UniTask.Yield();
 
-            UIDialogue.Instantiate(okAction: () => LoadSceneAsync(gameSceneName).Forget());
-
+            LoadSceneAsync(nextScene).Forget();
         }
 
         private async UniTaskVoid LoadSceneAsync(string sceneName)

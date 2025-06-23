@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -15,17 +16,31 @@ namespace QQ
 
         void Start()
         {
-            // 배경 로드
-            ResManager.Instantiate(ResType.Stage, "Stage1");
+            // 첫 번째 플레이인지 구분
+            if (GameManager.Instance.GetIntPlayerData(PlayerDataType.FirstPlay) == 0)
+            {
+                // 인트로 영상, 다이얼로그 출력
+                UIDialogue.Instantiate(okAction: () =>
+                {
+                    // 다이얼로그 다 넘기면 저장
+                    GameManager.Instance.SavePlayerData(PlayerDataType.FirstPlay, null, 1);
+                    UIDialogue.CloseUI();
+                    GameManager.Instance.GameStart(1, 1);
+                    GameManager.Instance.GamePause(true);
+                });
+            }
+
+            GameManager.Instance.LoadStage(1, 1);
 
             // 플레이어 로드
-            ResManager.Instantiate(ResType.Object, "Actor");
+            ResManager.Instantiate(ResType.Object, "Actor").Forget();
 
-            // 몬스터 로드
+
         }
 
         void Update()
         {
+
         }
     }
 }
