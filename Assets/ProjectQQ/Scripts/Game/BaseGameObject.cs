@@ -1,6 +1,3 @@
-using Spine;
-using Spine.Unity;
-using System.Collections.Generic;
 using QQ.FSM;
 using UnityEngine;
 
@@ -21,19 +18,6 @@ namespace QQ
         public virtual float Speed { get; set; }
         public Rigidbody2D RigidBody { get; protected set; }
 
-        #region animation ∞¸∑√ ∫Øºˆ
-        // «ˆ¿Á æ÷¥œ∏ﬁ¿Ãº« ªÛ≈¬∞™
-        private AnimState curAnimState;
-        // Body Skeleton
-        [SerializeField] private SkeletonAnimation animBody;
-        private Skin skinBody;
-        private readonly Dictionary<string, Spine.Animation> dicAnimBody = new Dictionary<string, Spine.Animation>();
-        // Weapon Skeleton
-        [SerializeField] private SkeletonAnimation animWeapon;
-        private Skin skinWeapon;
-        private readonly Dictionary<string, Spine.Animation> dicAnimWeapon = new Dictionary<string, Spine.Animation>();
-        #endregion
-
         #region Status
 
         protected StatusEffectController status;
@@ -42,7 +26,7 @@ namespace QQ
         #endregion
 
         /// <summary>
-        /// BaseGameObject ª˝º∫Ω√ «◊ªÛ Init() µø¿€
+        /// BaseGameObject ÏÉùÏÑ±Ïãú Ìï≠ÏÉÅ Init() ÎèôÏûë
         /// </summary>
         public BaseGameObject()
         {
@@ -58,271 +42,17 @@ namespace QQ
             gameObject.transform.SetParent(transform);
         }
 
-        /// <summary>
-        /// Spine µ•¿Ã≈Õ¿« Layer º≥¡§
-        /// </summary>
-        /// <param name="anim">Ω∫ƒÃ∑π≈Ê µ•¿Ã≈Õ</param>
-        /// <param name="animSlot">Body, Weapon Type</param>
-        private void SetLayer(SkeletonAnimation anim, AnimSlotType animSlot)
-        {
-            var mesh = anim.transform.GetComponent<MeshRenderer>();
-
-            // sorting layer º≥¡§
-            mesh.sortingLayerID = SortingLayer.NameToID(SortingLayerName.Object.ToString());
-            // order in layer º≥¡§
-            mesh.sortingOrder = animSlot == AnimSlotType.Body ? (int)OrderInSortingLayer.OBJBody
-                                                              : (int)OrderInSortingLayer.OBJWeapon;
-        }
-
-        /// <summary>
-        /// Skeleton ∫∞ layer ºº∆√ π◊ æ÷¥œ∏ﬁ¿Ãº« √ ±‚»≠
-        /// </summary>
-        private void InitAnimation()
-        {
-            // Body SkeletonAnimation √ ±‚»≠
-            if (animBody != null)
-            {
-                // √ ±‚»≠ æ»«“Ω√ skeletionanimation.skeleton¿Ã null
-                animBody.Initialize(false);
-
-                // sorting layer, order in layer ºº∆√
-                SetLayer(animBody, AnimSlotType.Body);
-
-                // skeleton Dataø° ¡¢±Ÿ«œø© animations string∞™ ƒ≥ΩÃ
-                foreach (var anim in animBody.skeleton.Data.Animations)
-                {
-                    if (!dicAnimBody.ContainsKey(anim.Name))
-                    {
-                        dicAnimBody.Add(anim.Name, anim);
-                    }
-                }
-            }
-            else
-            {
-                LogHelper.LogError("animBody is not assigned.");
-            }
-
-            // Weapon SkeletonAnimation √ ±‚»≠, Actor∏∏ ¿˚øÎ
-            if (animWeapon != null && Type == GameObjectType.Actor)
-            {
-                // √ ±‚»≠ æ»«“Ω√ skeletionanimation.skeleton¿Ã null
-                animWeapon.Initialize(false);
-
-                // sorting layer, order in layer ºº∆√
-                SetLayer(animWeapon, AnimSlotType.Weapon);
-
-                // skeleton Dataø° ¡¢±Ÿ«œø© animations string∞™ ƒ≥ΩÃ
-                foreach (var anim in animWeapon.skeleton.Data.Animations)
-                {
-                    if (!dicAnimWeapon.ContainsKey(anim.Name))
-                    {
-                        dicAnimWeapon.Add(anim.Name, anim);
-                    }
-                }
-            }
-            else
-            {
-                LogHelper.LogError("animWeapon is not assigned.");
-            }
-
-            // æ÷¥œ∏ﬁ¿Ãº« √ ±‚»≠
-            SetCurAnimation(AnimState.Idle);
-        }
-
-        /// <summary>
-        /// Skeleton¿« customSkin ∫Øºˆ √ ±‚»≠. InitAnimation() ¿Ã»ƒ »£√‚«“∞Õ.(Skeleton.skeleton¿Ã null¿œ ºˆ ¿÷¿Ω)
-        /// </summary>
-        private void InitSkin()
-        {
-            // skin temp ∫Øºˆ ª˝º∫
-            skinBody = new Skin("BodySkin");
-            skinWeapon = new Skin("WeaponSkin");
-
-            var findSkinBody = animBody.skeleton.Data.FindSkin("default");
-            if (findSkinBody != null)
-            {
-                skinBody.AddSkin(findSkinBody);
-                animBody.skeleton.SetSkin(skinBody);
-            }
-            else
-            {
-                LogHelper.LogError("default skin not found for Body.");
-            }
-
-            if (Type == GameObjectType.Actor)
-            {
-                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("Weapon0");
-
-                if (findSkinWeapon != null)
-                {
-                    skinWeapon.AddSkin(findSkinWeapon);
-                    animWeapon.skeleton.SetSkin(skinWeapon);
-                }
-                else
-                {
-                    LogHelper.LogError("weapon0 skin not found for weapon.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// «ˆ¿Á Ω∫≈≤¿ª º≥¡§«œ¥¬ ƒ⁄µÂ.
-        /// </summary>
-        /// <param name="skinName"></param>
-        public void SetCurSkin(string skinName)
-        {
-            // «ˆ¿Á Ω∫≈≤∞˙ ∫Ò±≥«œø© ¥Ÿ∏¶ ∞ÊøÏø°∏∏ Ω∫≈≤¿ª ∫Ø∞Ê
-            if (animBody.skeleton.Skin.Name != skinName)
-            {
-                // ƒøΩ∫≈“ Ω∫≈≤ √ ±‚»≠
-                skinBody.Clear();
-                // ±‚¡∏ skeleton¿« skin √ﬂ∞°
-                skinBody.AddSkin(animBody.skeleton.Data.FindSkin(skinName));
-
-                // skeletonø° Ω∫≈≤ ¿˚øÎ
-                animBody.skeleton.SetSkin(skinBody);
-                animBody.skeleton.SetSlotsToSetupPose();
-                animBody.AnimationState.Apply(animBody.skeleton);
-            }
-        }
-
-        /// <summary>
-        /// Body,Weapon¿« «ÿ¥Á slotø°º≠ Attachment¿ª º≥¡§«œ¥¬ ƒ⁄µÂ
-        /// </summary>
-        /// <param name="type">AnimSlotType</param>
-        /// <param name="slotName">Spine Slot Name</param>
-        /// <param name="attachmentName">Spine AtachemntName</param>
-        public void SetCurAttachment(AnimSlotType type, string slotName, string attachmentName)
-        {
-            SetAttachment(type == AnimSlotType.Body ? animBody : animWeapon, slotName, attachmentName);
-        }
-
-        /// <summary>
-        /// SetCurAttachment()ø°º≠ »£√‚µ«¥¬ ƒ⁄µÂ.
-        /// </summary>
-        /// <param name="anim">Body or Weapon Skeleton</param>
-        /// <param name="slotName">Spine Slot Name</param>
-        /// <param name="attachmentName">Spine AtachemntName</param>
-        private void SetAttachment(SkeletonAnimation anim, string slotName, string attachmentName)
-        {
-            var slot = anim.skeleton.Data.FindSlot(slotName);
-            if (slot == null)
-            {
-                LogHelper.LogError($"Slot '{slotName}' not found in skeleton data.");
-                return;
-            }
-
-            var attach = anim.skeleton.GetAttachment(slot.Name, attachmentName);
-            if (attach == null)
-            {
-                LogHelper.LogError($"Attachment '{attachmentName}' not found in slot '{slotName}'.");
-                return;
-            }
-
-            anim.skeleton.SetAttachment(slotName, attachmentName);
-            anim.skeleton.SetSlotsToSetupPose();
-            anim.AnimationState.Apply(animBody.skeleton);
-        }
-
-        /// <summary>
-        /// SetAnimation¿ª Ω««‡«œ¥¬ ƒ⁄µÂ
-        /// </summary>
-        /// <param name="state">«ˆ¿Á ªÛ≈¬∞™</param>
-        /// <param name="timeScale">Ω√∞£∞™</param>
-        public void SetCurAnimation(AnimState state, float timeScale = 1f)
-        {
-            if (curAnimState == state)
-                return;
-
-            SetAnimation(AnimSlotType.Body, GetAnimName(state), GetAnimLoop(state), timeScale);
-            SetAnimation(AnimSlotType.Weapon, GetAnimName(state), GetAnimLoop(state), timeScale);
-
-            curAnimState = state;
-        }
-
-        /// <summary>
-        /// animation º≥¡§ ƒ⁄µÂ
-        /// </summary>
-        /// <param name="type">Body, Weapon</param>
-        /// <param name="animName">ƒ≥ΩÃµ» animation name∞™</param>
-        /// <param name="loop">π›∫π√º≈©</param>
-        /// <param name="timeScale">Ω√∞£∞™</param>
-        private void SetAnimation(AnimSlotType type, string animName, bool loop, float timeScale = 1)
-        {
-            if (type == AnimSlotType.Body && animBody != null)
-            {
-                if (dicAnimBody.TryGetValue(animName, out var anim))
-                {
-                    // TrackEntry TimeScale ∞™¿ª º≥¡§«œ∏È, ∞‘¿”º≥¡§¿« TimeScale¿« øµ«‚¿ª πﬁ¡ˆ æ ∞Ì µ∂∏≥¿˚¿∏∑Œ ºº∆√«—¥Ÿ.
-                    animBody.state.SetAnimation(0, anim, loop).TimeScale = timeScale;
-                    animBody.loop = loop;
-                    animBody.timeScale = timeScale;
-                }
-                else
-                {
-                    LogHelper.LogError($"Animation '{animName}' not found in Body animations.");
-                }
-            }
-            else if (type == AnimSlotType.Weapon && animWeapon != null)
-            {
-                if (dicAnimWeapon.TryGetValue(animName, out var anim))
-                {
-                    animWeapon.state.SetAnimation(0, anim, loop).TimeScale = timeScale;
-                    animWeapon.loop = loop;
-                    animWeapon.timeScale = timeScale;
-                }
-                else
-                {
-                    LogHelper.LogError($"Animation '{animName}' not found in Weapon animations.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// «ˆ¿Á ªÛ≈¬∫∞ Spine animation name∞™ return
-        /// </summary>
-        private string GetAnimName(AnimState state)
-        {
-            switch (state)
-            {
-                case AnimState.Idle:
-                    return "idle";
-                case AnimState.Run:
-                    return "run";
-                case AnimState.Roll:
-                    return "roll";
-                default:
-                    LogHelper.LogError($"Unknown animation state: {state}");
-                    return string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// «ˆ¿Á ªÛ≈¬∫∞ Spine animation Loop ∞™ return
-        /// </summary>
-        private bool GetAnimLoop(AnimState state)
-        {
-            switch (state)
-            {
-                case AnimState.Idle:
-                    return true;
-                case AnimState.Run:
-                    return true;
-                case AnimState.Roll:
-                    return false;
-                default:
-                    LogHelper.LogError($"Unknown animation state: {state}");
-                    return false;
-            }
-        }
-
-        #region ¿Ø¥œ∆º ª˝∏Ì¡÷±‚ «‘ºˆ
+       
+        #region Ïú†ÎãàÌã∞ ÏÉùÎ™ÖÏ£ºÍ∏∞ Ìï®Ïàò
         protected virtual void Awake()
         {
             status = new StatusEffectController();
-            
-            InitAnimation();
-            InitSkin();
+
+            RigidBody = GetComponent<Rigidbody2D>();
+            if (null == RigidBody)
+            {
+                LogHelper.LogError($"MovementBase {gameObject.name} Î¶¨ÏßÄÎìúÎ∞îÎîî2DÍ∞Ä ÏóÜÏùå");
+            }
 
             OnAwake();
         }

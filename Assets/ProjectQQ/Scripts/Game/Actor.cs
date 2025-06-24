@@ -1,12 +1,9 @@
-using System;
 using QQ.FSM;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace QQ
 {
-    public class Actor : BaseGameObject
+    public class Actor : SpineGameObject
     {
         public override GameObjectType Type => GameObjectType.Actor;
 
@@ -15,19 +12,19 @@ namespace QQ
         
         public PlayerStateContext StateContext { get; private set; }
         
-        // ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ ÀÓ½Ã
+        // í”Œë ˆì´ì–´ ë°ì´í„° ì„ì‹œ
         [SerializeField] private int maxHp = 10;
         private int currentHp;
         public Vector2 LastHitDirection { get; private set; }
         public bool IsDead = false;
         
-        // °ø°İ ÀÓ½Ã
+        // ê³µê²© ì„ì‹œ
         private float attackInterval = 1.0f;
         private float attackTimer;
-        private bool canAttack = true; // °ø°İ °¡´É ¿©ºÎ
+        private bool canAttack = true; // ê³µê²© ê°€ëŠ¥ ì—¬ë¶€
         
         // public override float Speed { get => playerStatData.baseSpeed; }
-        public override float Speed { get => 1f; } // Å×½ºÆ®¿ë ÀÓ½Ã ÄÚµå
+        public override float Speed { get => 1f; } // í…ŒìŠ¤íŠ¸ìš© ì„ì‹œ ì½”ë“œ
 
         public override void Init()
         {
@@ -47,12 +44,8 @@ namespace QQ
 
         protected override void OnAwake()
         {
-            RigidBody = GetComponent<Rigidbody2D>();
-            if (null == RigidBody)
-            {
-                LogHelper.LogError($"MovementBase {gameObject.name} ¸®Áöµå¹Ùµğ2D°¡ ¾øÀ½");
-            }
-            
+            base.OnAwake();
+ 
             PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
             
             PlayerMovement.OnMove += ChangeMoveState;
@@ -130,11 +123,11 @@ namespace QQ
 
         #endregion
 
-        #region °ø°İ + ÇÇ°İ (¼öÁ¤ ¿¹Á¤)
+        #region ê³µê²© + í”¼ê²© (ìˆ˜ì • ì˜ˆì •)
 
         public void PerformAttack()
         {
-            Debug.Log("°ø°İ");
+            Debug.Log("ê³µê²©");
         }
 
         public void SetCanAttack(bool value)
@@ -153,7 +146,7 @@ namespace QQ
             currentHp -= damage;
             currentHp = Mathf.Max(currentHp, 0);
             
-            Debug.Log($"{gameObject.name} ÇÇÇØ: {damage} ¡æ ³²Àº Ã¼·Â: {currentHp}");
+            Debug.Log($"{gameObject.name} í”¼í•´: {damage} â†’ ë‚¨ì€ ì²´ë ¥: {currentHp}");
 
             if (currentHp <= 0)
             {
@@ -161,7 +154,7 @@ namespace QQ
                 return;
             }
 
-            // FSM »óÅÂ ÀüÀÌ
+            // FSM ìƒíƒœ ì „ì´
             LastHitDirection = (transform.position - transformPosition).normalized;
             ChangeKnockBackState();
         }
@@ -173,8 +166,8 @@ namespace QQ
             IsDead = true;
             ChangeDieState();
 
-            // Á×À½ °ü·Ã Ã³¸®: ÀÌÆåÆ®, »ç¿îµå, UI, ÆÄ±«
-            Debug.Log($"{name} »ç¸Á Ã³¸® ¿Ï·á");
+            // ì£½ìŒ ê´€ë ¨ ì²˜ë¦¬: ì´í™íŠ¸, ì‚¬ìš´ë“œ, UI, íŒŒê´´
+            Debug.Log($"{name} ì‚¬ë§ ì²˜ë¦¬ ì™„ë£Œ");
         }
 
         #endregion
