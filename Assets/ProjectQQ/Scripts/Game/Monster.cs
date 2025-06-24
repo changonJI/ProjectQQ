@@ -31,6 +31,8 @@ namespace QQ
 
         protected override void OnAwake()
         {
+            base.OnAwake();
+
             StateContext = new MonsterStateContext(this);
             MonsterMovement = GetComponent<MonsterMovement>();
         }

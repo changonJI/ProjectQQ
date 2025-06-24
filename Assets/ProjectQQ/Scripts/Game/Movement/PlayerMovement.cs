@@ -10,9 +10,9 @@ namespace QQ
         public Action<Vector2> OnMove;
         public Action OnRoll;
         
-        // ±∏∏£±‚ ¿”Ω√ ƒ⁄µÂ
+        // Íµ¨Î•¥Í∏∞ ÏûÑÏãú ÏΩîÎìú
         private readonly float rollDuration = 0.5f;
-        private readonly float rollSpeed = 5f;  // ø¯«œ¥¬ ∑— º”µµ
+        private readonly float rollSpeed = 5f;  // ÏõêÌïòÎäî Î°§ ÏÜçÎèÑ
         private float elapsedTime;
         private Vector2 rollDirection;
         
@@ -23,7 +23,7 @@ namespace QQ
             InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
             InputManager.Instance.AddRollInputEvent(HandleRollInput);
             
-            elapsedTime = 0f; // ±∏∏£±‚ ¿”Ω√ ƒ⁄µÂ
+            elapsedTime = 0f; // Íµ¨Î•¥Í∏∞ ÏûÑÏãú ÏΩîÎìú
         }
 
         protected override void OnDestroyed()
@@ -59,8 +59,9 @@ namespace QQ
 
         private void Roll(Vector2 dir)
         {
-            // ±∏∏£±‚ ¿”Ω√ ƒ⁄µÂ
+            // Íµ¨Î•¥Í∏∞ ÏûÑÏãú ÏΩîÎìú
             elapsedTime += Time.deltaTime;
+            EffectManager.PlayEffect(Owner.gameObject, EffectManager.EffectType.Roll, rollSpeed);
             if (elapsedTime >= rollDuration)
             {
                 isRollStart = false;
@@ -73,23 +74,23 @@ namespace QQ
             string strDir = "";
             if (0 < dir.x)
             {
-                strDir = "ø¿∏•¬  ";
+                strDir = "Ïò§Î•∏Ï™Ω ";
             }
             else if (0 > dir.x)
             {
-                strDir = "øﬁ¬  ";
+                strDir = "ÏôºÏ™Ω ";
             }
 
             if (0 < dir.y)
             {
-                strDir += "¿ß";
+                strDir += "ÏúÑ";
             }
             else if (0 > dir.y)
             {
-                strDir += "æ∆∑°";
+                strDir += "ÏïÑÎûò";
             }
 
-            LogHelper.Log($"µ•±∏∑Ó~ πÊ«‚ {strDir}");
+            LogHelper.Log($"Îç∞Íµ¨Î£Ω~ Î∞©Ìñ• {strDir}");
         }
     }
 }

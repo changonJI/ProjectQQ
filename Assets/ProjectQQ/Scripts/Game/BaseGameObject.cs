@@ -51,7 +51,7 @@ namespace QQ
             RigidBody = GetComponent<Rigidbody2D>();
             if (null == RigidBody)
             {
-                LogHelper.LogError($"MovementBase {gameObject.name} 리지드바디2D가 없음");
+                LogHelper.LogError($"{gameObject.name} 리지드바디2D가 없음");
             }
 
             OnAwake();
