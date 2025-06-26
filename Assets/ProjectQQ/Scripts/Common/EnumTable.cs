@@ -21,17 +21,17 @@ namespace QQ
     public enum MonsterType : byte
     {
         None = 0,
-        Normal = 1, // �Ϲ� ����
-        MiniBoss = 2, // �̴� ���� ����
-        Boss = 3,   // ���� ����
-        Event = 4,  // �̺�Ʈ ����
+        Normal = 1, // 일반 몬스터
+        MiniBoss = 2, // 미니 보스 몬스터
+        Boss = 3,   // 보스 몬스터
+        Event = 4,  // 이벤트 몬스터
     }
 
     public enum MonsterAtkType : byte
     {
         None = 0,
-        Melee = 1, // ���� ����
-        Ranged = 2, // ���Ÿ� ����
+        Melee = 1, // 근접 공격
+        Ranged = 2, // 원거리 공격
     }
     #endregion
 
@@ -108,6 +108,7 @@ namespace QQ
         Object = 2,
         Stage = 3,
         Texture = 4,
+        Effect = 5,
     }
     public enum InputMap : byte // 키 입력 상황
     {
@@ -125,7 +126,7 @@ namespace QQ
         Actor,
         Monster,
         Npc,
-        Building,   // �ʿ� ��ġ�� ������Ʈ
+        Building,   // 맵에 배치된 오브젝트
         Item,
         SFX,
     }
@@ -136,14 +137,21 @@ namespace QQ
         SFX = 1,
         UI = 2,
     }
+
+    public enum EffectType
+    {
+        None = 0,
+        Roll = 1,
+        Skill = 2,
+    }
     #endregion
 
     #region Animation
     public enum AnimSlotType : byte
     {
         None = 0,
-        Body = 1, // ����
-        Weapon = 2, // ����
+        Body = 1, // 몸통
+        Weapon = 2, // 무기
     }
 
     public enum AnimState : byte
