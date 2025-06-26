@@ -37,9 +37,10 @@ namespace QQ
 
         public override void SetData(int id)
         {
-            var data = PlayerStatDataManager.Instance.Get(id);
+            //NOTE: TableData 들어오면 세팅
+            //var data = PlayerStatDataManager.Instance.Get(id);
 
-            playerStatData.Set(data);
+            //playerStatData.Set(data);
         }
 
         protected override void OnAwake()
@@ -171,5 +172,19 @@ namespace QQ
         }
 
         #endregion
+
+#if UNITY_EDITOR
+        [SerializeField] bool onActorState = true;
+        private void OnGUI()
+        {
+            if (onActorState)
+            {
+                GUIStyle myStyle = new GUIStyle(GUI.skin.label);
+                myStyle.fontSize = 50;
+                myStyle.normal.textColor = Color.green;
+                GUI.Label(new Rect(20, 40, Screen.width * 0.3f, Screen.height * 0.3f), StateContext.CurrentState.ToString(), myStyle);
+            }
+        }
     }
+#endif
 }

@@ -6,39 +6,61 @@ namespace QQ
 {
     public class PoolManager : DontDestroySingleton<PoolManager>
     {
+        [SerializeField] private Transform ActorRoot;
         [SerializeField] private Transform monsterRoot;
         [SerializeField] private Transform itemRoot;
         [SerializeField] private Transform sfxRoot;
+
+        // NOTE: ÏûÑÏãú ÌÖåÏä§Ìä∏Ïö©
+        public Actor actor;
 
         // List: all Objects created by PoolManager
         // Queue: inactive Objects that are ready for reuse
         protected readonly Dictionary<string, (List<BaseGameObject> list, Queue<BaseGameObject> queue)> monsterPools = new Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject> queue)>(dicCapacity);
         protected readonly Dictionary<string, (List<BaseGameObject> list, Queue<BaseGameObject> queue)> itemPools = new Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)>(dicCapacity);
-        protected readonly Dictionary<string, (List<BaseGameObject> list, Queue<BaseGameObject> queue)> sfxPools = new Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)>(dicCapacity);
+        public readonly Dictionary<string, (List<BaseGameObject> list, Queue<BaseGameObject> queue)> sfxPools = new Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)>(dicCapacity);
 
         private const int dicCapacity = 256;
         private const int poolCapacity = 2048;
 
-        private async UniTask<BaseGameObject> CreateBaseGameObject(GameObjectType objType, string prefabName)
+        private async UniTask<BaseGameObject> CreateBaseGameObject(GameObjectType objType, string prefabName, int tableID)
         {
-            GameObject obj = await ResManager.Instantiate(ResType.Object, prefabName);
+            GameObject obj = await ResManager.Instantiate(ObjTypeToResType(objType), prefabName);
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
 
             if (baseGameObj == null)
             {
                 baseGameObj = AddComponenetBaseGameObject(ref obj, objType);
-                LogHelper.LogError($"ø¿∫Í¡ß∆Æ «¡∏Æ∆’ {prefabName}ø° Object Ω∫≈©∏≥∆Æ ƒƒ∆˜≥Õ∆Æ √ﬂ∞° « ø‰!!!");
+                LogHelper.LogError($"Ïò§Î∏åÏ†ùÌä∏ ÌîÑÎ¶¨Ìåπ {prefabName}Ïóê Object Ïä§ÌÅ¨Î¶ΩÌä∏ Ïª¥Ìè¨ÎÑåÌä∏ Ï∂îÍ∞Ä ÌïÑÏöî!!!");
             }
 
-            baseGameObj.Init();
+            baseGameObj.SetData(tableID);
 
             return baseGameObj;
         }
 
-        public async UniTask<GameObject> GetObject(GameObjectType objType, string prefabName)
+        public async UniTask<GameObject> GetObject(GameObjectType objType, string prefabName, int tableID = 0)
         {
-            Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(objType);
             GameObject obj = null;
+
+            // Îã®Ïùº Í∞ùÏ≤¥Îäî Pool ÏïàÏì∞ÎèÑÎ°ù
+            if(objType == GameObjectType.Actor)
+            {
+                // Create Object Instance
+                BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, tableID);
+
+                actor = baseGameObj as Actor;
+
+                obj = baseGameObj.gameObject;
+                obj.name = prefabName;
+                SetParent(obj.transform, objType);
+
+                obj?.SetActive(true);
+
+                return obj;
+            }
+
+            Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(objType);
 
 
             if (!pool.TryGetValue(prefabName, out (List<BaseGameObject> list, Queue<BaseGameObject> queue) poolPair))
@@ -47,12 +69,12 @@ namespace QQ
                 pool.Add(prefabName, poolPair);
             }
 
-            Queue<BaseGameObject> queue = poolPair.Item2;
+            Queue<BaseGameObject> queue = poolPair.queue;
 
             if (0 == poolPair.queue.Count && poolCapacity > poolPair.list.Count)
             {
                 // Create Object Instance
-                BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName);
+                BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, tableID);
                 obj = baseGameObj.gameObject;
                 obj.name = prefabName;
                 SetParent(obj.transform, objType);
@@ -61,7 +83,10 @@ namespace QQ
             }
             else
             {
-                obj = poolPair.queue.Dequeue().gameObject;
+                BaseGameObject poolObject = poolPair.queue.Dequeue();
+                poolObject.Init();
+
+                obj = poolObject.gameObject;
             }
 
             obj?.SetActive(true);
@@ -94,15 +119,16 @@ namespace QQ
         {
             BaseGameObject baseGameObj = objType switch
             {
+                GameObjectType.Actor => obj.AddComponent<Actor>(),
                 GameObjectType.Monster => obj.AddComponent<Monster>(),
                 GameObjectType.Item => obj.AddComponent<Item>(),
-                GameObjectType.SFX => obj.AddComponent<SFX>(),
+                GameObjectType.SFX => obj.AddComponent<EffectSystem>(),
                 _ => null
             };
 
             if (null == baseGameObj)
             {
-                LogHelper.LogError("objTypeø° ∏¬¥¬ BaseGameObject ≈¨∑°Ω∫∞° æ¯¿Ω");
+                LogHelper.LogError("objTypeÏóê ÎßûÎäî BaseGameObject ÌÅ¥ÎûòÏä§Í∞Ä ÏóÜÏùå");
             }
 
             return baseGameObj;
@@ -112,6 +138,10 @@ namespace QQ
         {
             switch (objType)
             {
+                case GameObjectType.Actor:
+                    obj.SetParent(ActorRoot);
+                    break;
+
                 case GameObjectType.Monster:
                     obj.SetParent(monsterRoot);
                     break;
@@ -128,6 +158,9 @@ namespace QQ
 
         public void DestroyAll()
         {
+            Destroy(actor);
+            actor = null;
+
             foreach (var poolPair in monsterPools.Values)
             {
                 // Destroy All Object in List
@@ -167,6 +200,25 @@ namespace QQ
                 }
                 poolPair.list.Clear();
                 poolPair.queue.Clear();
+            }
+        }
+
+        private ResType ObjTypeToResType(GameObjectType type)
+        {
+            switch (type)
+            {
+                case GameObjectType.Actor:
+                case GameObjectType.Monster:
+                case GameObjectType.Npc:
+                case GameObjectType.Building:
+                case GameObjectType.Item:
+                    return ResType.Object;
+
+                case GameObjectType.SFX:
+                    return ResType.Effect;
+
+                default:
+                    return ResType.Object;
             }
         }
     }

@@ -27,10 +27,7 @@ namespace QQ
             instance = null;
         }
 
-        public bool isValid()
-        {
-            return instance != null;
-        }
+        public static bool isValid() => instance != null;        
     }
 
     public class DontDestroySingleton<T> : MonoBehaviour where T : DontDestroySingleton<T>
@@ -49,7 +46,7 @@ namespace QQ
                     }
                     else
                     {
-                        LogHelper.LogError($"___________DontDestroySIngleton_»ý¼ºµÈ ¿ÀºêÁ§Æ® ¾øÀ½ : {typeof(T).Name}");
+                        LogHelper.LogError($"___________DontDestroySIngleton_ìƒì„±ëœ ì˜¤ë¸Œì íŠ¸ ì—†ìŒ : {typeof(T).Name}");
                     }
                 }
 
@@ -57,10 +54,7 @@ namespace QQ
             }
         }
 
-        public bool IsValid()
-        {
-            return instance != null;
-        }
+        public static bool IsValid() => instance != null;
 
         protected virtual void Awake()
         {
@@ -69,6 +63,14 @@ namespace QQ
 
             instance = this as T;
             DontDestroyOnLoad(instance.gameObject);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (IsValid())
+            {
+                instance = null;
+            }
         }
     }
 }

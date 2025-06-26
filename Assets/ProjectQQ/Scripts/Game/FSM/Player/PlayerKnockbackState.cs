@@ -15,14 +15,14 @@ namespace QQ.FSM
         
         public void Enter()
         {
-            actor.PlayerMovement.LockMovement();
-            LogHelper.Log("Enter PlayerKnockbackState : æ∆æÊ");
+            actor.PlayerMovement.SetMoveLock(true);
+            LogHelper.Log("Enter PlayerKnockbackState : ÏïÑÏñè");
             actor.SetCanAttack(false);
         }
 
         public void Update()
         {
-            // ∫π±Õ: ¿‘∑¬ πÊ«‚ ∫∏∞Ì ªÛ≈¬ ∞·¡§
+            // Î≥µÍ∑Ä: ÏûÖÎ†• Î∞©Ìñ• Î≥¥Í≥† ÏÉÅÌÉú Í≤∞Ï†ï
             if (actor.PlayerMovement.MoveDirection == Vector2.zero)
                 context.ChangeState(context.PlayerIdleState);
             else
@@ -31,7 +31,7 @@ namespace QQ.FSM
 
         public void Exit()
         {
-            actor.PlayerMovement.UnlockMovemnet();
+            actor.PlayerMovement.SetMoveLock(false);
             actor.SetCanAttack(true);
         }
 

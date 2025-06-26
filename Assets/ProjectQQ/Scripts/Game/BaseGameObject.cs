@@ -25,14 +25,6 @@ namespace QQ
 
         #endregion
 
-        /// <summary>
-        /// BaseGameObject 생성시 항상 Init() 동작
-        /// </summary>
-        public BaseGameObject()
-        {
-            Init();
-        }
-
         public abstract void Init();
 
         public abstract void SetData(int id);
@@ -46,6 +38,8 @@ namespace QQ
         #region 유니티 생명주기 함수
         protected virtual void Awake()
         {
+            Init();
+
             status = new StatusEffectController();
 
             RigidBody = GetComponent<Rigidbody2D>();

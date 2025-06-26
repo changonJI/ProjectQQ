@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace QQ.FSM
 {
     public class PlayerMoveState : IState
@@ -15,7 +13,7 @@ namespace QQ.FSM
         
         public void Enter()
         {
-            actor.PlayerMovement.UnlockMovemnet();
+            actor.PlayerMovement.SetMoveLock(false);
             actor.SetCurAnimation(AnimState.Run);
         }
 

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace QQ
 {
@@ -13,15 +11,15 @@ namespace QQ
         {
         }
 
-        void Start()
+        async void Start()
         {
-            // ¹è°æ ·Îµå
-            ResManager.Instantiate(ResType.Stage, "Stage1");
+            // ë°°ê²½ ë¡œë“œ
+            await ResManager.Instantiate(ResType.Stage, "Stage1");
 
-            // ÇÃ·¹ÀÌ¾î ·Îµå
-            ResManager.Instantiate(ResType.Object, "Actor");
+            // í”Œë ˆì´ì–´ ë¡œë“œ
+            await PoolManager.Instance.GetObject(GameObjectType.Actor, "Actor");
 
-            // ¸ó½ºÅÍ ·Îµå
+            // ëª¬ìŠ¤í„° ë¡œë“œ
         }
 
         void Update()

@@ -13,10 +13,9 @@ namespace QQ
         public Vector2 MoveDirection => moveDirection;
         public BaseGameObject Owner { get; private set; }
 
-        public bool IsMoveLock { get; private set; } = false;
-        public void LockMovement() => IsMoveLock = true;
-        public void UnlockMovemnet() => IsMoveLock = false;
-
+        protected bool IsMoveLock = false;
+        public bool SetMoveLock(bool isLock) => IsMoveLock = isLock; 
+        
         public void Init(BaseGameObject obj)
         {
             Owner = obj;

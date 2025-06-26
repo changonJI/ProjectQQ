@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace QQ.FSM
 {
     public class PlayerDieState : IState
@@ -13,7 +11,7 @@ namespace QQ.FSM
         
         public void Enter()
         {
-            actor.PlayerMovement.LockMovement();
+            actor.PlayerMovement.SetMoveLock(true);
             actor.SetCanAttack(false);
             actor.SetCurAnimation(AnimState.Die);
         }

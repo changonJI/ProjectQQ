@@ -15,8 +15,8 @@ namespace QQ.FSM
         
         public void Enter()
         {
-            actor.PlayerMovement.LockMovement();
-            actor.SetCurAnimation(AnimState.Roll, 1.0f); // roll ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+            actor.PlayerMovement.SetMoveLock(true);
+            actor.SetCurAnimation(AnimState.Roll); // roll ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
         }
 
         public void Update()
@@ -32,7 +32,7 @@ namespace QQ.FSM
 
         public void Exit()
         {
-            actor.PlayerMovement.UnlockMovemnet();
+            actor.PlayerMovement.SetMoveLock(false);
         }
 
     }
