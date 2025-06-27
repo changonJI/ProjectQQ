@@ -28,11 +28,11 @@ namespace QQ
 
         public override void Init()
         {
+            IsDead = false;
+            currentHp = maxHp;
+
             playerStatData = new PlayerStatData();
             StateContext = new PlayerStateContext(this);
-            
-            currentHp = maxHp;
-            IsDead = false;
         }
 
         public override void SetData(int id)
@@ -128,7 +128,7 @@ namespace QQ
 
         public void PerformAttack()
         {
-            Debug.Log("공격");
+            //Debug.Log("공격");
         }
 
         public void SetCanAttack(bool value)

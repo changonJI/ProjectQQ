@@ -40,8 +40,6 @@ namespace QQ
         {
             if (IsMoveLock ||  isRollStart) return;
            
-            EffectManager.Instance.PlayEffect(0).Forget();
-
             OnRoll?.Invoke();
         }
     }

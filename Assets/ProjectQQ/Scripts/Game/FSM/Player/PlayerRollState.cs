@@ -15,8 +15,10 @@ namespace QQ.FSM
         
         public void Enter()
         {
+            actor.PlayerMovement.SetRollState(true);
             actor.PlayerMovement.SetMoveLock(true);
             actor.SetCurAnimation(AnimState.Roll); // roll 애니메이션 재생
+            EffectManager.Instance.PlayEffect(0).Forget();
         }
 
         public void Update()

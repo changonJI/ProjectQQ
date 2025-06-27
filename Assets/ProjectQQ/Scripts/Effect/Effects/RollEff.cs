@@ -12,7 +12,6 @@ namespace QQ
             base.Init();
 
             endPos = owner.transform.localPosition + Vector3.Scale(endPosValue, owner.PlayerMovement.MoveDirection);
-            owner.PlayerMovement.SetRollState(true);
         }
         protected override void OnAwake()
         {
@@ -26,8 +25,8 @@ namespace QQ
         {
             if(IsFinished)
             {
-                owner.PlayerMovement.SetRollState(false); // 구르기 상태 해제
                 PoolManager.Instance.ReleaseObject(gameObject);
+                owner.PlayerMovement.SetRollState(false); // 구르기 상태 해제
                 return;
             }
 

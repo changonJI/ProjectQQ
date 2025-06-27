@@ -47,7 +47,6 @@ namespace QQ
             // only triggers movement if a direction was given
             if (false == IsMoveLock && Vector2.zero != moveDirection)
             {
-                LogHelper.Log(Owner.Speed);
                 Move(moveDirection, Owner.Speed);
             }
 
