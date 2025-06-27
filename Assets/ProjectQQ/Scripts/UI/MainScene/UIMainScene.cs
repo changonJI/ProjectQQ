@@ -113,7 +113,11 @@ namespace QQ
         private void OnClickExit()
         {
             Debug.Log("Exit Game");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
+#endif
         }
     }
 }
