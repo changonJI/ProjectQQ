@@ -1,7 +1,6 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
-using System.Linq;
 using System;
+using System.Linq;
+using UnityEngine;
 
 namespace QQ
 {
@@ -10,11 +9,11 @@ namespace QQ
         private PlayerInputActions inputActions;
         private InputMap currentInputMap;
 
-        // ∞‘¿” «√∑π¿Ã ¿Œ«≤
+        // Í≤åÏûÑ ÌîåÎ†àÏù¥ Ïù∏Ìíã
         private event Action<Vector2> OnMoveInput;
         private event Action OnRollInput;
 
-        // UI ¿Œ«≤
+        // UI Ïù∏Ìíã
         private event Action<Vector2> OnUINaviInput;
         private event Action OnUISelectInput;
         private event Action OnUICancelInput;
@@ -26,18 +25,18 @@ namespace QQ
             inputActions = new PlayerInputActions();
             inputActions.Enable();
 
-            // ∞‘¿” «√∑π¿Ã ø¨∞·
+            // Í≤åÏûÑ ÌîåÎ†àÏù¥ Ïó∞Í≤∞
             inputActions.Player.Move.performed += ctx => OnMoveInput?.Invoke(ctx.ReadValue<Vector2>());
             inputActions.Player.Move.canceled += ctx => OnMoveInput?.Invoke(Vector2.zero);
             inputActions.Player.Roll.performed += ctx => OnRollInput?.Invoke();
 
-            // UI ø¨∞·
+            // UI Ïó∞Í≤∞
             inputActions.UI.Navigate.performed += ctx => OnUINaviInput?.Invoke(ctx.ReadValue<Vector2>());
             inputActions.UI.Select.performed += ctx => OnUISelectInput?.Invoke();
             inputActions.UI.Cancel.performed += ctx => OnUICancelInput?.Invoke();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             inputActions.Disable();
         }
@@ -67,7 +66,7 @@ namespace QQ
         #region PlayerInput
         public void AddMoveInputEvent(Action<Vector2> action)
         {
-            // action ¡ﬂ∫π µÓ∑œ πÊ¡ˆ
+            // action Ï§ëÎ≥µ Îì±Î°ù Î∞©ÏßÄ
             if (null == OnMoveInput || false == OnMoveInput.GetInvocationList().Contains(action))
             {
                 OnMoveInput += action;
@@ -81,7 +80,7 @@ namespace QQ
 
         public void AddRollInputEvent(Action action)
         {
-            // action ¡ﬂ∫π µÓ∑œ πÊ¡ˆ
+            // action Ï§ëÎ≥µ Îì±Î°ù Î∞©ÏßÄ
             if (null == OnRollInput || false == OnRollInput.GetInvocationList().Contains(action))
             {
                 OnRollInput += action;
@@ -97,7 +96,7 @@ namespace QQ
         #region UIInput
         public void AddUINaviInputEvent(Action<Vector2> action)
         {
-            // action ¡ﬂ∫π µÓ∑œ πÊ¡ˆ
+            // action Ï§ëÎ≥µ Îì±Î°ù Î∞©ÏßÄ
             if (null == OnUINaviInput || false == OnUINaviInput.GetInvocationList().Contains(action))
             {
                 OnUINaviInput += action;
@@ -111,7 +110,7 @@ namespace QQ
 
         public void AddUISelectInputEvent(Action action)
         {
-            // action ¡ﬂ∫π µÓ∑œ πÊ¡ˆ
+            // action Ï§ëÎ≥µ Îì±Î°ù Î∞©ÏßÄ
             if (null == OnUISelectInput || false == OnUISelectInput.GetInvocationList().Contains(action))
             {
                 OnUISelectInput += action;
@@ -125,7 +124,7 @@ namespace QQ
 
         public void AddUICancelInputEvent(Action action)
         {
-            // action ¡ﬂ∫π µÓ∑œ πÊ¡ˆ
+            // action Ï§ëÎ≥µ Îì±Î°ù Î∞©ÏßÄ
             if (null == OnUICancelInput || false == OnUICancelInput.GetInvocationList().Contains(action))
             {
                 OnUICancelInput += action;

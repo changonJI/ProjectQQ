@@ -62,7 +62,7 @@ namespace QQ
         {
             if (TargetTransform == null)
             {
-                var player = FindObjectOfType<Actor>();
+                var player = PoolManager.Instance.actor;
                 if (player != null) //  && !player.IsDead
                 {
                     TargetTransform = player.transform;

@@ -33,7 +33,7 @@ namespace QQ {
             UI.OnDestroyAction += OnDestroyAction;
         }
 
-        void OnDestroy()
+        protected override void OnDestroy()
         {
             UI.OnCreateAction -= OnCreateAction;
             UI.OnFocusAction -= OnFocusAction;
@@ -57,7 +57,7 @@ namespace QQ {
 
         public void OnCreateAction(UI ui)
         {
-            //NOTE: Indicator´Â uiList¿¡¼­ Á¦¿Ü. Ãß°¡½Ã ¾ÀÀüÈ¯ÇÒ¶§ ClearUI¿¡¼­ Ãæµ¹
+            //NOTE: IndicatorëŠ” uiListì—ì„œ ì œì™¸. ì¶”ê°€ì‹œ ì”¬ì „í™˜í• ë•Œ ClearUIì—ì„œ ì¶©ëŒ
             if (ui.uiDepth == UIDepth.Indicator)
                 return;
 
@@ -137,7 +137,7 @@ namespace QQ {
         }
 
         /// <summary>
-        /// ¾ÀÀüÈ¯½Ã UI ÃÊ±âÈ­
+        /// ì”¬ì „í™˜ì‹œ UI ì´ˆê¸°í™”
         /// </summary>
         public async UniTask ClearUI()
         {
