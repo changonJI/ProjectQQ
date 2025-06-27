@@ -21,7 +21,16 @@ namespace QQ
         protected override void Awake()
         {
             base.Awake();
+        }
 
+        protected override void OnDestroy()
+        {
+            if (inputActions != null)
+            inputActions.Disable();
+        }
+
+        public void Init()
+        {
             inputActions = new PlayerInputActions();
             inputActions.Enable();
 
@@ -34,11 +43,6 @@ namespace QQ
             inputActions.UI.Navigate.performed += ctx => OnUINaviInput?.Invoke(ctx.ReadValue<Vector2>());
             inputActions.UI.Select.performed += ctx => OnUISelectInput?.Invoke();
             inputActions.UI.Cancel.performed += ctx => OnUICancelInput?.Invoke();
-        }
-
-        protected override void OnDestroy()
-        {
-            inputActions.Disable();
         }
 
         public void SwitchInputMap(InputMap context)

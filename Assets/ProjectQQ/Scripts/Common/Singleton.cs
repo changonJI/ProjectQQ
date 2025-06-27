@@ -46,7 +46,11 @@ namespace QQ
                     }
                     else
                     {
-                        LogHelper.LogError($"___________DontDestroySIngleton_생성된 오브젝트 없음 : {typeof(T).Name}");
+#if UNITY_EDITOR
+                        LogHelper.LogError($"Creat DonDestroySingleTone : {typeof(T)}");
+#endif
+                        var name = typeof(T).Name;
+                        instance = new GameObject(string.Concat("SingletonOf", typeof(T).Name), typeof(T)).GetComponent<T>();
                     }
                 }
 

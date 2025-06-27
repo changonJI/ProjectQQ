@@ -17,57 +17,60 @@ namespace QQ
         protected override void Awake()
         {
             base.Awake();
-            
+        }
+
+        public void Init()
+        {
             bgmSource = gameObject.AddComponent<AudioSource>();
             uiSource = gameObject.AddComponent<AudioSource>();
             sfxSource = gameObject.AddComponent<AudioSource>();
 
             soundDictionary = new Dictionary<string, AudioClip>();
 
-            // ÃÊ±âÈ­
+            // ì´ˆê¸°í™”
             InitAudioSource(SoundType.BGM, bgmSource);
             InitAudioSource(SoundType.UI, uiSource);
             InitAudioSource(SoundType.SFX, sfxSource);
 
-            //TODO: sounddataÅ×ÀÌºí ¿¡¼­ string°ª °¡Á®¿Í¼­ ÀĞ¾î¾ßµÊ
+            //TODO: sounddataí…Œì´ë¸” ì—ì„œ stringê°’ ê°€ì ¸ì™€ì„œ ì½ì–´ì•¼ë¨
             //LoadSound().Forget();
 
             var sound = ResManager.LoadResource<AudioClip>(ResType.Sound, "Jump");
             var sound2 = ResManager.LoadResource<AudioClip>(ResType.Sound, "ButtonClick");
-            
+
             soundDictionary.Add("Jump", sound);
             soundDictionary.Add("ButtonClick", sound2);
         }
 
         private void InitAudioSource(SoundType type, AudioSource source)
         {
-            // À½¼Ò°Å
+            // ìŒì†Œê±°
             source.mute = false;
 
-            // ¿Àµğ¿À ÀÌÆåÆ®¸¦ ¹«½ÃÇÏ°í ¿øº» ¿Àµğ¿À Ãâ·Â
+            // ì˜¤ë””ì˜¤ ì´í™íŠ¸ë¥¼ ë¬´ì‹œí•˜ê³  ì›ë³¸ ì˜¤ë””ì˜¤ ì¶œë ¥
             source.bypassEffects = false;
-            // AudioListenerÀÇ ÀÌÆåÆ®(ex: 3D °ø°£ À½Çâ) ¹«½Ã
+            // AudioListenerì˜ ì´í™íŠ¸(ex: 3D ê³µê°„ ìŒí–¥) ë¬´ì‹œ
             source.bypassListenerEffects = false;
-            // ¸®¹öºê Á¸ È¿°ú¸¦ ¹«½Ã
+            // ë¦¬ë²„ë¸Œ ì¡´ íš¨ê³¼ë¥¼ ë¬´ì‹œ
             source.bypassReverbZones = false;
             source.playOnAwake = false;
 
-            // ¹İº¹
+            // ë°˜ë³µ
             source.loop = false;
 
-            // ½ÇÇà ¼ø¼­
+            // ì‹¤í–‰ ìˆœì„œ
             source.priority = SetPriority(type);
             
             source.volume = 1.0f;
             source.pitch = 1.0f;
 
-            // ¿Àµğ¿ÀÀÇ ÁÂ¿ìÁß ¾î´ÀÂÊÀ¸·Î ¼Ò¸®¸¦ °­ÇÏ°Ô ³»º¸³¾Áö °áÁ¤ÇÏ´Â °ª
+            // ì˜¤ë””ì˜¤ì˜ ì¢Œìš°ì¤‘ ì–´ëŠìª½ìœ¼ë¡œ ì†Œë¦¬ë¥¼ ê°•í•˜ê²Œ ë‚´ë³´ë‚¼ì§€ ê²°ì •í•˜ëŠ” ê°’
             source.panStereo = 0.0f;
-            // ¿Àµğ¿À°¡ 2D(½ºÅ×·¹¿À)¿Í 3D(°ø°£ À½Çâ)»çÀÌ¿¡¼­ ¾î¶»°Ô Àç»ıµÇ´ÂÁöÀÇ °ª
-            // 0.0f = 2D, 1.0f = 3D, 0.5f = 2D¿Í 3DÀÇ ÇÏÀÌºê¸®µå
+            // ì˜¤ë””ì˜¤ê°€ 2D(ìŠ¤í…Œë ˆì˜¤)ì™€ 3D(ê³µê°„ ìŒí–¥)ì‚¬ì´ì—ì„œ ì–´ë–»ê²Œ ì¬ìƒë˜ëŠ”ì§€ì˜ ê°’
+            // 0.0f = 2D, 1.0f = 3D, 0.5f = 2Dì™€ 3Dì˜ í•˜ì´ë¸Œë¦¬ë“œ
             source.spatialBlend = 0.0f;
-            // ¿Àµğ¿À°¡ °ø°£ÀÇ ÀÜÇâÈ¿°ú¸¦ ¾ó¸¶³ª Àû¿ë ¹ŞÀ»Áö
-            // 0.0f = Àû¿ë ¾ÈµÊ(¿øº» ¼Ò¸®), 1.0f = Àû¿ëµÊ(ÀÜÇâ °­ÇÏ°Ô), 1.1f = ±Ø´ëÈ­
+            // ì˜¤ë””ì˜¤ê°€ ê³µê°„ì˜ ì”í–¥íš¨ê³¼ë¥¼ ì–¼ë§ˆë‚˜ ì ìš© ë°›ì„ì§€
+            // 0.0f = ì ìš© ì•ˆë¨(ì›ë³¸ ì†Œë¦¬), 1.0f = ì ìš©ë¨(ì”í–¥ ê°•í•˜ê²Œ), 1.1f = ê·¹ëŒ€í™”
             source.reverbZoneMix = 1.0f;
         }
 

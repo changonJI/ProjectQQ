@@ -14,6 +14,8 @@ namespace QQ
             base.OnDestroy();
         }
 
+        public void Init() { }
+
         public async UniTaskVoid PlayEffect(int skillID)
         {
             // TODO : GET SKillTable Data

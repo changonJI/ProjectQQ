@@ -1,10 +1,11 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace QQ
 {
     // TODO
-    // ÀÌ¸§ ½ÇÁ¦ ÀúÀå ÄÚµå ÀÛ¼º ÇÊ¿ä
-    // ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ Ã¼Å© ÄÚµå ÇÊ¿ä
+    // ì´ë¦„ ì‹¤ì œ ì €ì¥ ì½”ë“œ ì‘ì„± í•„ìš”
+    // í”Œë ˆì´ì–´ ë°ì´í„° ì²´í¬ ì½”ë“œ í•„ìš”
     public sealed class MainSceneManager : MonoBehaviour
     {
         private void Awake()
@@ -14,12 +15,21 @@ namespace QQ
 
         private void Start()
         {
-            // InputManager Ãß°¡ ÇÊ¿ä
-            // SoundManager Ãß°¡ ÇÊ¿ä
-            // EffectManager Ãß°¡ ÇÊ¿ä
-            // PoolManager Ãß°¡ ÇÊ¿ä
-            UIMainScene.Instantiate();
+            Init().Forget();
         }
         
+        private async UniTaskVoid Init()
+        {
+            //Managerë“¤ ì¶”ê°€
+            GameManager.Instance.Init();
+            InputManager.Instance.Init();
+            SoundManager.Instance.Init();
+            EffectManager.Instance.Init();
+            PoolManager.Instance.Init();
+
+            await GameManager.Instance.InitCamera();
+
+            UIMainScene.Instantiate();
+        }
     }
 }

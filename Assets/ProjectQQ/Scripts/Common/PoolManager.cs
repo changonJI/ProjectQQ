@@ -23,6 +23,7 @@ namespace QQ
         private const int dicCapacity = 256;
         private const int poolCapacity = 2048;
 
+        public void Init() { }
         private async UniTask<BaseGameObject> CreateBaseGameObject(GameObjectType objType, string prefabName, int tableID)
         {
             GameObject obj = await ResManager.Instantiate(ObjTypeToResType(objType), prefabName);
