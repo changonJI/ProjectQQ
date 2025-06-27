@@ -12,16 +12,28 @@ namespace QQ
 
         public static string nextScene;
 
-        // Áßº¹ ¾À ·Îµå ¹æÁö¿ë
+        // ì¤‘ë³µ ì”¬ ë¡œë“œ ë°©ì§€ìš©
         private static bool canLoad = false;
 
         private static float fakeTime = 0.5f;
 
         [SerializeField] private UIProgressBar progressBar;
         
-        public static void LoadScene(string sceneName)
+        public static void LoadScene(SceneType sceneName)
         {
-            nextScene = sceneName;
+            string nextScene = string.Empty;
+            switch (sceneName)
+            {
+                case SceneType.MainScene:
+                    nextScene = mainSceneName;
+                    break;
+                case SceneType.LoadingScene:
+                    nextScene = loadingSceneName;
+                    break;
+                case SceneType.GameScene:
+                    nextScene = gameSceneName;
+                    break;
+            }
 
             UIIndicator.Instantiate();
 
@@ -30,24 +42,26 @@ namespace QQ
 
         private void Awake()
         {
-            // ÃÊ±âÈ­ ÀÛ¾÷
+            // ì´ˆê¸°í™” ìž‘ì—…
             canLoad = true;
             progressBar.Init(0f, 1f);
         }
 
         private void Start()
         {
-            OnStart().Forget();
+            Init().Forget();
         }
 
-        private async UniTaskVoid OnStart()
+        private async UniTaskVoid Init()
         {
+            await GameManager.Instance.InitCamera();
+
             // fakeTime
             await UniTask.WaitForSeconds(0.5f);
 
             UIIndicator.CloseUI();
 
-            // CloseUI ´ë±â
+            // CloseUI ëŒ€ê¸°
             await UniTask.Yield();
 
             UIDialogue.Instantiate(okAction: () => LoadSceneAsync(gameSceneName).Forget());
@@ -63,7 +77,7 @@ namespace QQ
 
             canLoad = false;
 
-            // ÃÊ±âÈ­ ÀÛ¾÷ ´ëÃ¼
+            // ì´ˆê¸°í™” ìž‘ì—… ëŒ€ì²´
             await UniTask.Yield(); 
 
             AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
@@ -76,7 +90,7 @@ namespace QQ
 
             while (!op.isDone)
             {
-                // ÇÁ·¹ÀÓ¸¶´Ù ´ë±â
+                // í”„ë ˆìž„ë§ˆë‹¤ ëŒ€ê¸°
                 await UniTask.Yield();
 
                 if (op.progress < 0.9f)
@@ -93,7 +107,7 @@ namespace QQ
                     {
                         op.allowSceneActivation = true;
 
-                        // UIRoot ÃÊ±âÈ­
+                        // UIRoot ì´ˆê¸°í™”
                         await UIRoot.Instance.ClearUI();
 
                         UIIndicator.CloseUI();

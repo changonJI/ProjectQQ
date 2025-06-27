@@ -92,7 +92,7 @@ namespace QQ
         private void OnClickNewGame()
         {
             Debug.Log("LoadGameScene");
-            LoadingSceneManager.LoadScene(LoadingSceneManager.gameSceneName);
+            GameManager.Instance.LoadScene(SceneType.GameScene);
         }
 
         private void OnClickContinue()

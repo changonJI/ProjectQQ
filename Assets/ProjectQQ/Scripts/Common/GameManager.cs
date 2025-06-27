@@ -1,19 +1,52 @@
-using System;
+using Cysharp.Threading.Tasks;
 using QQ;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : DontDestroySingleton<GameManager>
 {
-    #region Playerprefs
+    public CinemachineCamera virtualCam;
+    private readonly Vector3 camPos = new Vector3(0, 0, -100); 
 
+    public void Init() { }
+
+    public async UniTask InitCamera()
+    {
+        await UniTask.WaitForEndOfFrame();
+
+        SetCamera(Camera.main.GetComponent<CinemachineBrain>());
+
+        //ë°©ì–´ì½”ë“œ
+        while (virtualCam == null)
+        {
+            await UniTask.Yield();
+
+            SetCamera(Camera.main.GetComponent<CinemachineBrain>());
+        }
+    }
+
+    public void SetCamera(CinemachineBrain brain)
+    {
+        virtualCam = brain.ActiveVirtualCamera as CinemachineCamera;
+    }
+
+    public void SetCameraTarget(Transform target)
+    {
+        if (virtualCam == null) return;
+
+        virtualCam.Follow = target;
+        virtualCam.LookAt = target;
+    }
+
+    #region Playerprefs
     /// <summary>
-    /// playerprefs ÃÊ±âÈ­
+    /// playerprefs ì´ˆê¸°í™”
     /// </summary>
     public void ClearPlayerData() => PlayerPrefs.DeleteAll();
 
     /// <summary>
-    /// playerprefs¿¡ ÀúÀå
+    /// playerprefsì— ì €ì¥
     /// </summary>
     public void SavePlayerData(PlayerDataType dataType, string text = null, int iNum = -1, float fNum = 0f)
     {
@@ -30,7 +63,7 @@ public class GameManager : DontDestroySingleton<GameManager>
     }
     
     /// <summary>
-    /// string µ¥ÀÌÅÍ ·Îµå
+    /// string ë°ì´í„° ë¡œë“œ
     /// </summary>
     public string GetStringPlayerData(PlayerDataType dataType)
     {
@@ -47,13 +80,13 @@ public class GameManager : DontDestroySingleton<GameManager>
         }
         
         if(dataType != PlayerDataType.UserName && data == string.Empty)
-            LogHelper.LogError("µ¥ÀÌÅÍ Å¸ÀÔÀ» È®ÀÎÇÏ¼¼¿ä.");
+            LogHelper.LogError("ë°ì´í„° íƒ€ì…ì„ í™•ì¸í•˜ì„¸ìš”.");
         
         return data;
     }
     
     /// <summary>
-    /// int µ¥ÀÌÅÍ ·Îµå
+    /// int ë°ì´í„° ë¡œë“œ
     /// </summary>
     public int GetIntPlayerData(PlayerDataType dataType)
     {
@@ -70,7 +103,7 @@ public class GameManager : DontDestroySingleton<GameManager>
         }
         
         if(data == -1)
-            LogHelper.LogError("µ¥ÀÌÅÍ Å¸ÀÔÀ» È®ÀÎÇÏ¼¼¿ä.");
+            LogHelper.LogError("ë°ì´í„° íƒ€ì…ì„ í™•ì¸í•˜ì„¸ìš”.");
         
         return data;
     }
@@ -82,7 +115,7 @@ public class GameManager : DontDestroySingleton<GameManager>
     private bool isPaused = false;
     
     /// <summary>
-    /// °ÔÀÓ ¸ØÃã - Åä±Û Çü½Ä
+    /// ê²Œì„ ë©ˆì¶¤ - í† ê¸€ í˜•ì‹
     /// </summary>
     public void TogglePause()
     {
@@ -91,7 +124,7 @@ public class GameManager : DontDestroySingleton<GameManager>
     }
 
     /// <summary>
-    /// °ÔÀÓ ¸ØÃã - bool °ª ÀÌ¿ë
+    /// ê²Œì„ ë©ˆì¶¤ - bool ê°’ ì´ìš©
     /// </summary>
     /// <param name="isPaused"></param>
     public void GamePause(bool isPaused)
@@ -104,24 +137,24 @@ public class GameManager : DontDestroySingleton<GameManager>
     #region Scene
 
     /// <summary>
-    /// µ¿±â ¾À ·Îµå
+    /// ë™ê¸° ì”¬ ë¡œë“œ
     /// </summary>
-    public static void LoadScene(SceneType scene)
+    public void LoadScene(SceneType sceneType)
     {
-        if (SceneExists(scene.ToString()))
+        if (SceneExists(sceneType.ToString()))
         {
-            SceneManager.LoadScene(scene.ToString());
+            LoadingSceneManager.LoadScene(sceneType);
         }
         else
         {
-            Debug.LogError($"[SceneLoader] ¾À '{scene}' ÀÌ(°¡) Build Settings¿¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.LogError($"[SceneLoader] ì”¬ '{sceneType}' ì´(ê°€) Build Settingsì— ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
     }
 
     /// <summary>
-    /// ¾À Á¸Àç ¿©ºÎ È®ÀÎ
+    /// ì”¬ ì¡´ì¬ ì—¬ë¶€ í™•ì¸
     /// </summary>
-    private static bool SceneExists(string sceneName)
+    private bool SceneExists(string sceneName)
     {
         int sceneCount = SceneManager.sceneCountInBuildSettings;
         for (int i = 0; i < sceneCount; i++)
