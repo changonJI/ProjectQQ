@@ -44,10 +44,16 @@ namespace QQ
 
         protected virtual void FixedUpdate()
         {
+            if(Owner.stateContext.GetCurFSMType() == FSMState.Roll)
+            {
+                Move(lastMoveDirection, Owner.GetSpeed());
+                return;
+            }
+
             // only triggers movement if a direction was given
             if (false == IsMoveLock && Vector2.zero != moveDirection)
             {
-                Move(moveDirection, Owner.Speed);
+                Move(moveDirection, Owner.GetSpeed());
             }
 
             OnFixedUpdate();

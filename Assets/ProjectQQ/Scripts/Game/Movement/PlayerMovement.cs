@@ -5,9 +5,6 @@ namespace QQ
 {
     public class PlayerMovement : MovementBase
     {
-        public bool isRollStart { get; private set;}
-        public void SetRollState(bool isRoll) => isRollStart = isRoll;
-
         public Action<Vector2> OnMove;
         public Action OnRoll;
         
@@ -33,12 +30,13 @@ namespace QQ
             if(IsMoveLock) return;
             
             moveDirection = dir;
+
             OnMove.Invoke(dir);
         }
 
         public void HandleRollInput()
         {
-            if (IsMoveLock ||  isRollStart) return;
+            if (IsMoveLock) return;
            
             OnRoll?.Invoke();
         }
