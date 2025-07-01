@@ -1,4 +1,5 @@
 using QQ.FSM;
+using System;
 using UnityEngine;
 
 namespace QQ
@@ -10,6 +11,8 @@ namespace QQ
         private MonsterData monsterData;
         
         public MonsterMovement MonsterMovement { get; private set; }
+
+        [Obsolete("BaseGameObject stateContext 사용")]
         public MonsterStateContext StateContext { get; private set; }
         
         private StatusEffectController.StatusEffect currentStatus = StatusEffectController.StatusEffect.None;
@@ -33,13 +36,13 @@ namespace QQ
         {
             base.OnAwake();
 
-            StateContext = new MonsterStateContext(this);
+            stateContext = new MonsterStateContext(this);
             MonsterMovement = GetComponent<MonsterMovement>();
         }
 
         protected override void OnStart()
         {
-            StateContext.ChangeState(StateContext.MonsterIdleState);
+            stateContext.ChangeState(stateContext.GetIdleState());
             TryFindPlayer();
         }
 
@@ -49,7 +52,7 @@ namespace QQ
         protected override void OnUpdate()
         {
             TryFindPlayer();
-            StateContext.Update();
+            stateContext.Update();
         }
 
         protected override void OnFixedUpdate()

@@ -15,14 +15,17 @@ namespace QQ
             set { isLoaded = value; }
         }
 
-        public virtual float Speed { get; set; }
+        public virtual float GetSpeed() => 0f;
+
         public Rigidbody2D RigidBody { get; protected set; }
 
-        #region Status
+        #region FSM
+        public BaseStateContext stateContext;
+        #endregion
 
+        #region Status
         protected StatusEffectController status;
         protected bool IsStunned => status.HasStatus(StatusEffectController.StatusEffect.Stunned);
-
         #endregion
 
         public abstract void Init();

@@ -1,4 +1,5 @@
 using QQ.FSM;
+using System;
 using UnityEngine;
 
 namespace QQ
@@ -9,7 +10,8 @@ namespace QQ
 
         private PlayerStatData playerStatData;
         public PlayerMovement PlayerMovement { get; private set; }
-        
+
+        [Obsolete("BaseGameObject stateContext 사용")]        
         public PlayerStateContext StateContext { get; private set; }
         
         // 플레이어 데이터 임시
@@ -22,9 +24,10 @@ namespace QQ
         private float attackInterval = 1.0f;
         private float attackTimer;
         private bool canAttack = true; // 공격 가능 여부
-        
-        // public override float Speed { get => playerStatData.baseSpeed; }
-        public override float Speed { get => 1f; } // 테스트용 임시 코드
+
+        // NOTE: playerStatData.baseSpeed + addSpeed
+        public override float GetSpeed() => 5f;
+        private float addSpeed = 0f;
 
         public override void Init()
         {
@@ -32,7 +35,7 @@ namespace QQ
             currentHp = maxHp;
 
             playerStatData = new PlayerStatData();
-            StateContext = new PlayerStateContext(this);
+            stateContext = new PlayerStateContext(this);
         }
 
         public override void SetData(int id)
@@ -77,14 +80,14 @@ namespace QQ
 
         protected override void OnStart()
         {
-            StateContext.ChangeState(StateContext.PlayerIdleState);
+            stateContext.ChangeState(stateContext.GetIdleState());
         }
 
         protected override void OnUpdate()
         {
             if (status.HasStatus(StatusEffectController.StatusEffect.Stunned)) return;
 
-            StateContext.Update();
+            stateContext.Update();
             
             if (canAttack)
             {
@@ -98,30 +101,33 @@ namespace QQ
         }
 
         #region FSM
-        
         private void ChangeMoveState(Vector2 dir)
         {
             if(dir != Vector2.zero)
-                StateContext.ChangeState(StateContext.PlayerMoveState);
+                stateContext.ChangeState(stateContext.GetMoveState());
             else
-                StateContext.ChangeState(StateContext.PlayerIdleState);
+                stateContext.ChangeState(stateContext.GetIdleState());
         }
 
         private void ChangeRollState()
         {
-            StateContext.ChangeState(StateContext.PlayerRollState);
+            stateContext.ChangeState(stateContext.GetRollState());
         }
 
         private void ChangeKnockBackState()
         {
-            StateContext.ChangeState(StateContext.PlayerKnockbackState);
+            stateContext.ChangeState(stateContext.GetKnockbackState());
         }
 
         private void ChangeDieState()
         {
-            StateContext.ChangeState(StateContext.PlayerDieState);
+            stateContext.ChangeState(stateContext.GetDieState());
         }
+        #endregion
 
+        #region State Detail
+        public void SetAddSpeed(float speed) => addSpeed = speed;
+        public void CalcAddSpeed(float speed) => addSpeed += speed;
         #endregion
 
         #region 공격 + 피격 (수정 예정)
@@ -182,7 +188,7 @@ namespace QQ
                 GUIStyle myStyle = new GUIStyle(GUI.skin.label);
                 myStyle.fontSize = 50;
                 myStyle.normal.textColor = Color.green;
-                GUI.Label(new Rect(20, 40, Screen.width * 0.3f, Screen.height * 0.3f), StateContext.CurrentState.ToString(), myStyle);
+                GUI.Label(new Rect(20, 40, Screen.width * 0.3f, Screen.height * 0.3f), stateContext.GetCurFSMType().ToString(), myStyle);
             }
         }
     }
