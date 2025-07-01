@@ -26,7 +26,7 @@ namespace QQ
         private bool canAttack = true; // 공격 가능 여부
 
         // NOTE: playerStatData.baseSpeed + addSpeed
-        public override float GetSpeed() => 5f;
+        public override float GetSpeed() => 5f + addSpeed;
         private float addSpeed = 0f;
 
         public override void Init()
@@ -126,6 +126,7 @@ namespace QQ
         #endregion
 
         #region State Detail
+        public float GetAddSpeed() => addSpeed;
         public void SetAddSpeed(float speed) => addSpeed = speed;
         public void CalcAddSpeed(float speed) => addSpeed += speed;
         #endregion

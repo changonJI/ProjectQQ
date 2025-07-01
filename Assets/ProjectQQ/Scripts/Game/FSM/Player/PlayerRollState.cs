@@ -14,11 +14,11 @@ namespace QQ.FSM
         private float duration = 0f;
         // 진행시간
         private float processTime;
-        // 구르기 힘(actor.Speed * rollPower값)
-        private float rollPower = 0f;
         // 더해지는 속도 값
         private float addSpeed = 0f;
 
+        // 구르기 힘(eased * rollPower)
+        private float rollPower = 5f;
         // 구르기 anim의 속도 값
         private float easeSpeed = 5f;
 
@@ -41,7 +41,6 @@ namespace QQ.FSM
             duration = actor.GetAnimDuration(AnimState.Roll);
 
             processTime = 0f;
-            rollPower = actor.GetSpeed() * 2;
             addSpeed = 0f;
         }
 
