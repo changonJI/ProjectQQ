@@ -5,10 +5,11 @@ namespace QQ
     public abstract class BaseStateContext
     {
         private IState currentState;
-        public IState CurrentState => currentState;
 
         public void ChangeState(IState newState)
         {
+            if (newState == currentState) return;
+
             currentState?.Exit();
             currentState = newState;
             currentState.Enter();
