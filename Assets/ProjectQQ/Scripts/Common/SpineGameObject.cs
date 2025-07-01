@@ -322,5 +322,15 @@ namespace QQ
             }
         }
 
+        public float GetAnimDuration(AnimState state)
+        {
+            string animName = GetAnimName(state);
+
+            var anim = animBody.skeleton.Data.FindAnimation(animName);
+
+            float duration = anim.Duration;
+
+            return duration;
+        }
     }
 }
