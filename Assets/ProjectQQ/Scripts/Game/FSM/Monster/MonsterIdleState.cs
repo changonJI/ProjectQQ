@@ -1,9 +1,8 @@
-using UnityEngine;
-
 namespace QQ.FSM
 {
     public class MonsterIdleState : IState
     {
+        public FSMState GetFSMType() => FSMState.Idle;
         private readonly Monster monster;
         private readonly MonsterStateContext monsterStateContext;
 

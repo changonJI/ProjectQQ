@@ -18,5 +18,12 @@ namespace QQ
         {
             currentState?.Update();
         }
+
+        public virtual FSMState GetCurFSMType() => currentState?.GetFSMType() ?? FSMState.None;
+        public virtual IState GetIdleState() => null;
+        public virtual IState GetMoveState() => null;
+        public virtual IState GetRollState() => null;
+        public virtual IState GetKnockbackState() => null;
+        public virtual IState GetDieState() => null;
     }
 }

@@ -4,6 +4,7 @@ namespace QQ.FSM
 {
     public class PlayerKnockbackState : IState
     {
+        public FSMState GetFSMType() => FSMState.Knockback;
         private readonly Actor actor;
         private readonly PlayerStateContext context;
 

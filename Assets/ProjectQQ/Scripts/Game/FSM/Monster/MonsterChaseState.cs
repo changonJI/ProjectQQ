@@ -4,6 +4,7 @@ namespace QQ.FSM
 {
     public class MonsterChaseState : IState
     {
+        public FSMState GetFSMType() => FSMState.Move;
         private readonly Monster monster;
         private readonly MonsterStateContext context;
 

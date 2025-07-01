@@ -2,6 +2,8 @@ namespace QQ.FSM
 {
     public class MonsterDieState : IState
     {
+        public FSMState GetFSMType() => FSMState.Die;
+
         private readonly Monster monster;
 
         public bool IsInputBlocked { get; }

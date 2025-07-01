@@ -12,5 +12,10 @@ namespace QQ.FSM
             MonsterChaseState = new MonsterChaseState(monster, this);
             MonsterDieState = new MonsterDieState(monster, this);
         }
+
+        public override IState GetIdleState() => MonsterIdleState;
+        public override IState GetMoveState() => MonsterChaseState;
+        public override IState GetDieState() => MonsterDieState;
+        
     }
 }

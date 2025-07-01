@@ -2,6 +2,7 @@ namespace QQ.FSM
 {
     public class PlayerMoveState : IState
     {
+        public FSMState GetFSMType() => FSMState.Move;
         private readonly Actor actor;
         private readonly PlayerStateContext context;
 

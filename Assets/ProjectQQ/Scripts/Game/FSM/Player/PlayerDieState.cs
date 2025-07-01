@@ -2,6 +2,7 @@ namespace QQ.FSM
 {
     public class PlayerDieState : IState
     {
+        public FSMState GetFSMType() => FSMState.Die;
         private readonly Actor actor;
 
         public PlayerDieState(Actor actor)

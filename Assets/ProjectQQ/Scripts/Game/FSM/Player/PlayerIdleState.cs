@@ -2,6 +2,7 @@ namespace QQ.FSM
 {
     public class PlayerIdleState : IState
     {
+        public FSMState GetFSMType() => FSMState.Idle;
         private readonly Actor actor;
         private readonly PlayerStateContext context;
 

@@ -101,6 +101,7 @@ namespace QQ
         LoadingScene = 1,
         GameScene = 2
     }
+
     public enum ResType : byte
     {
         UI = 0,
@@ -110,6 +111,7 @@ namespace QQ
         Texture = 4,
         Effect = 5,
     }
+
     public enum InputMap : byte // 키 입력 상황
     {
         Player = 0,
@@ -161,6 +163,18 @@ namespace QQ
         Roll = 2,
         Run = 3,
         Hit = 4,
+        Die = 5,
+    }
+    #endregion
+
+    #region FSM
+    public enum FSMState : byte
+    {
+        None = 0,
+        Idle = 1,
+        Move = 2,
+        Roll = 3,
+        Knockback = 4,
         Die = 5,
     }
     #endregion

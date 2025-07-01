@@ -2,8 +2,6 @@ namespace QQ.FSM
 {
     public class PlayerStateContext : BaseStateContext
     {
-        private IState currentState;
-        
         public IState PlayerIdleState { get; private set; }
         public IState PlayerMoveState { get; private set; }
         public IState PlayerRollState { get; private set; }
@@ -18,5 +16,11 @@ namespace QQ.FSM
             PlayerKnockbackState = new PlayerKnockbackState(actor, this);
             PlayerDieState = new PlayerDieState(actor);
         }
+
+        public override IState GetIdleState() => PlayerIdleState;
+        public override IState GetMoveState() => PlayerMoveState;
+        public override IState GetRollState() => PlayerRollState;
+        public override IState GetKnockbackState() => PlayerKnockbackState;
+        public override IState GetDieState() => PlayerDieState;
     }
 }
