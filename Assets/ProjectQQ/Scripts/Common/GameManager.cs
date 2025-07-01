@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : DontDestroySingleton<GameManager>
 {
     public CinemachineCamera virtualCam;
-    private readonly Vector3 camPos = new Vector3(0, 0, -100); 
 
     public void Init() { }
 
