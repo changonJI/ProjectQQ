@@ -1,43 +1,11 @@
-using Cysharp.Threading.Tasks;
 using QQ;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : DontDestroySingleton<GameManager>
 {
-    public CinemachineCamera virtualCam;
-
     public void Init() { }
-
-    public async UniTask InitCamera()
-    {
-        await UniTask.WaitForEndOfFrame();
-
-        SetCamera(Camera.main.GetComponent<CinemachineBrain>());
-
-        //방어코드
-        while (virtualCam == null)
-        {
-            await UniTask.Yield();
-
-            SetCamera(Camera.main.GetComponent<CinemachineBrain>());
-        }
-    }
-
-    public void SetCamera(CinemachineBrain brain)
-    {
-        virtualCam = brain.ActiveVirtualCamera as CinemachineCamera;
-    }
-
-    public void SetCameraTarget(Transform target)
-    {
-        if (virtualCam == null) return;
-
-        virtualCam.Follow = target;
-        virtualCam.LookAt = target;
-    }
-
+   
     #region Playerprefs
     /// <summary>
     /// playerprefs 초기화

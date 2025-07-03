@@ -119,6 +119,13 @@ namespace QQ
 
         Texture = 3,
     }
+
+    public enum CameraType : byte // 카메라 타입
+    {
+        Default = 0, // Main 고정 카메라
+        Player = 1, // 플레이어 따라가는 카메라
+        Boss = 2, // 보스 몬스터 따라가는 카메라
+    }
     #endregion
 
     #region GameObject

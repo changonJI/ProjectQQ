@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace QQ
@@ -10,15 +9,16 @@ namespace QQ
     {
         private void Awake()
         {
+            // TODO: 모든 테이블 데이터 읽어와야 합니다.
             LanguageDataManager.Instance.LoadData();
         }
 
         private void Start()
         {
-            Init().Forget();
+            Init();
         }
         
-        private async UniTaskVoid Init()
+        private void Init()
         {
             //Manager들 추가
             GameManager.Instance.Init();
@@ -26,8 +26,6 @@ namespace QQ
             SoundManager.Instance.Init();
             EffectManager.Instance.Init();
             PoolManager.Instance.Init();
-
-            await GameManager.Instance.InitCamera();
 
             UIMainScene.Instantiate();
         }

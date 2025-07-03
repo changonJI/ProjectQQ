@@ -54,8 +54,6 @@ namespace QQ
 
         private async UniTaskVoid Init()
         {
-            await GameManager.Instance.InitCamera();
-
             // fakeTime
             await UniTask.WaitForSeconds(0.5f);
 
