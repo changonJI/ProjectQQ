@@ -178,6 +178,18 @@ namespace QQ
             Debug.Log($"{name} 사망 처리 완료");
         }
 
+        /// <summary>
+        /// 내적을 활용한 앞 뒤 구분. 양수 : 예각, 0 : 직각, 음수 : 둔각
+        /// </summary>
+        private bool IsBackAttack()
+        {
+            var dot = Vector3.Dot(PlayerMovement.MoveDirection, LastHitDirection);
+            
+            if (dot < 0) return true;
+
+            return false;
+        }
+
         #endregion
 
 #if UNITY_EDITOR
