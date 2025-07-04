@@ -4,8 +4,8 @@ using UnityEngine;
 namespace QQ
 {
     /// <summary>
-    /// ºôµå½Ã ENABLE_LOG ¸ÅÅ©·Î°¡ Á¤ÀÇµÇ¸é UnityEngine.Debug.Log, LogWarning, LogError¸¦ È£ÃâÇÏ´Â À¯Æ¿¸®Æ¼ Å¬·¡½ºÀÔ´Ï´Ù.
-    /// ºôµå½Ã ENABLE_LOG¸¦ 
+    /// ë¹Œë“œì‹œ ENABLE_LOG ë§¤í¬ë¡œê°€ ì •ì˜ë˜ë©´ UnityEngine.Debug.Log, LogWarning, LogErrorë¥¼ í˜¸ì¶œí•˜ëŠ” ìœ í‹¸ë¦¬í‹° í´ë˜ìŠ¤ì…ë‹ˆë‹¤.
+    /// ë¹Œë“œì‹œ ENABLE_LOGë¥¼ 
     /// </summary>
     public static class LogHelper
     {
@@ -43,6 +43,12 @@ namespace QQ
         public static void LogError(object message, Object context)
         {
             UnityEngine.Debug.LogError(message, context);
+        }
+
+        [Conditional("ENABLE_LOG")]
+        public static void DrawLine(Vector3 start, Vector3 end, Color color, float duration, bool depthtest = false)
+        {
+            UnityEngine.Debug.DrawLine(start, end, color, duration, depthtest);
         }
     }
 
