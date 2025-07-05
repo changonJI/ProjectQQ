@@ -1,5 +1,4 @@
 using QQ.FSM;
-using System;
 using UnityEngine;
 
 namespace QQ
@@ -11,9 +10,6 @@ namespace QQ
         private MonsterData monsterData;
         
         public MonsterMovement MonsterMovement { get; private set; }
-
-        [Obsolete("BaseGameObject stateContext 사용")]
-        public MonsterStateContext StateContext { get; private set; }
         
         private StatusEffectController.StatusEffect currentStatus = StatusEffectController.StatusEffect.None;
         

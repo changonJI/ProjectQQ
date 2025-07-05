@@ -1,5 +1,4 @@
 using QQ.FSM;
-using System;
 using UnityEngine;
 
 namespace QQ
@@ -11,9 +10,6 @@ namespace QQ
         private PlayerStatData playerStatData;
         public PlayerMovement PlayerMovement { get; private set; }
 
-        [Obsolete("BaseGameObject stateContext 사용")]        
-        public PlayerStateContext StateContext { get; private set; }
-        
         // 플레이어 데이터 임시
         [SerializeField] private int maxHp = 10;
         private int currentHp;
