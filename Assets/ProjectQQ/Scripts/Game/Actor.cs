@@ -49,13 +49,13 @@ namespace QQ
             PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
             
             PlayerMovement.OnMove += ChangeMoveState;
-            PlayerMovement.OnRoll += ChangeRollState;
+            InputManager.Instance.AddRollInputEvent(ChangeRollState);
         }
 
         protected override void OnDestroyed()
         {
             PlayerMovement.OnMove -= ChangeMoveState;
-            PlayerMovement.OnRoll -= ChangeRollState;
+            InputManager.Instance.RemoveRollInputEvent(ChangeRollState);
         }
 
         protected override void OnDisabled()

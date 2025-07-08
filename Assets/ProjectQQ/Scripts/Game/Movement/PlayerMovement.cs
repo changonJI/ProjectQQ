@@ -6,20 +6,17 @@ namespace QQ
     public class PlayerMovement : MovementBase
     {
         public Action<Vector2> OnMove;
-        public Action OnRoll;
-        
+
         protected override void OnInit() { }
 
         protected override void OnStart()
         {
             InputManager.Instance.AddMoveInputEvent(HandleMoveInput);
-            InputManager.Instance.AddRollInputEvent(HandleRollInput);
         }
 
         protected override void OnDestroyed()
         {
             InputManager.Instance.RemoveMoveInputEvent(HandleMoveInput);
-            InputManager.Instance.RemoveRollInputEvent(HandleRollInput);
         }
 
         protected override void OnUpdate() {}
@@ -32,13 +29,6 @@ namespace QQ
             moveDirection = dir;
 
             OnMove?.Invoke(dir);
-        }
-
-        public void HandleRollInput()
-        {
-            if (IsMoveLock) return;
-           
-            OnRoll?.Invoke();
         }
     }
 }
