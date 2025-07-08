@@ -8,7 +8,8 @@ namespace QQ
 
         public void ChangeState(IState newState)
         {
-            if (newState == currentState) return;
+            if (newState == currentState)
+                return;
 
             currentState?.Exit();
             currentState = newState;

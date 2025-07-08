@@ -99,10 +99,10 @@ namespace QQ
         #region FSM
         private void ChangeMoveState(Vector2 dir)
         {
-            if(dir != Vector2.zero)
-                stateContext.ChangeState(stateContext.GetMoveState());
-            else
+            if(dir == Vector2.zero)
                 stateContext.ChangeState(stateContext.GetIdleState());
+            else
+                stateContext.ChangeState(stateContext.GetMoveState());
         }
 
         private void ChangeRollState()

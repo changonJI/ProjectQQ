@@ -31,7 +31,7 @@ namespace QQ
             
             moveDirection = dir;
 
-            OnMove.Invoke(dir);
+            OnMove?.Invoke(dir);
         }
 
         public void HandleRollInput()

@@ -48,10 +48,10 @@ namespace QQ.FSM
         {
             if (isFinished)
             {
-                if (actor.PlayerMovement.MoveDirection != Vector2.zero)
-                    context.ChangeState(context.PlayerMoveState);
+                if (actor.PlayerMovement.MoveDirection == Vector2.zero)
+                    context.ChangeState(context.GetIdleState());
                 else
-                    context.ChangeState(context.PlayerIdleState);
+                    context.ChangeState(context.GetMoveState());
             }
             else
                 EaseOut();
