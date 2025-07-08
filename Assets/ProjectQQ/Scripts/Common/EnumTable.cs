@@ -2,20 +2,23 @@ namespace QQ
 {
     #region Table
     /// <summary>
-    /// TableType == DataClassName
+    /// TableType == Data script Name
+    /// Table Save & Load 시 script 이름으로 불러온다.
     /// </summary>
     public enum TableType : byte
     {
         None = 0,
         LanguageData = 1,
+        BaseData = 2,
+        DialogueData = 3,
         PlayerStatData = 4,
-        MonsterData = 12,
-    }
-
-    public enum PlayerDataType : byte
-    {
-        UserName = 0,
-        FirstPlay = 1
+        ItemData = 5,
+        WeaponData = 6,
+        ExpData = 7,
+        MonsterSpawnData = 8,
+        MonsterData = 9,
+        DropData = 10,
+        BossPatternData = 11,
     }
 
     public enum MonsterType : byte
@@ -32,6 +35,36 @@ namespace QQ
         None = 0,
         Melee = 1, // 근접 공격
         Ranged = 2, // 원거리 공격
+    }
+
+    public enum DialogueImgPosType : byte
+    {
+        None = 0,
+        Left = 1, 
+        Right = 2,
+        CenterL = 3,
+        CenterR = 4,
+    }
+
+    public enum ItemType : byte
+    {
+        None = 0,
+        Material = 1, // 재료 아이템
+        Box = 2, // 상자 아이템
+        Consume = 3, // 소비 아이템
+    }
+    #endregion
+
+    #region PlayerPref
+    public enum PlayerDataType : int
+    {
+        // Player
+        UserName = 0,
+        FirstPlay = 1,
+
+        // Preferences
+        Country = 100,
+
     }
     #endregion
 
@@ -100,6 +133,26 @@ namespace QQ
         MainScene = 0,
         LoadingScene = 1,
         GameScene = 2
+    }
+
+    public enum ConturyType : byte
+    {
+        Korean = 0,
+        English = 1,
+        Chinese = 2,
+        Japanese = 3,
+    }
+
+    public enum LanguageType : int // 언어 타입
+    {
+        UI = 1,
+        Dialouge = 2,
+        Item = 3,
+        ItemDes = 4,
+        Map = 5,
+        Monster = 6,
+        Skill = 7,
+        Scenario = 9,
     }
 
     public enum ResType : byte

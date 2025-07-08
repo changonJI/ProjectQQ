@@ -15,7 +15,7 @@ public class GameManager : DontDestroySingleton<GameManager>
     /// <summary>
     /// playerprefs에 저장
     /// </summary>
-    public void SavePlayerData(PlayerDataType dataType, string text = null, int iNum = -1, float fNum = 0f)
+    public void SavePlayerData(PlayerDataType dataType, string text = "", int iNum = -1, float fNum = 0f)
     {
         switch (dataType)
         {
@@ -25,6 +25,10 @@ public class GameManager : DontDestroySingleton<GameManager>
             
             case PlayerDataType.FirstPlay:
                 PlayerPrefs.SetInt(dataType.ToString(), iNum);
+                break;
+
+            case PlayerDataType.Country:
+                PlayerPrefs.SetString(dataType.ToString(), text);
                 break;
         }
     }
@@ -64,7 +68,10 @@ public class GameManager : DontDestroySingleton<GameManager>
             case PlayerDataType.FirstPlay :
                 data = PlayerPrefs.GetInt(dataType.ToString());
                 break;
-            
+            case PlayerDataType.Country:
+                data = PlayerPrefs.GetInt(dataType.ToString());
+                break;
+
             default:
                 break;
         }
@@ -74,7 +81,6 @@ public class GameManager : DontDestroySingleton<GameManager>
         
         return data;
     }
-
     #endregion
 
     #region Time

@@ -3,16 +3,16 @@ using QQ;
 public struct MonsterData : IData
 {
     public short id;    // key
-    public int nameId;   // ¸ó½ºÅÍ ÀÌ¸§
-    public int desId;  // ¸ó½ºÅÍ ¼³¸í
-    public MonsterType type;    // ¸ó½ºÅÍ Å¸ÀÔ
-    public short hp; // ÃÖ´ë Hp
-    public short attack; // µ¥¹ÌÁö
-    public MonsterAtkType atkType; // °ø°İ Å¸ÀÔ(1 : ±ÙÁ¢, 2 : ¿ø°Å¸®)
+    public int nameId;   // ëª¬ìŠ¤í„° ì´ë¦„
+    public int desId;  // ëª¬ìŠ¤í„° ì„¤ëª…
+    public MonsterType type;    // ëª¬ìŠ¤í„° íƒ€ì…
+    public short hp; // ìµœëŒ€ Hp
+    public short attack; // ë°ë¯¸ì§€
+    public MonsterAtkType atkType; // ê³µê²© íƒ€ì…(1 : ê·¼ì ‘, 2 : ì›ê±°ë¦¬)
     public short skill; // ?
-    public float attackLag; // µô·¹ÀÌ ½Ã°£
-    public float attackAng; // °ø°İ ¹üÀ§(°¢µµ)
-    public float speed; // ¼Óµµ
+    public float attackLag; // ë”œë ˆì´ ì‹œê°„
+    public float attackAng; // ê³µê²© ë²”ìœ„(ê°ë„)
+    public float speed; // ì†ë„
     public string spriteName;
 
     public void Clear()

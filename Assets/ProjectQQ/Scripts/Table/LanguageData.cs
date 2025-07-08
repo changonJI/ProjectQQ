@@ -1,9 +1,17 @@
 public struct LanguageData : IData
 {
-    public int ID;
+    public int id;
+    public string korean;
+    public string english;
+    public string chinese;
+    public string japanese;
 
     public void Clear()
     {
-        ID = 0;
+        id = 0;
+        korean = string.Empty;
+        english = string.Empty;
+        chinese = string.Empty;
+        japanese = string.Empty;
     }
 }

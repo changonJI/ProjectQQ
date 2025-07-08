@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace QQ
 {
@@ -27,29 +27,40 @@ namespace QQ
 
                 LanguageData data = new LanguageData() 
                 { 
-                    ID = int.Parse(columns[0]),
+                    id = int.Parse(columns[0]),
                 };
 
-                if (!dic_Data.ContainsKey(data.ID))
+                if (!dic_Data.ContainsKey(data.id))
                 {
-                    dic_Data.Add(data.ID, data);
+                    dic_Data.Add(data.id, data);
                 }
             }
         }
 
-        public LanguageData Get(int id)
+        public string Get(int id, ConturyType type)
         {
             if (id <= 0) return default;
 
             if (dic_Data.ContainsKey(id))
             {
-                return dic_Data[id];
+                switch (type)
+                {
+                    case ConturyType.English:
+                        return dic_Data[id].english;
+                    case ConturyType.Chinese:
+                        return dic_Data[id].chinese;
+                    case ConturyType.Japanese:
+                        return dic_Data[id].japanese;
+                    case ConturyType.Korean:
+                    default:
+                        return dic_Data[id].korean;
+                }
             }
             else
             {
                 LogHelper.LogError($"LanguageDat is Null : {id}");
 
-                return default;
+                return string.Empty;
             }
         }
     }

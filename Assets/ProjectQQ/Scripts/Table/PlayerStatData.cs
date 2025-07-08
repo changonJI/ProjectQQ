@@ -1,11 +1,11 @@
 public struct PlayerStatData : IData
 {
     public short id;    // key
-    public short playerLevel;   // Ä³¸¯ÅÍ ·¹º§
-    public short heartMax;  // ·¹º§º° ÃÖ´ë Ã¼·Â
-    public short baseAttack;    // ·¹º§º° Ä³¸¯ÅÍÀÇ ±âº» °ø°İ·Â
-    public float baseSpeed; // ·¹º§º° Ä³¸¯ÅÍÀÇ ±âº» ÀÌµ¿ ¼Óµµ
-    public float dodgeCooldown; // È¸ÇÇ ÄğÅ¸ÀÓ °¨¼Ò·®(%·Î Àû¿ë)
+    public short playerLevel;   // ìºë¦­í„° ë ˆë²¨
+    public short heartMax;  // ë ˆë²¨ë³„ ìµœëŒ€ ì²´ë ¥
+    public short baseAttack;    // ë ˆë²¨ë³„ ìºë¦­í„°ì˜ ê¸°ë³¸ ê³µê²©ë ¥
+    public float baseSpeed; // ë ˆë²¨ë³„ ìºë¦­í„°ì˜ ê¸°ë³¸ ì´ë™ ì†ë„
+    public float dodgeCooldown; // íšŒí”¼ ì¿¨íƒ€ì„ ê°ì†ŒëŸ‰(%ë¡œ ì ìš©)
 
     public void Clear()
     {

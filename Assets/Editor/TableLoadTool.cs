@@ -12,8 +12,9 @@ namespace QQ
     public class TableLoadTool : EditorWindow
     {
         private const string tableInfoURL = "https://docs.google.com/spreadsheets/d/1nU5HWuWUUNNVqjZQv9zfUHahbEy45P1fZetfD7LDvEQ/edit?usp=sharing";
-        
-        // ±¸±Û ½ÃÆ® Á¤º¸
+        private const string tableRange = "A2:D50";
+
+        // êµ¬ê¸€ ì‹œíŠ¸ ì •ë³´
         private List<SheetInfo> sheetInfos;
         private struct SheetInfo
         {
@@ -23,17 +24,17 @@ namespace QQ
             public string sheetID;
         }
 
-        // ·ÎÄÃ Å×ÀÌºí Á¤º¸(IDataManage¸¦ ±¸ÇöÇÏ´Â)
+        // ë¡œì»¬ í…Œì´ë¸” ì •ë³´(IDataManageë¥¼ êµ¬í˜„í•˜ëŠ”)
         private List<IDataManager> localTables;
 
-        // ±¸±Û ½ÃÆ® ÁÖ¼Ò ºÒ·¯¿Ô´ÂÁö ¿©ºÎ
+        // êµ¬ê¸€ ì‹œíŠ¸ ì£¼ì†Œ ë¶ˆëŸ¬ì™”ëŠ”ì§€ ì—¬ë¶€
         private bool isReady = false;
-        // ±¸±Û ½ÃÆ® ºÒ·¯¿À´ÂÁß ·Îµù
+        // êµ¬ê¸€ ì‹œíŠ¸ ë¶ˆëŸ¬ì˜¤ëŠ”ì¤‘ ë¡œë”©
         private bool isSheetTableLoading = false;
-        // Å×ÀÌºí ¾î¼Àºí¸® ºÒ·¯¿À´ÂÁß ·Îµù
+        // í…Œì´ë¸” ì–´ì…ˆë¸”ë¦¬ ë¶ˆëŸ¬ì˜¤ëŠ”ì¤‘ ë¡œë”©
         private bool isLocalTableLoading = false;
 
-        // Tool ¹öÆ° bool °ª
+        // Tool ë²„íŠ¼ bool ê°’
         private bool ActiveBtnTableLocalLoad = true;
         private bool ActiveBtnTableSave = true;
 
@@ -49,7 +50,7 @@ namespace QQ
             isSheetTableLoading = false;
             isLocalTableLoading = false;
 
-            // ±¸±Û ½ÃÆ® ÀÓ½Ã º¯¼ö ÃÊ±âÈ­
+            // êµ¬ê¸€ ì‹œíŠ¸ ì„ì‹œ ë³€ìˆ˜ ì´ˆê¸°í™”
             if (sheetInfos != null)
             {
                 ListPool<SheetInfo>.Release(sheetInfos);
@@ -57,7 +58,7 @@ namespace QQ
             }
             sheetInfos = ListPool<SheetInfo>.Get();
 
-            // ·ÎÄÃ Å×ÀÌºí Á¤º¸ ÀÓ½Ã º¯¼ö ÃÊ±âÈ­
+            // ë¡œì»¬ í…Œì´ë¸” ì •ë³´ ì„ì‹œ ë³€ìˆ˜ ì´ˆê¸°í™”
             if(localTables != null)
             {
                 ListPool<IDataManager>.Release(localTables);
@@ -110,7 +111,7 @@ namespace QQ
 
         public async UniTaskVoid TableLoadData()
         {
-            using (UnityWebRequest www = UnityWebRequest.Get(TableDataManager.GetGoogleSheetAddress(tableInfoURL, "A2:D2", "0")))
+            using (UnityWebRequest www = UnityWebRequest.Get(TableDataManager.GetGoogleSheetAddress(tableInfoURL, tableRange, "0")))
             {
                 www.timeout = 60;
 
@@ -137,6 +138,9 @@ namespace QQ
                     for (int i = 0; i < rows.Length; i++)
                     {
                         string[] columns = rows[i].Split('\t');
+
+                        if (columns[0] == string.Empty)
+                            continue;
 
                         sheetInfos.Add(new SheetInfo
                         {
@@ -181,7 +185,7 @@ namespace QQ
                         FIndTable(type).SaveData(type, data);
                     }
                     else
-                        LogHelper.LogError($"{type}¿¡ ÇØ´çÇÏ´Â Assembly ¾øÀ½");
+                        LogHelper.LogError($"{type}ì— í•´ë‹¹í•˜ëŠ” Assembly ì—†ìŒ");
                 }
 
                 ActiveBtnTableSave = true;
@@ -189,7 +193,7 @@ namespace QQ
         }
 
         /// <summary>
-        /// IDataManager¸¦ ±¸ÇöÇÏ´Â ¸ğµç Å×ÀÌºíÀ» Ã£¾Æ ·ÎÄÃ Å×ÀÌºí ¸®½ºÆ®¿¡ Ãß°¡
+        /// IDataManagerë¥¼ êµ¬í˜„í•˜ëŠ” ëª¨ë“  í…Œì´ë¸”ì„ ì°¾ì•„ ë¡œì»¬ í…Œì´ë¸” ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
         /// </summary>
         private void GetTableAssembly()
         {
