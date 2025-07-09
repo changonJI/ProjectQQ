@@ -10,12 +10,24 @@ namespace QQ
     {
         [SerializeField] protected Vector2 moveDirection;
         [SerializeField] protected Vector2 lastMoveDirection;
-        public Vector2 MoveDirection => moveDirection;
+        public Vector2 MoveDirection
+        {
+            get => moveDirection;
+            protected set => moveDirection = value;
+        }
         public BaseGameObject Owner { get; private set; }
+        public bool IsMoveBlock { get; private set; }
+        public void SetMoveBlock(bool isBlock, bool clearDirection = false)
+        {
+            IsMoveBlock = isBlock;
 
-        protected bool IsMoveLock = false;
-        public bool SetMoveLock(bool isLock) => IsMoveLock = isLock; 
-        
+            if (true == isBlock && true == clearDirection)
+            {
+                MoveDirection = Vector2.zero;
+            }
+        }
+
+
         public void Init(BaseGameObject obj)
         {
             Owner = obj;
@@ -51,7 +63,7 @@ namespace QQ
             }
 
             // only triggers movement if a direction was given
-            if (false == IsMoveLock && Vector2.zero != moveDirection)
+            if (false == IsMoveBlock && Vector2.zero != MoveDirection)
             {
                 Move(moveDirection, Owner.GetSpeed());
             }

@@ -16,7 +16,7 @@ namespace QQ.FSM
         
         public void Enter()
         {
-            actor.PlayerMovement.SetMoveLock(true);
+            actor.PlayerMovement.SetMoveBlock(true);
             LogHelper.Log("Enter PlayerKnockbackState : 아얏");
             actor.SetCanAttack(false);
         }
@@ -32,7 +32,7 @@ namespace QQ.FSM
 
         public void Exit()
         {
-            actor.PlayerMovement.SetMoveLock(false);
+            actor.PlayerMovement.SetMoveBlock(false);
             actor.SetCanAttack(true);
         }
 
