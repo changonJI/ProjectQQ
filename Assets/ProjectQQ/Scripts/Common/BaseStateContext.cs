@@ -22,7 +22,8 @@ namespace QQ
             if (newState == currentState)
                 return;
 
-            if (false == AllowedTransrations[currentState.GetFSMType()].Contains(newState.GetFSMType()))
+            if (currentState != null &&
+                false == AllowedTransrations[currentState.GetFSMType()].Contains(newState.GetFSMType()))
                 return;
 
             currentState?.Exit();

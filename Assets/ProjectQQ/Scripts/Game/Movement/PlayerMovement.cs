@@ -24,9 +24,12 @@ namespace QQ
 
         private void HandleMoveInput(Vector2 dir)
         {
-            if(IsMoveLock) return;
-            
             moveDirection = dir;
+
+            if (true == IsMoveBlock)
+            {
+                return;
+            }
 
             OnMove?.Invoke(dir);
         }

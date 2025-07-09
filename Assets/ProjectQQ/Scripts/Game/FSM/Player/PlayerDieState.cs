@@ -12,7 +12,7 @@ namespace QQ.FSM
         
         public void Enter()
         {
-            actor.PlayerMovement.SetMoveLock(true);
+            actor.PlayerMovement.SetMoveBlock(true, true);
             actor.SetCanAttack(false);
             actor.SetCurAnimation(AnimState.Die);
         }
