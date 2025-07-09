@@ -44,13 +44,11 @@ namespace QQ
  
             PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
             
-            PlayerMovement.OnMove += ChangeMoveState;
             InputManager.Instance.AddRollInputEvent(ChangeRollState);
         }
 
         protected override void OnDestroyed()
         {
-            PlayerMovement.OnMove -= ChangeMoveState;
             InputManager.Instance.RemoveRollInputEvent(ChangeRollState);
         }
 
@@ -93,12 +91,12 @@ namespace QQ
         }
 
         #region FSM
-        private void ChangeMoveState(Vector2 dir)
+        private void ChangeMoveState()
         {
-            if(dir == Vector2.zero)
-                stateContext.ChangeState(stateContext.GetIdleState());
-            else
+            if(PlayerMovement.IsMoving())
                 stateContext.ChangeState(stateContext.GetMoveState());
+            else
+                stateContext.ChangeState(stateContext.GetIdleState());
         }
 
         private void ChangeRollState()

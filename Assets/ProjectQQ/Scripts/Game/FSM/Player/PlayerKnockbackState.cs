@@ -24,7 +24,7 @@ namespace QQ.FSM
         public void Update()
         {
             // 복귀: 입력 방향 보고 상태 결정
-            if (actor.PlayerMovement.MoveDirection == Vector2.zero)
+            if (actor.PlayerMovement.InputDirection == Vector2.zero)
                 context.ChangeState(context.GetIdleState());
             else
                 context.ChangeState(context.GetMoveState());

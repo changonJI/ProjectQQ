@@ -20,6 +20,10 @@ namespace QQ.FSM
 
         public void Update()
         {
+            if (true == actor.PlayerMovement.IsMoving())
+            {
+                context.ChangeState(context.GetMoveState());
+            }
         }
 
         public void Exit()

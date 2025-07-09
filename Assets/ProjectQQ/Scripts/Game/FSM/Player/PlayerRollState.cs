@@ -36,8 +36,8 @@ namespace QQ.FSM
 
         private void Init()
         {
-            actor.PlayerMovement.SetMoveLock(true);
-
+            actor.PlayerMovement.SetDirectionLock(true);
+            actor.PlayerMovement.SetMoveDirectionToLast();
             duration = actor.GetAnimDuration(AnimState.Roll);
 
             processTime = 0f;
@@ -48,7 +48,7 @@ namespace QQ.FSM
         {
             if (isFinished)
             {
-                if (actor.PlayerMovement.MoveDirection == Vector2.zero)
+                if (actor.PlayerMovement.InputDirection == Vector2.zero)
                     context.ChangeState(context.GetIdleState());
                 else
                     context.ChangeState(context.GetMoveState());
@@ -60,7 +60,7 @@ namespace QQ.FSM
         public void Exit()
         {
             actor.CalcAddSpeed(-addSpeed);
-            actor.PlayerMovement.SetMoveLock(false);
+            actor.PlayerMovement.SetDirectionLock(false);
         }
 
         /// <summary>

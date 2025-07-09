@@ -9,13 +9,33 @@ namespace QQ
     public abstract class MovementBase : MonoBehaviour, IOwnable
     {
         [SerializeField] protected Vector2 moveDirection;
-        [SerializeField] protected Vector2 lastMoveDirection;
         public Vector2 MoveDirection
         {
             get => moveDirection;
             protected set => moveDirection = value;
         }
+
+        public Vector2 LastMoveDirection { get; protected set; }
+
+        public void SetMoveDirectionToLast()
+        {
+            MoveDirection = LastMoveDirection;
+        }
+
+        public void FlipDirection()
+        {
+            MoveDirection = -MoveDirection;
+        }
+
+        public bool IsDirectionLock { get; private set; }
+        public void SetDirectionLock(bool isLock)
+        {
+            IsDirectionLock = isLock;
+        }
+
         public BaseGameObject Owner { get; private set; }
+        public float Speed => Owner.GetSpeed();
+
         public bool IsMoveBlock { get; private set; }
         public void SetMoveBlock(bool isBlock, bool clearDirection = false)
         {
@@ -27,6 +47,13 @@ namespace QQ
             }
         }
 
+        public bool IsMoving()
+        {
+            if (true == IsMoveBlock || Vector2.zero == MoveDirection || 0f == Speed)
+                return false;
+
+            return true;
+        }
 
         public void Init(BaseGameObject obj)
         {
@@ -56,16 +83,10 @@ namespace QQ
 
         protected virtual void FixedUpdate()
         {
-            if(Owner.stateContext.GetCurFSMType() == FSMState.Roll)
-            {
-                Move(lastMoveDirection, Owner.GetSpeed());
-                return;
-            }
-
             // only triggers movement if a direction was given
             if (false == IsMoveBlock && Vector2.zero != MoveDirection)
             {
-                Move(moveDirection, Owner.GetSpeed());
+                Move(MoveDirection, Speed);
             }
 
             OnFixedUpdate();
@@ -78,7 +99,7 @@ namespace QQ
             Owner.RigidBody.MovePosition(Owner.RigidBody.position + vec2DeltaMovement);
 
             // refresh last move direction on movement
-            lastMoveDirection = dir;
+            LastMoveDirection = dir;
         }
 
         protected abstract void OnInit();
