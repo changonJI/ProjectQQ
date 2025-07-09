@@ -15,7 +15,7 @@ namespace QQ
 
         public void LoadData()
         {
-            string[] dataRows = TableDataManager.LoadData(TableType.ExpData);
+            string[] dataRows = TableDataManager.LoadData(TableType.MonsterSpawnData);
 
             foreach (string str in dataRows)
             {

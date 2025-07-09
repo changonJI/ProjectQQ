@@ -9,8 +9,7 @@ namespace QQ
     {
         private void Awake()
         {
-            // TODO: 모든 테이블 데이터 읽어와야 합니다.
-            LanguageDataManager.Instance.LoadData();
+            TableDataManager.LoadTableData();
         }
 
         private void Start()

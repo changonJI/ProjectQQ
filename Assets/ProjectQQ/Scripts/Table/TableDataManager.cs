@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using System;
 using System.IO;
 using System.Reflection;
@@ -19,10 +18,10 @@ namespace QQ
         public static string path = StringBuilderPool.Get(Application.dataPath, "/Resources/Table/");
 
         /// <summary>
-        /// CSV ÆÄÀÏÀ» ¾ÏÈ£È­ ÇÏ¿© ÀúÀåÇÕ´Ï´Ù.
+        /// CSV íŒŒì¼ì„ ì•”í˜¸í™” í•˜ì—¬ ì €ì¥í•©ë‹ˆë‹¤.
         /// </summary>
         /// <param name="saveFileName">nameof(TableType)</param>
-        /// <param name="str_Data">±¸±Û½ÃÆ®¿¡¼­ ¹Ş¾Æ¿Â µ¥ÀÌÅÍ string °ª</param>
+        /// <param name="str_Data">êµ¬ê¸€ì‹œíŠ¸ì—ì„œ ë°›ì•„ì˜¨ ë°ì´í„° string ê°’</param>
         public static void SaveData(TableType saveFileName, string str_Data)
         {
             string _path = StringBuilderPool.Get(path, saveFileName.ToString(),".csv");
@@ -37,7 +36,7 @@ namespace QQ
         }
 
         /// <summary>
-        /// CSV ÆÄÀÏÀ» º¹È£È­ ÇÏ¿© ºÒ·¯¿É´Ï´Ù.
+        /// CSV íŒŒì¼ì„ ë³µí˜¸í™” í•˜ì—¬ ë¶ˆëŸ¬ì˜µë‹ˆë‹¤.
         /// </summary>
         /// <param name="loadFileName">nameof(TableType)</param>
         /// <returns></returns>
@@ -52,11 +51,16 @@ namespace QQ
             string decryptData = Decrypt(csvData);
 
             string[] rows = decryptData.Split('\n');
-
+            
+            for(int i = 0; i < rows.Length; i++)
+            {
+                rows[i] = rows[i].TrimEnd('\r');
+            }
+            
             return rows;
         }
 
-        public static async UniTaskVoid LoadTableData()
+        public static void LoadTableData()
         {
             var localTable = Assembly.GetAssembly(typeof(IDataManager));
 
@@ -77,16 +81,14 @@ namespace QQ
                     }
                 }
             }
-
-            await UniTask.Yield();
         }
 
         /// <summary>
-        /// º¹»çÇØ¿Â URL ¿¡¼­ edit?usp=sharing Á¦°ÅÈÄ Á¦°ÅµÈ ºÎºĞ¿¡ export?format=tsv&range=½ÃÆ® ¹üÀ§&gid=½ÃÆ®ID°ª
+        /// ë³µì‚¬í•´ì˜¨ URL ì—ì„œ edit?usp=sharing ì œê±°í›„ ì œê±°ëœ ë¶€ë¶„ì— export?format=tsv&range=ì‹œíŠ¸ ë²”ìœ„&gid=ì‹œíŠ¸IDê°’
         /// </summary>
         /// <param name="address">https:// ~ /</param>
-        /// <param name="range">±¸±Û ½ÃÆ® Range</param>
-        /// <param name="sheetID">½ÃÆ® °íÀ¯ ID</param>
+        /// <param name="range">êµ¬ê¸€ ì‹œíŠ¸ Range</param>
+        /// <param name="sheetID">ì‹œíŠ¸ ê³ ìœ  ID</param>
         /// <returns></returns>
         public static string GetGoogleSheetAddress(string address, string range, string sheetID)
         {
@@ -108,9 +110,11 @@ namespace QQ
             {
                 aes.Key = keyBytes;
                 aes.IV = ivBytes;
+                aes.Padding = PaddingMode.PKCS7;
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-                byte[] encrypted = encryptor.TransformFinalBlock(Encoding.UTF8.GetBytes(data), 0, data.Length);
+                byte[] buffer = Encoding.UTF8.GetBytes(data);
+                byte[] encrypted = encryptor.TransformFinalBlock(buffer, 0, buffer.Length);
 
                 return System.Convert.ToBase64String(encrypted);
             }
@@ -127,6 +131,7 @@ namespace QQ
             {
                 aes.Key = keyBytes;
                 aes.IV = ivBytes;
+                aes.Padding = PaddingMode.PKCS7;
 
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 

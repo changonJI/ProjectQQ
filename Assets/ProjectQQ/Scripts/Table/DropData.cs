@@ -8,6 +8,7 @@ public struct DropData : IData
     public DropItemData item1;
     public DropItemData item2;
     public DropItemData item3;
+    public bool isBoss;
 
     public void Clear()
     {
@@ -16,6 +17,7 @@ public struct DropData : IData
         item1 = new DropItemData();
         item2 = new DropItemData();
         item3 = new DropItemData();
+        isBoss = false;
     }
 }
 
@@ -26,8 +28,8 @@ public struct DropItemData
     /// </summary>
     public int itemId;  // 아이템 Id
     public float dropRate;    // 드랍 확률
-    public string dropCount; // 드랍 갯수
-    public DropItemData(int itemId, float dropRate, string dropCount)
+    public short dropCount; // 드랍 갯수
+    public DropItemData(int itemId, float dropRate, short dropCount)
     {
         this.itemId = itemId;
         this.dropRate = dropRate;

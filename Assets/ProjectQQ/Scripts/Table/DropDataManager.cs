@@ -29,22 +29,26 @@ namespace QQ
                 {
                     id = short.Parse(columns[0]), // Drop ID
                     monsterId = int.Parse(columns[1]), // 몬스터 ID
-                    item1 = new DropItemData 
-                    { 
-                        dropCount = columns[2], itemId = int.Parse(columns[3]), dropRate = float.Parse(columns[4]) 
+                    item1 = new DropItemData
+                    {
+                        itemId = int.Parse(columns[2]),
+                        dropRate = float.Parse(columns[3]),
+                        dropCount = short.Parse(columns[4]),
                     }, // 아이템 1
                     item2 = new DropItemData
                     {
-                        dropCount = columns[5],
-                        itemId = int.Parse(columns[6]),
-                        dropRate = float.Parse(columns[7])
-                    }, // 아이템 2
+                        itemId = int.Parse(columns[5]),
+                        dropRate = float.Parse(columns[6]),
+                        dropCount = short.Parse(columns[7]),
+                    }, // 아이템 1
                     item3 = new DropItemData
                     {
-                        dropCount = columns[8],
-                        itemId = int.Parse(columns[9]),
-                        dropRate = float.Parse(columns[10])
-                    } // 아이템 3
+                        itemId = int.Parse(columns[8]),
+                        dropRate = float.Parse(columns[9]),
+                        dropCount = short.Parse(columns[10]),
+                    }, // 아이템 1
+
+                    isBoss = int.Parse(columns[11]) > 0 // 보스 여부
                 };
 
                 if (!dic_Data.ContainsKey(data.id))

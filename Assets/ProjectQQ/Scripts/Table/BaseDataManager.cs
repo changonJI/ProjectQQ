@@ -53,8 +53,10 @@ namespace QQ
                         break;
                     default:
                         LogHelper.LogError($"Unknown unit type: {data.unit}");
-                        continue; // Skip this entry if unit type is unknown
+                        break;
                 }
+
+                data.a = columns[3];
 
                 if (!dic_Data.ContainsKey(data.id))
                 {

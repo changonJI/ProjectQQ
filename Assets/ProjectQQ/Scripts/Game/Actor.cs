@@ -7,28 +7,25 @@ namespace QQ
     {
         public override GameObjectType Type => GameObjectType.Actor;
 
-        private PlayerStatData playerStatData;
         public PlayerMovement PlayerMovement { get; private set; }
-
-        // 플레이어 데이터 임시
-        [SerializeField] private int maxHp = 10;
+        private PlayerStatData playerStatData;
+        // 이속
+        public override float GetSpeed() => playerStatData.baseSpeed + addSpeed;
+        private float addSpeed = 0f;
+        // 체력
+        private int maxHp() => playerStatData.heartMax;
         private int currentHp;
-        public Vector2 LastHitDirection { get; private set; }
         public bool IsDead = false;
-        
-        // 공격 임시
+        // 공격력
         private float attackInterval = 1.0f;
         private float attackTimer;
         private bool canAttack = true; // 공격 가능 여부
 
-        // NOTE: playerStatData.baseSpeed + addSpeed
-        public override float GetSpeed() => 5f + addSpeed;
-        private float addSpeed = 0f;
+        public Vector2 LastHitDirection { get; private set; }
 
         public override void Init()
         {
             IsDead = false;
-            currentHp = maxHp;
 
             playerStatData = new PlayerStatData();
             stateContext = new PlayerStateContext(this);
@@ -36,10 +33,9 @@ namespace QQ
 
         public override void SetData(int id)
         {
-            //NOTE: TableData 들어오면 세팅
-            //var data = PlayerStatDataManager.Instance.Get(id);
+            var data = PlayerStatDataManager.Instance.Get(id);
 
-            //playerStatData.Set(data);
+            playerStatData.Set(data);
         }
 
         protected override void OnAwake()
