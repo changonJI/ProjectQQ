@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace QQ
 {
-    public class Item : BaseGameObject
+    public class Item : BaseGameObject, ICollectable
     {
         public override GameObjectType Type => GameObjectType.Item;
 
@@ -29,5 +29,10 @@ namespace QQ
         protected override void OnFixedUpdate() { }
         protected override void OnLateUpdate() { }
         protected override void OnDestroyed() { }
+        public void Collect()
+        {
+            Debug.Log($"Collect Item : {gameObject.name}");
+            Destroy(gameObject);
+        }
     }
 }

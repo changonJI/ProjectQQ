@@ -14,15 +14,21 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
         public void TryCollectItems()
         {
-            Vector2 center = transform.position;
+            Vector2 center = transform.position + new Vector3(0, 9, 0);
 
             int count = Physics2D.OverlapCircleNonAlloc(center, pickupRange, itemResults, itemLayer);
+
+            if (count <= 0)
+            {
+                OnItemCollected?.Invoke(false);
+                return;
+            }
 
             for (int i = 0; i < count; i++)
             {
                 Collider2D col = itemResults[i];
 
-                if (col.TryGetComponent<ICollectible>(out var item))
+                if (col.TryGetComponent<ICollectable>(out var item))
                 {
                     item.Collect();
                 }
@@ -32,7 +38,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, pickupRange);
+            Gizmos.DrawWireSphere(transform.position + new Vector3(0, 9, 0), pickupRange);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

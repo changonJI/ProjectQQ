@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2386275540243164587}
   - component: {fileID: 2616779181046938892}
   - component: {fileID: 5378933133409794853}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: TestMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 5005916426935925057}
   - component: {fileID: 7099115766906726592}
   - component: {fileID: 6958978014686390272}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Spine GameObject (Parts_Body)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

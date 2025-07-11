@@ -29,7 +29,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
         private GameObject FindClosestEnemy()
         {
-            int count = Physics2D.OverlapCircleNonAlloc(transform.position, detectRange, hitBuffer, enemyLayer);
+            int count = Physics2D.OverlapCircleNonAlloc(transform.position + new Vector3(0, 9, 0), detectRange, hitBuffer, enemyLayer);
 
             float minDist = float.MaxValue;
             GameObject closest = null;
@@ -59,14 +59,14 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            
+            OnRangedAttack?.Invoke(true);
         }
 
 #if UNITY_EDITOR
         public void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(transform.position, detectRange);
+            Gizmos.DrawWireSphere(transform.position + new Vector3(0, 9, 0), detectRange);
         }
 #endif
     }

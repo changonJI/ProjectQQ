@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace QQ
 {
-    public class Actor : SpineGameObject
+    public class Actor : SpineGameObject, IDamageable
     {
         public override GameObjectType Type => GameObjectType.Actor;
         
@@ -50,11 +50,19 @@ namespace QQ
             PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
             
             InputManager.Instance.AddRollInputEvent(ChangeRollState);
+
+            meleeAttack.OnMeleeEntered += SetCanMeleeAttack;
+            rangedAttack.OnRangedAttack += SetCanRangedAttack;
+            itemCollector.OnItemCollected += SetCanCollectItem;
         }
 
         protected override void OnDestroyed()
         {
             InputManager.Instance.RemoveRollInputEvent(ChangeRollState);
+
+            meleeAttack.OnMeleeEntered -= SetCanMeleeAttack;
+            rangedAttack.OnRangedAttack -= SetCanRangedAttack;
+            itemCollector.OnItemCollected -= SetCanCollectItem;
         }
 
         protected override void OnDisabled()
@@ -131,33 +139,10 @@ namespace QQ
             //Debug.Log("공격");
         }
 
-        public void SetCanAttack(bool value)
-        {
-            canMeleeAttack = value;
-            canRangedAttack = value;
-        }
-
-        public void TakeDamage(int damage, Vector3 transformPosition)
-        {
-            if(IsDead) return;
-            
-            if(status != null && status.HasStatus(StatusEffectController.StatusEffect.Invincible)) return;
-            
-            currentHp -= damage;
-            currentHp = Mathf.Max(currentHp, 0);
-            
-            Debug.Log($"{gameObject.name} 피해: {damage} → 남은 체력: {currentHp}");
-
-            if (currentHp <= 0)
-            {
-                OnDie();
-                return;
-            }
-
-            // FSM 상태 전이
-            LastHitDirection = (transform.position - transformPosition).normalized;
-            ChangeKnockBackState();
-        }
+        public void SetCanRangedAttack(bool value) => canRangedAttack = value;
+        public void SetCanMeleeAttack(bool value) => canMeleeAttack = value;
+        public void SetCanCollectItem(bool value) => canCollectItem = value;
+        
 
         private void OnDie()
         {
@@ -195,6 +180,28 @@ namespace QQ
                 myStyle.normal.textColor = Color.green;
                 GUI.Label(new Rect(20, 40, Screen.width * 0.3f, Screen.height * 0.3f), stateContext.GetCurFSMType().ToString(), myStyle);
             }
+        }
+
+        public void TakeDamage(int damage, Vector3 transformPosition)
+        {
+            if(IsDead) return;
+            
+            if(status != null && status.HasStatus(StatusEffectController.StatusEffect.Invincible)) return;
+            
+            currentHp -= damage;
+            currentHp = Mathf.Max(currentHp, 0);
+            
+            Debug.Log($"{gameObject.name} 피해: {damage} → 남은 체력: {currentHp}");
+        
+            if (currentHp <= 0)
+            {
+                OnDie();
+                return;
+            }
+        
+            // FSM 상태 전이
+            LastHitDirection = (transform.position - transformPosition).normalized;
+            ChangeKnockBackState();
         }
     }
 #endif

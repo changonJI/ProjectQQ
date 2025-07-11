@@ -1,12 +1,13 @@
 ﻿using System;
 using QQ;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ProjectQQ.Scripts.Game.Actions.Player
 {
     public class PlayerMeleeAttack : MonoBehaviour
     {
-        public event Action<Collider2D> OnMeleeEntered;
+        public event Action<bool> OnMeleeEntered;
         
         public LayerMask enemyLayer;
         public float attackRange = 1.5f;
@@ -19,7 +20,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
             // Layer 기반 감지
             if ((enemyLayer.value & (1 << other.gameObject.layer)) != 0)
             {
-                OnMeleeEntered?.Invoke(other);
+                OnMeleeEntered?.Invoke(true);
             }
         }
 
@@ -33,13 +34,19 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
             if (target.TryGetComponent<IDamageable>(out var damageable))
             {
-                damageable.TakeDamage(damage);
+                damageable.TakeDamage(damage, transform.position);
             }
         }
 
         private GameObject FindClosestEnemy()
         {
-            int count = Physics2D.OverlapCircleNonAlloc(transform.position, attackRange, hitResults, enemyLayer);
+            int count = Physics2D.OverlapCircleNonAlloc(transform.position + new Vector3(0, 9, 0), attackRange, hitResults, enemyLayer);
+
+            if (count <= 0)
+            {
+                OnMeleeEntered?.Invoke(false);
+                return null;
+            }
 
             float minDist = float.MaxValue;
             GameObject closest = null;
@@ -64,7 +71,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
         public void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, attackRange);
+            Gizmos.DrawWireSphere(transform.position + new Vector3(0, 9, 0), attackRange);
         }
 #endif
     }

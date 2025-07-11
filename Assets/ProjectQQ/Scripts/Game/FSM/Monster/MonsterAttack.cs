@@ -14,14 +14,9 @@ namespace QQ.FSM
         {
             if(Time.time - lastHitTime < hitCooldown) return;
 
-            if (collision.CompareTag("Player"))
+            if (collision.TryGetComponent<IDamageable>(out var damageable) && collision.CompareTag("Player"))
             {
-                var actor = collision.GetComponent<Actor>();
-                if (actor != null && !actor.IsDead)
-                {
-                    actor.TakeDamage(damage, transform.position);
-                    lastHitTime = Time.time;
-                }
+                damageable.TakeDamage(damage, transform.position);
             }
         }
     }

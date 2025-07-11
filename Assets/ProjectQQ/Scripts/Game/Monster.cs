@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace QQ
 {
-    public class Monster : SpineGameObject
+    public class Monster : SpineGameObject, IDamageable
     {
         public override GameObjectType Type => GameObjectType.Monster;
 
@@ -67,6 +67,11 @@ namespace QQ
                     TargetTransform = player.transform;
                 }
             }
+        }
+
+        public void TakeDamage(int damage, Vector3 transformPosition)
+        {
+            Debug.Log("아얏");
         }
     }
 }

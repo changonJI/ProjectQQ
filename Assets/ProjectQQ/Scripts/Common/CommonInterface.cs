@@ -10,10 +10,10 @@ namespace QQ
     
     public interface IDamageable
     {
-        void TakeDamage(int damage);
+        void TakeDamage(int damage, Vector3 transformPosition);
     }
     
-    public interface ICollectible
+    public interface ICollectable
     {
         void Collect();
     }

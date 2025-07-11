@@ -52,9 +52,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animBody: {fileID: 5235672656272409726}
   animWeapon: {fileID: 1684545007562061898}
-  meleeAttack: {fileID: 0}
-  rangedAttack: {fileID: 0}
-  itemCollector: {fileID: 0}
+  meleeAttack: {fileID: 485841055079294954}
+  rangedAttack: {fileID: 8239050903093473080}
+  itemCollector: {fileID: 1645365311870359041}
   IsDead: 0
   onActorState: 1
 --- !u!50 &3074001158339007908
@@ -83,7 +83,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &4281829177633588388
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -238,8 +238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 256
-  attackRange: 1.5
+    m_Bits: 128
+  attackRange: 20
   damage: 10
 --- !u!1 &1636994554962477832
 GameObject:
@@ -516,10 +516,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f45d4fcabfd4303bb8b2ed839b62805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupRange: 0
+  pickupRange: 20
   itemLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
 --- !u!1 &7214405568801423225
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,7 +762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4574642be7468fb03724fd87a2cf32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectRange: 6
+  detectRange: 50
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 128

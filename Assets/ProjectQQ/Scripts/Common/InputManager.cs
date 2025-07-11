@@ -11,12 +11,12 @@ namespace QQ
 
         // 게임 플레이 인풋
         private event Action<Vector2> OnMoveInput;
-        private event Action OnRollInput;
+        private event System.Action OnRollInput;
 
         // UI 인풋
         private event Action<Vector2> OnUINaviInput;
-        private event Action OnUISelectInput;
-        private event Action OnUICancelInput;
+        private event System.Action OnUISelectInput;
+        private event System.Action OnUICancelInput;
 
         protected override void Awake()
         {
@@ -82,7 +82,7 @@ namespace QQ
             OnMoveInput -= action;
         }
 
-        public void AddRollInputEvent(Action action)
+        public void AddRollInputEvent(System.Action action)
         {
             // action 중복 등록 방지
             if (null == OnRollInput || false == OnRollInput.GetInvocationList().Contains(action))
@@ -91,7 +91,7 @@ namespace QQ
             }
         }
 
-        public void RemoveRollInputEvent(Action action)
+        public void RemoveRollInputEvent(System.Action action)
         {
             OnRollInput -= action;
         }
@@ -112,7 +112,7 @@ namespace QQ
             OnUINaviInput -= action;
         }
 
-        public void AddUISelectInputEvent(Action action)
+        public void AddUISelectInputEvent(System.Action action)
         {
             // action 중복 등록 방지
             if (null == OnUISelectInput || false == OnUISelectInput.GetInvocationList().Contains(action))
@@ -121,12 +121,12 @@ namespace QQ
             }
         }
 
-        public void RemoveUISelectnputEvent(Action action)
+        public void RemoveUISelectnputEvent(System.Action action)
         {
             OnUISelectInput -= action;
         }
 
-        public void AddUICancelInputEvent(Action action)
+        public void AddUICancelInputEvent(System.Action action)
         {
             // action 중복 등록 방지
             if (null == OnUICancelInput || false == OnUICancelInput.GetInvocationList().Contains(action))
@@ -135,7 +135,7 @@ namespace QQ
             }
         }
 
-        public void RemoveUICancelInputEvent(Action action)
+        public void RemoveUICancelInputEvent(System.Action action)
         {
             OnUICancelInput -= action;
         }
