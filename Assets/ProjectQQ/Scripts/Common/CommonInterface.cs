@@ -7,4 +7,14 @@ namespace QQ
         public void Init(BaseGameObject ownerObj);
         public BaseGameObject Owner { get; }
     }
+    
+    public interface IDamageable
+    {
+        void TakeDamage(int damage);
+    }
+    
+    public interface ICollectible
+    {
+        void Collect();
+    }
 }

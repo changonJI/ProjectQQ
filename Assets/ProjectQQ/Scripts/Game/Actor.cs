@@ -1,3 +1,4 @@
+using ProjectQQ.Scripts.Game.Actions.Player;
 using QQ.FSM;
 using UnityEngine;
 
@@ -6,6 +7,10 @@ namespace QQ
     public class Actor : SpineGameObject
     {
         public override GameObjectType Type => GameObjectType.Actor;
+        
+        [SerializeField] private PlayerMeleeAttack meleeAttack;
+        [SerializeField] private PlayerRangedAttack rangedAttack;
+        [SerializeField] private PlayerItemCollector itemCollector;
 
         public PlayerMovement PlayerMovement { get; private set; }
         private PlayerStatData playerStatData;
@@ -16,10 +21,10 @@ namespace QQ
         private int maxHp() => playerStatData.heartMax;
         private int currentHp;
         public bool IsDead = false;
-        // 공격력
-        private float attackInterval = 1.0f;
-        private float attackTimer;
-        private bool canAttack = true; // 공격 가능 여부
+        // 공격
+        private bool canMeleeAttack = false;
+        private bool canRangedAttack = false;
+        private bool canCollectItem = false;
 
         public Vector2 LastHitDirection { get; private set; }
 
@@ -75,19 +80,17 @@ namespace QQ
 
         protected override void OnUpdate()
         {
+            if (canCollectItem)
+                itemCollector.TryCollectItems();
+            
             if (status.HasStatus(StatusEffectController.StatusEffect.Stunned)) return;
 
             stateContext.Update();
             
-            if (canAttack)
-            {
-                attackTimer += Time.deltaTime;
-                if (attackTimer >= attackInterval)
-                {
-                    attackTimer = 0f;
-                    PerformAttack();
-                }
-            }
+            if(canMeleeAttack)
+                meleeAttack.Attack();
+            if(canRangedAttack)
+                rangedAttack.Attack();
         }
 
         #region FSM
@@ -130,9 +133,8 @@ namespace QQ
 
         public void SetCanAttack(bool value)
         {
-            canAttack = value;
-            if (!value)
-                attackTimer = 0f;
+            canMeleeAttack = value;
+            canRangedAttack = value;
         }
 
         public void TakeDamage(int damage, Vector3 transformPosition)

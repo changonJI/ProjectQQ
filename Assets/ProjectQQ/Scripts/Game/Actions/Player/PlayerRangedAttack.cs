@@ -1,0 +1,73 @@
+﻿using System;
+using QQ;
+using UnityEngine;
+
+namespace ProjectQQ.Scripts.Game.Actions.Player
+{
+    public class PlayerRangedAttack : MonoBehaviour
+    {
+        public event Action<bool> OnRangedAttack;
+
+        public float detectRange = 6.0f;
+        public LayerMask enemyLayer;
+        private readonly Collider2D[] hitBuffer = new Collider2D[10];
+
+        public void Attack()
+        {
+            GameObject target = FindClosestEnemy();
+
+            if (target != null)
+            {
+                Shoot(target.transform);
+                OnRangedAttack?.Invoke(true);
+            }
+            else
+            {
+                OnRangedAttack?.Invoke(false);
+            }
+        }
+
+        private GameObject FindClosestEnemy()
+        {
+            int count = Physics2D.OverlapCircleNonAlloc(transform.position, detectRange, hitBuffer, enemyLayer);
+
+            float minDist = float.MaxValue;
+            GameObject closest = null;
+
+            for (int i = 0; i < count; i++)
+            {
+                var enemy = hitBuffer[i];
+                if (enemy == null) continue;
+
+                float dist = Vector2.SqrMagnitude(enemy.transform.position - transform.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    closest = enemy.gameObject;
+                }
+            }
+
+            return closest;
+        }
+
+        private void Shoot(Transform target)
+        {
+            Debug.Log($"Shoot Projectile To {target.name}");
+            // 예: Instantiate(projectilePrefab, actor.transform.position, Quaternion.identity);
+            // Projectile.Initialize(target);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            
+        }
+
+#if UNITY_EDITOR
+        public void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, detectRange);
+        }
+#endif
+    }
+}
