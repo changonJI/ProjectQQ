@@ -14,6 +14,17 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
         public int damage = 10;
 
         private readonly Collider2D[] hitResults = new Collider2D[10]; // GC 방지
+        private ContactFilter2D filter;
+
+        private void Awake()
+        {
+            filter = new ContactFilter2D()
+            {
+                useLayerMask = true,
+                layerMask = enemyLayer,
+                useTriggers = true
+            };
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -30,7 +41,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
             if (target == null)
                 return;
 
-            Debug.Log($"Melee Attack To {target.name}");
+            LogHelper.Log($"Melee Attack To {target.name}");
 
             if (target.TryGetComponent<IDamageable>(out var damageable))
             {
@@ -40,7 +51,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
         private GameObject FindClosestEnemy()
         {
-            int count = Physics2D.OverlapCircleNonAlloc(transform.position + new Vector3(0, 9, 0), attackRange, hitResults, enemyLayer);
+            int count = Physics2D.OverlapCircle(transform.position + new Vector3(0, 9, 0), attackRange, filter, hitResults);
 
             if (count <= 0)
             {

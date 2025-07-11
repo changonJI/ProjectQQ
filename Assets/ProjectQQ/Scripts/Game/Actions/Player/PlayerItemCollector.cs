@@ -7,16 +7,28 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
     public class PlayerItemCollector : MonoBehaviour
     {
         public event Action<bool> OnItemCollected; 
+        
         public float pickupRange = 1.0f;
         public LayerMask itemLayer;
 
         private Collider2D[] itemResults = new Collider2D[10];
+        private ContactFilter2D filter;
+
+        private void Awake()
+        {
+            filter = new ContactFilter2D()
+            {
+                useLayerMask = true,
+                layerMask = itemLayer,
+                useTriggers = true
+            };
+        }
 
         public void TryCollectItems()
         {
             Vector2 center = transform.position + new Vector3(0, 9, 0);
 
-            int count = Physics2D.OverlapCircleNonAlloc(center, pickupRange, itemResults, itemLayer);
+            int count = Physics2D.OverlapCircle(center, pickupRange, filter, itemResults);
 
             if (count <= 0)
             {

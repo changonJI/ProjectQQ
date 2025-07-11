@@ -75,6 +75,12 @@ namespace QQ
 
         protected override void OnFixedUpdate()
         {
+            if (canCollectItem)
+                itemCollector.TryCollectItems();
+            if(canMeleeAttack)
+                meleeAttack.Attack();
+            if(canRangedAttack)
+                rangedAttack.Attack();
         }
 
         protected override void OnLateUpdate()
@@ -88,17 +94,9 @@ namespace QQ
 
         protected override void OnUpdate()
         {
-            if (canCollectItem)
-                itemCollector.TryCollectItems();
-            
             if (status.HasStatus(StatusEffectController.StatusEffect.Stunned)) return;
 
             stateContext.Update();
-            
-            if(canMeleeAttack)
-                meleeAttack.Attack();
-            if(canRangedAttack)
-                rangedAttack.Attack();
         }
 
         #region FSM

@@ -10,7 +10,19 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
         public float detectRange = 6.0f;
         public LayerMask enemyLayer;
+        
         private readonly Collider2D[] hitBuffer = new Collider2D[10];
+        private ContactFilter2D filter;
+
+        private void Awake()
+        {
+            filter = new ContactFilter2D()
+            {
+                useLayerMask = true,
+                layerMask = enemyLayer,
+                useTriggers = true
+            };
+        }
 
         public void Attack()
         {
@@ -29,7 +41,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
         private GameObject FindClosestEnemy()
         {
-            int count = Physics2D.OverlapCircleNonAlloc(transform.position + new Vector3(0, 9, 0), detectRange, hitBuffer, enemyLayer);
+            int count = Physics2D.OverlapCircle(transform.position + new Vector3(0, 9, 0), detectRange, filter, hitBuffer);
 
             float minDist = float.MaxValue;
             GameObject closest = null;
@@ -52,7 +64,7 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
 
         private void Shoot(Transform target)
         {
-            Debug.Log($"Shoot Projectile To {target.name}");
+            LogHelper.Log($"Shoot Projectile To {target.name}");
             // 예: Instantiate(projectilePrefab, actor.transform.position, Quaternion.identity);
             // Projectile.Initialize(target);
         }
