@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2386275540243164587}
   - component: {fileID: 2616779181046938892}
   - component: {fileID: 5378933133409794853}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TestMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,8 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f0a364b0995450085c75dcd2664bb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBase: 5
-  lastMoveDirection: {x: 0, y: 0}
+  moveDirection: {x: 0, y: 0}
 --- !u!114 &2386275540243164587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +154,7 @@ GameObject:
   - component: {fileID: 5005916426935925057}
   - component: {fileID: 7099115766906726592}
   - component: {fileID: 6958978014686390272}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spine GameObject (Parts_Body)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
