@@ -24,7 +24,9 @@ namespace QQ
 
             if (currentState != null &&
                 false == AllowedTransrations[currentState.GetFSMType()].Contains(newState.GetFSMType()))
-                return;
+            {
+                LogHelper.LogError($"BaseStateContext.ChangeState : FSM {currentState}→{newState} 전이 시도, 변경 불가함");
+            }
 
             currentState?.Exit();
             currentState = newState;
