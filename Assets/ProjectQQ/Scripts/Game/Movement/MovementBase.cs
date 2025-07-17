@@ -9,13 +9,13 @@ namespace QQ
     public abstract class MovementBase : MonoBehaviour, IOwnable
     {
         [SerializeField] protected Vector2 moveDirection;
-        public Vector2 MoveDirection
-        {
-            get => moveDirection;
-            protected set => moveDirection = value;
-        }
-
+        public Vector2 MoveDirection { get => moveDirection; protected set => moveDirection = value; }
         public Vector2 LastMoveDirection { get; protected set; }
+        public bool IsDirectionLock { get; private set; }
+        public bool IsMoveBlock { get; private set; }
+
+        public BaseGameObject Owner { get; private set; }
+        public float Speed => Owner.GetSpeed();
 
         public void SetMoveDirectionToLast()
         {
@@ -27,16 +27,11 @@ namespace QQ
             MoveDirection = -MoveDirection;
         }
 
-        public bool IsDirectionLock { get; private set; }
         public void SetDirectionLock(bool isLock)
         {
             IsDirectionLock = isLock;
         }
 
-        public BaseGameObject Owner { get; private set; }
-        public float Speed => Owner.GetSpeed();
-
-        public bool IsMoveBlock { get; private set; }
         public void SetMoveBlock(bool isBlock, bool clearDirection = false)
         {
             IsMoveBlock = isBlock;
