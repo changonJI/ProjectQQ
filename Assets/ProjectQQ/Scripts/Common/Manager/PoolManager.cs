@@ -28,6 +28,8 @@ namespace QQ
         {
             GameObject obj = await ResManager.Instantiate(ObjTypeToResType(objType), prefabName);
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
+         
+            LogHelper.Log($"Create BaseGameObject: {prefabName} ({objType})");
 
             if (baseGameObj == null)
             {
@@ -35,7 +37,8 @@ namespace QQ
                 LogHelper.LogError($"오브젝트 프리팹 {prefabName}에 Object 스크립트 컴포넌트 추가 필요!!!");
             }
 
-            baseGameObj.SetData(tableID);
+            baseGameObj.SetTableID(tableID);
+            baseGameObj.SetActive(true);
 
             return baseGameObj;
         }
@@ -56,8 +59,6 @@ namespace QQ
                 obj.name = prefabName;
                 SetParent(obj.transform, objType);
 
-                obj?.SetActive(true);
-
                 return obj;
             }
 
@@ -76,6 +77,7 @@ namespace QQ
             {
                 // Create Object Instance
                 BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, tableID);
+
                 obj = baseGameObj.gameObject;
                 obj.name = prefabName;
                 SetParent(obj.transform, objType);
@@ -85,24 +87,25 @@ namespace QQ
             else
             {
                 BaseGameObject poolObject = poolPair.queue.Dequeue();
-                poolObject.Init();
 
+                poolObject.SetActive(true);
                 obj = poolObject.gameObject;
             }
 
-            obj?.SetActive(true);
             return obj;
         }
 
         public void ReleaseObject(GameObject obj)
         {
-            obj.SetActive(false);
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
+            
             Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(baseGameObj.Type);
             if (pool.TryGetValue(obj.name, out (List<BaseGameObject> list, Queue<BaseGameObject> queue) poolPair))
             {
                 poolPair.queue.Enqueue(baseGameObj);
+                baseGameObj.SetActive(false);
             }
+
         }
 
         Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> GetPoolByType(GameObjectType objType)
