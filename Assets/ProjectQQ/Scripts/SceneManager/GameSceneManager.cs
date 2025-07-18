@@ -7,7 +7,7 @@ namespace QQ
     public class GameSceneManager : MonoBehaviour
     {
         [SerializeField] private CameraManager cameraManager;
-
+        GameObject stage;
         private void Awake()
         {
             cameraManager.Init();
@@ -24,9 +24,10 @@ namespace QQ
 
         private async UniTaskVoid Init()
         {            
-            // 배경 로드
-            GameObject map = await ResManager.Instantiate(ResType.Stage, "Stage1");
-            cameraManager.SetCameraTarget(CameraType.Default, map.transform);
+            // 스테이지 로드  // TODO. stage BaseGameObject 통해서 값 넣도록 변경
+            stage = await ResManager.Instantiate(ResType.Stage, "Stage1");
+
+            cameraManager.SetCameraTarget(CameraType.Default, stage.transform);
 
             await UniTask.WaitForSeconds(3f); // 맵 로드 후 딜레이
             // 플레이어 로드
@@ -34,6 +35,14 @@ namespace QQ
             cameraManager.SetCameraTarget(CameraType.Player, actor.transform);
 
             // 몬스터 로드
+            MonsterSpawner spawner = stage.GetComponent<MonsterSpawner>();
+            if (null != spawner)
+            {
+                float cameraHalfH = cameraManager.GetCameraOrthographicSize(CameraType.Player);
+                float cameraHalfW = cameraHalfH * cameraManager.GetCameraAspect();
+
+                spawner.SetStage(10, 1, stage.GetComponent<GridManager>(), cameraHalfW, cameraHalfH);
+            }
         }
     }
 }

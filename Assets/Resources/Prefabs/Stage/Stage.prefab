@@ -168,6 +168,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8760257251474460747}
+  - component: {fileID: -6247128847658101782}
+  - component: {fileID: 3900617719614568798}
   m_Layer: 0
   m_Name: Stage
   m_TagString: Untagged
@@ -193,6 +195,36 @@ Transform:
   - {fileID: 7535162586198966224}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-6247128847658101782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5288158634944034263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61efd332d8a093745add42cc37727c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unwalkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  nodeRadius: 10
+  worldSizeX: 1000
+  worldSizeY: 1000
+--- !u!114 &3900617719614568798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5288158634944034263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98584994cf8df94d9b343cbaa75113a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5811279261808207625
 GameObject:
   m_ObjectHideFlags: 0

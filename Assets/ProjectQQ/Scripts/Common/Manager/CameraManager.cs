@@ -80,5 +80,16 @@ namespace QQ {
                     return (OutputChannels)(-1);
             }
         }
+
+        public float GetCameraOrthographicSize(CameraType type)
+        {
+            CinemachineCamera cam = childCam[(int)type];
+            return cam.Lens.OrthographicSize;
+        }
+
+        public float GetCameraAspect()
+        {
+            return brainCam.OutputCamera.aspect;
+        }
     }
 }
