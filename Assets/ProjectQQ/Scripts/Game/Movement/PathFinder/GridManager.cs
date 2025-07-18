@@ -71,15 +71,25 @@ namespace QQ
         /// <returns></returns>
         public GridNode GetNodeFromWorldPos(Vector2 worldPosition)
         {
-            float percentX = (worldPosition.x + WorldSizeX / 2) / WorldSizeX;
-            float percentY = (worldPosition.y + WorldSizeY / 2) / WorldSizeY;
+            int x = GetGridX(worldPosition.x);
+            int y = GetGridY(worldPosition.y);
+
+            return GetNode(x, y);
+        }
+
+        public int GetGridX(float worldPositionX)
+        {
+            float percentX = (worldPositionX + WorldSizeX / 2) / WorldSizeX;
             percentX = Mathf.Clamp01(percentX);
+
+            return Mathf.RoundToInt((GridSize.x - 1) * percentX);
+        }
+        public int GetGridY(float worldPositionY)
+        {
+            float percentY = (worldPositionY + WorldSizeY / 2) / WorldSizeY;
             percentY = Mathf.Clamp01(percentY);
 
-            int x = Mathf.RoundToInt((GridSize.x - 1) * percentX);
-            int y = Mathf.RoundToInt((GridSize.y - 1) * percentY);
-
-            return grid[x, y];
+            return Mathf.RoundToInt((GridSize.y - 1) * percentY);
         }
 
         private void CreateGrid()
