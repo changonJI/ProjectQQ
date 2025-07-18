@@ -16,7 +16,8 @@ namespace QQ
 
         // 범위
         private float minDist = float.MaxValue;
-        private readonly float attackRadius = 10f;
+        private readonly float attackRadius = 30f;
+        private readonly float attackRadiusRange = 900f;
         private readonly Collider2D[] hitEnemy = new Collider2D[100];
         private ContactFilter2D enemyFilter;
         private Transform target = null;
@@ -112,39 +113,55 @@ namespace QQ
         {
             int count = Physics2D.OverlapCircle(transform.localPosition + new Vector3(0, 9, 0), attackRadius, enemyFilter, hitEnemy);
 
-            for (int i = 0; i < count; i++)
+            if (count == 0)
             {
-                var enemy = hitEnemy[i];
-
-                if (enemy == null) continue;
-
-                float dist = Vector2.SqrMagnitude(enemy.transform.localPosition - transform.localPosition);
-
-                if (dist < minDist)
+                target = null;
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
                 {
-                    minDist = dist;
-                    target = enemy.transform;
+                    var enemy = hitEnemy[i];
+
+                    if (enemy == null) continue;
+
+                    float dist = Vector2.SqrMagnitude(enemy.transform.localPosition - transform.localPosition);
+
+                    LogHelper.Log($"dist : {dist}");
+
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        target = enemy.transform;
+                    }
                 }
             }
 
             if (target == null) return;
             if(target.gameObject.activeSelf == false) return;
 
-            Attack(target);
+            Attack(target, minDist);
         }
 
         #region 공격 + 피격 (수정 예정)
 
-        private void Attack(Transform target)
+        private void Attack(Transform target, float dist)
         {
+            // 현재 FSM 체크
             if (stateContext.GetCurFSMType() == FSMState.Die || stateContext.GetCurFSMType() == FSMState.Knockback) return;
 
+            // 현재 들고 있는 
             foreach(var weapon in inventory)
             {
-                if (CoolTimeManager.Instance.IsItemReady(weapon.skillId, 5f))
-                {
-                    EffectManager.Instance.PlayEffect(weapon.skillId).Forget();
-                }
+                //TODO : TableID로 공격 범위 체크
+                // 사거리 체크
+                if (dist > attackRadiusRange) continue;
+
+                //TODO: Table ID로 id, duration 필요
+                // CoolTime 체크
+                if (!CoolTimeManager.Instance.IsItemReady(weapon.skillId, 5f)) continue;
+
+                EffectManager.Instance.PlayEffect(weapon.skillId).Forget();
             }
         }
 
