@@ -23,12 +23,45 @@ namespace QQ
         private const int dicCapacity = 256;
         private const int poolCapacity = 2048;
 
-        public void Init() { }
+        public void Init()
+        {
+            if (null == ActorRoot)
+            {
+                GameObject Actors = new GameObject("Actors");
+                Actors.transform.position = Vector3.zero;
+                Actors.transform.SetParent(gameObject.transform);
+                ActorRoot = Actors.transform;
+            }
+            
+            if (null == monsterRoot)
+            {
+                GameObject Monsters = new GameObject("Monsters");
+                Monsters.transform.position = Vector3.zero;
+                Monsters.transform.SetParent(gameObject.transform);
+                monsterRoot = Monsters.transform;
+            }
+
+            if (null == itemRoot)
+            {
+                GameObject Items = new GameObject("Items");
+                Items.transform.position = Vector3.zero;
+                Items.transform.SetParent(gameObject.transform);
+                itemRoot = Items.transform;
+            }
+
+            if (null == sfxRoot)
+            {
+                GameObject SFXs = new GameObject("SFXs");
+                SFXs.transform.position = Vector3.zero;
+                SFXs.transform.SetParent(gameObject.transform);
+                sfxRoot = SFXs.transform;
+            }
+        }
         private async UniTask<BaseGameObject> CreateBaseGameObject(GameObjectType objType, string prefabName, int tableID)
         {
             GameObject obj = await ResManager.Instantiate(ObjTypeToResType(objType), prefabName);
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
-         
+
             LogHelper.Log($"Create BaseGameObject: {prefabName} ({objType})");
 
             if (baseGameObj == null)
@@ -48,7 +81,7 @@ namespace QQ
             GameObject obj = null;
 
             // 단일 객체는 Pool 안쓰도록
-            if(objType == GameObjectType.Actor)
+            if (objType == GameObjectType.Actor)
             {
                 // Create Object Instance
                 BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, tableID);
@@ -98,7 +131,7 @@ namespace QQ
         public void ReleaseObject(GameObject obj)
         {
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
-            
+
             Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(baseGameObj.Type);
             if (pool.TryGetValue(obj.name, out (List<BaseGameObject> list, Queue<BaseGameObject> queue) poolPair))
             {
