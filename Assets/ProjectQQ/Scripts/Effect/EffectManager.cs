@@ -22,7 +22,7 @@ namespace QQ
             // TODO : GET SKillTable Data
             if (PoolManager.IsValid())
             {
-                await PoolManager.Instance.GetObject(GameObjectType.SFX, "RollEff", 0);
+                var effect = await PoolManager.Instance.GetObject(GameObjectType.SFX, "PistolEff", 0);
             }
         }
 

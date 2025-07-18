@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace QQ
 {
     /// <summary>
-    /// UI Á¤º¸ Å¬·¡½º
+    /// UI ì •ë³´ í´ë˜ìŠ¤
     /// </summary>
     [RequireComponent(typeof(Canvas), typeof(GraphicRaycaster), typeof(CanvasGroup))]
     public abstract class UI : MonoBehaviour
@@ -16,16 +16,16 @@ namespace QQ
 
         // UIType
         public abstract UIType uiType { get; }
-        // UIRoot À§Ä¡
+        // UIRoot ìœ„ì¹˜
         public abstract UIDepth uiDepth { get; }
         // RectTransform Layer
         public virtual Layer layer => Layer.UI;
-        // ±âº»°ª false. Init µÈ ÀÌÈÄ start() Å¸¸é true·Î º¯°æ
+        // ê¸°ë³¸ê°’ false. Init ëœ ì´í›„ start() íƒ€ë©´ trueë¡œ ë³€ê²½
         private bool isStart;   
-        // UI È°¼ºÈ­ »óÅÂ Ã¼Å©
+        // UI í™œì„±í™” ìƒíƒœ ì²´í¬
         public bool isActive { get; private set; }
 
-        // UIRoot ¿¡ Ãß°¡µÉ¶§ Action
+        // UIRoot ì— ì¶”ê°€ë ë•Œ Action
         public static event System.Action<UI> OnCreateAction;
         public static event System.Action<UI> OnFocusAction;
         public static event System.Action<UI> OnLostFocusAction;
@@ -45,7 +45,7 @@ namespace QQ
         }
 
         /// <summary>
-        /// awake ½ÇÇà ¸Ş¼Òµå
+        /// awake ì‹¤í–‰ ë©”ì†Œë“œ
         /// </summary>
         protected abstract void OnInit();
 
@@ -54,40 +54,40 @@ namespace QQ
             OnStart();
             isStart = true;
 
-            SetActive(true);
+            Focus();
         }
 
         /// <summary>
-        /// start ½ÇÇà ¸Ş¼Òµå
+        /// start ì‹¤í–‰ ë©”ì†Œë“œ
         /// </summary>
         protected abstract void OnStart();
 
         /// <summary>
-        /// Instancing ÀÌÈÄ OnEnable ±â´ÉÀ» ÇÏ´Â ¸Ş¼Òµå
+        /// start ì´í›„ 1íšŒ í˜¸ì¶œ, SetActive(true) ê¸°ëŠ¥ì„ í•˜ëŠ” ë©”ì†Œë“œ
         /// </summary>
         protected void Focus()
         {
-            // ¼¼ÆÃ ¾ÈµÇ¾úÀ¸¸é return
+            // ì„¸íŒ… ì•ˆë˜ì—ˆìœ¼ë©´ return
             if (!isStart)
                 return;
 
-            // ÇÏÀÌ¶óÅ°Ã¢ ÃÖÇÏ´ÜÀ¸·Î ³»¸®±â(UI»ó ¸Ç¾Õ¿¡ ¿Àµµ·Ï)
+            // í•˜ì´ë¼í‚¤ì°½ ìµœí•˜ë‹¨ìœ¼ë¡œ ë‚´ë¦¬ê¸°(UIìƒ ë§¨ì•ì— ì˜¤ë„ë¡)
             myTransform.SetAsLastSibling();
 
             OnFocus();
         }
 
         /// <summary>
-        /// Focus ½ÇÇà ¸Ş¼Òµå
+        /// Focus ì‹¤í–‰ ë©”ì†Œë“œ
         /// </summary>
         protected abstract void OnFocus();
 
         /// <summary>
-        /// OnDisable ¿ªÇÒÀ» ÇÏ´Â ¸Ş¼Òµå
+        /// SetActive(false) ì—­í• ì„ í•˜ëŠ” ë©”ì†Œë“œ
         /// </summary>
         protected void LostFocus()
         {
-            // ¼¼ÆÃ ¾ÈµÇ¾úÀ¸¸é return
+            // ì„¸íŒ… ì•ˆë˜ì—ˆìœ¼ë©´ return
             if (!isStart)
                 return;
 
@@ -95,7 +95,7 @@ namespace QQ
         }
 
         /// <summary>
-        /// LostFocus ÀÌÈÄ ½ÇÇà ¸Ş¼Òµå
+        /// LostFocus ì´í›„ ì‹¤í–‰ ë©”ì†Œë“œ
         /// </summary>
         protected abstract void OnLostFocus();
 
@@ -112,7 +112,7 @@ namespace QQ
             canvas = null;
         }
         /// <summary>
-        /// OnDestroy ÀÌÈÄ ½ÇÇà ¸Ş¼Òµå
+        /// OnDestroy ì´í›„ ì‹¤í–‰ ë©”ì†Œë“œ
         /// </summary>
         protected abstract void OnExit();
 
@@ -157,16 +157,16 @@ namespace QQ
     }
 
     /// <summary>
-    /// UI Á¦³×¸¯ »ı¼º Å¬·¡½º
+    /// UI ì œë„¤ë¦­ ìƒì„± í´ë˜ìŠ¤
     /// </summary>
     public abstract class UI<T> : UI where T : UI<T>
     {
         protected static T instance;
 
-        // UI »ı¼º ÈÄ Äİ¹é ¸Ş¼Òµå
+        // UI ìƒì„± í›„ ì½œë°± ë©”ì†Œë“œ
         private System.Action OnOkCallback;
         private System.Action OnCloseCallback;
-        // UI »ı¼º ÈÄ ÆÄ¶ó¹ÌÅÍ
+        // UI ìƒì„± í›„ íŒŒë¼ë¯¸í„°
         private object[] storedParams;
 
         protected override void Awake()
@@ -184,7 +184,7 @@ namespace QQ
         }
 
         /// <summary>
-        ///  UI »ı¼º ¸Ş¼Òµå
+        ///  UI ìƒì„± ë©”ì†Œë“œ
         /// </summary>
         public static void Instantiate(System.Action okAction = null, 
                                        System.Action closeAction = null,

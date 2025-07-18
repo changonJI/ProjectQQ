@@ -1,10 +1,10 @@
-﻿using System;
 using QQ;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 namespace ProjectQQ.Scripts.Game.Actions.Player
 {
+    [Obsolete]
     public class PlayerMeleeAttack : MonoBehaviour
     {
         public event Action<bool> OnMeleeEntered;

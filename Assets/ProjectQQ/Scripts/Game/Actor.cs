@@ -1,6 +1,7 @@
-using ProjectQQ.Scripts.Game.Actions.Player;
 using QQ.FSM;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace QQ
 {
@@ -8,12 +9,18 @@ namespace QQ
     {
         public override GameObjectType Type => GameObjectType.Actor;
         
-        [SerializeField] private PlayerMeleeAttack meleeAttack;
-        [SerializeField] private PlayerRangedAttack rangedAttack;
-        [SerializeField] private PlayerItemCollector itemCollector;
-
         public PlayerMovement PlayerMovement { get; private set; }
         private PlayerStatData playerStatData;
+
+        private List<ItemData> inventory;
+
+        // 범위
+        private float minDist = float.MaxValue;
+        private readonly float attackRadius = 10f;
+        private readonly Collider2D[] hitEnemy = new Collider2D[100];
+        private ContactFilter2D enemyFilter;
+        private Transform target = null;
+
         // 이속
         public override float GetSpeed() => playerStatData.baseSpeed + addSpeed;
         private float addSpeed = 0f;
@@ -21,75 +28,28 @@ namespace QQ
         private int maxHp() => playerStatData.heartMax;
         private int currentHp;
         public bool IsDead = false;
-        // 공격
-        private bool canMeleeAttack = false;
-        private bool canRangedAttack = false;
-        private bool canCollectItem = false;
-
+        
+        //마지막 피격 방향
         public Vector2 LastHitDirection { get; private set; }
 
-        public override void Init()
+        protected override void OnInit()
         {
-            IsDead = false;
+            base.OnInit();
 
-            playerStatData = new PlayerStatData();
-            stateContext = new PlayerStateContext(this);
-        }
-
-        public override void SetData(int id)
-        {
-            var data = PlayerStatDataManager.Instance.Get(id);
-
-            playerStatData.Set(data);
-        }
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
- 
-            PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
-            
-            InputManager.Instance.AddRollInputEvent(ChangeRollState);
-
-            meleeAttack.OnMeleeEntered += SetCanMeleeAttack;
-            rangedAttack.OnRangedAttack += SetCanRangedAttack;
-            itemCollector.OnItemCollected += SetCanCollectItem;
-        }
-
-        protected override void OnDestroyed()
-        {
-            InputManager.Instance.RemoveRollInputEvent(ChangeRollState);
-
-            meleeAttack.OnMeleeEntered -= SetCanMeleeAttack;
-            rangedAttack.OnRangedAttack -= SetCanRangedAttack;
-            itemCollector.OnItemCollected -= SetCanCollectItem;
-        }
-
-        protected override void OnDisabled()
-        {
-        }
-
-        protected override void OnEnabled()
-        {
-        }
-
-        protected override void OnFixedUpdate()
-        {
-            if (canCollectItem)
-                itemCollector.TryCollectItems();
-            if(canMeleeAttack)
-                meleeAttack.Attack();
-            if(canRangedAttack)
-                rangedAttack.Attack();
-        }
-
-        protected override void OnLateUpdate()
-        {
+            InitPlayer();
+            InitController();
         }
 
         protected override void OnStart()
         {
+            SetTable();
             stateContext.ChangeState(stateContext.GetIdleState());
+            inventory.Add(ItemDataManager.Instance.Get(3));
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            ScanObject();
         }
 
         protected override void OnUpdate()
@@ -97,6 +57,24 @@ namespace QQ
             if (status.HasStatus(StatusEffectController.StatusEffect.Stunned)) return;
 
             stateContext.Update();
+        }
+
+        protected override void OnDestroyed()
+        {
+            InputManager.Instance.RemoveRollInputEvent(ChangeRollState);
+            ListPool<ItemData>.Release(inventory);
+        }
+
+        protected override void OnTriggerEnter2Ded(Collider2D other)
+        {
+            if(other.gameObject.layer == (int)Layer.Enemy)
+            {
+
+            }
+            else if(other.gameObject.layer == (int)Layer.Item)
+            {
+
+            }
         }
 
         #region FSM
@@ -130,17 +108,45 @@ namespace QQ
         public void CalcAddSpeed(float speed) => addSpeed += speed;
         #endregion
 
-        #region 공격 + 피격 (수정 예정)
-
-        public void PerformAttack()
+        private void ScanObject()
         {
-            //Debug.Log("공격");
+            int count = Physics2D.OverlapCircle(transform.localPosition + new Vector3(0, 9, 0), attackRadius, enemyFilter, hitEnemy);
+
+            for (int i = 0; i < count; i++)
+            {
+                var enemy = hitEnemy[i];
+
+                if (enemy == null) continue;
+
+                float dist = Vector2.SqrMagnitude(enemy.transform.localPosition - transform.localPosition);
+
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    target = enemy.transform;
+                }
+            }
+
+            if (target == null) return;
+            if(target.gameObject.activeSelf == false) return;
+
+            Attack(target);
         }
 
-        public void SetCanRangedAttack(bool value) => canRangedAttack = value;
-        public void SetCanMeleeAttack(bool value) => canMeleeAttack = value;
-        public void SetCanCollectItem(bool value) => canCollectItem = value;
-        
+        #region 공격 + 피격 (수정 예정)
+
+        private void Attack(Transform target)
+        {
+            if (stateContext.GetCurFSMType() == FSMState.Die || stateContext.GetCurFSMType() == FSMState.Knockback) return;
+
+            foreach(var weapon in inventory)
+            {
+                if (CoolTimeManager.Instance.IsItemReady(weapon.skillId, 5f))
+                {
+                    EffectManager.Instance.PlayEffect(weapon.skillId).Forget();
+                }
+            }
+        }
 
         private void OnDie()
         {
@@ -165,7 +171,63 @@ namespace QQ
             return false;
         }
 
+        public void TakeDamage(int damage, Vector3 transformPosition)
+        {
+            if (IsDead) return;
+
+            if (status != null && status.HasStatus(StatusEffectController.StatusEffect.Invincible)) return;
+
+            currentHp -= damage;
+            currentHp = Mathf.Max(currentHp, 0);
+
+            Debug.Log($"{gameObject.name} 피해: {damage} → 남은 체력: {currentHp}");
+
+            if (currentHp <= 0)
+            {
+                OnDie();
+                return;
+            }
+
+            // FSM 상태 전이
+            LastHitDirection = (transform.position - transformPosition).normalized;
+            ChangeKnockBackState();
+        }
+
         #endregion
+
+        public Transform GetTarget()
+        {
+            return target;
+        }
+
+        private void InitPlayer()
+        {
+            IsDead = false;
+
+            playerStatData = new PlayerStatData();
+            stateContext = new PlayerStateContext(this);
+            inventory = ListPool<ItemData>.Get();
+
+            enemyFilter = new ContactFilter2D()
+            {
+                useLayerMask = true,
+                layerMask = 1 << (int)Layer.Enemy,
+                useTriggers = true
+            };
+        }
+
+        private void InitController()
+        {
+            PlayerMovement = gameObject.AddComponent<PlayerMovement>(this);
+            InputManager.Instance.AddRollInputEvent(ChangeRollState);
+        }
+
+        private void SetTable()
+        {
+            var data = PlayerStatDataManager.Instance.Get(tableID);
+
+            playerStatData.Set(data);
+        }
 
 #if UNITY_EDITOR
         [SerializeField] bool onActorState = true;
@@ -179,28 +241,7 @@ namespace QQ
                 GUI.Label(new Rect(20, 40, Screen.width * 0.3f, Screen.height * 0.3f), stateContext.GetCurFSMType().ToString(), myStyle);
             }
         }
-
-        public void TakeDamage(int damage, Vector3 transformPosition)
-        {
-            if(IsDead) return;
-            
-            if(status != null && status.HasStatus(StatusEffectController.StatusEffect.Invincible)) return;
-            
-            currentHp -= damage;
-            currentHp = Mathf.Max(currentHp, 0);
-            
-            Debug.Log($"{gameObject.name} 피해: {damage} → 남은 체력: {currentHp}");
-        
-            if (currentHp <= 0)
-            {
-                OnDie();
-                return;
-            }
-        
-            // FSM 상태 전이
-            LastHitDirection = (transform.position - transformPosition).normalized;
-            ChangeKnockBackState();
-        }
-    }
 #endif
+
+    }
 }

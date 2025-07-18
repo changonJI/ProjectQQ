@@ -22,47 +22,30 @@ namespace QQ
         private readonly Dictionary<string, Spine.Animation> dicAnimWeapon = new Dictionary<string, Spine.Animation>();
         #endregion
 
-        public override void Init()
-        {
-        }
-
-        public override void SetData(int id)
-        {
-        }
-
-        protected override void OnAwake()
+        /// <summary>
+        /// SpineAnim,Skin 초기화. 순서 필수(anim => skin)
+        /// </summary>
+        protected override void OnInit()
         {
             InitAnimation();
             InitSkin();
         }
 
-        protected override void OnDestroyed()
-        {
-        }
+        protected override void OnDestroyed() {}
 
-        protected override void OnDisabled()
-        {
-        }
+        protected override void OnFixedUpdate() {}
 
-        protected override void OnEnabled()
-        {
-        }
+        protected override void OnLateUpdate() {}
 
-        protected override void OnFixedUpdate()
-        {
-        }
+        protected override void OnStart() {}
 
-        protected override void OnLateUpdate()
-        {
-        }
+        protected override void OnFocus() {}
 
-        protected override void OnStart()
-        {
-        }
+        protected override void OnLostFocus() {}
 
-        protected override void OnUpdate()
-        {
-        }
+        protected override void OnUpdate() {}
+
+        protected override void OnTriggerEnter2Ded(Collider2D other) {}
 
         /// <summary>
         /// Spine 데이터의 Layer 설정

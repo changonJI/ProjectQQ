@@ -91,6 +91,8 @@ namespace QQ
     {
         Default = 0,
         UI = 5,
+        Enemy = 7,
+        Item = 8,
     }
 
     public enum UIDialouguePos : byte
@@ -200,12 +202,20 @@ namespace QQ
         UI = 2,
     }
 
-    public enum EffectType
+    public enum EffectType : byte
     {
         None = 0,
         Roll = 1,
         Skill = 2,
     }
+
+    public enum ScannerType : byte
+    { 
+        None = 0,
+        Attack = 1,
+        Item = 2,
+    }
+
     #endregion
 
     #region Animation

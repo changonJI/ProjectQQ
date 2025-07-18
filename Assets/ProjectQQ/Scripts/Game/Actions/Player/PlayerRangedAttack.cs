@@ -1,9 +1,10 @@
-﻿using System;
 using QQ;
+using System;
 using UnityEngine;
 
 namespace ProjectQQ.Scripts.Game.Actions.Player
 {
+    [Obsolete]
     public class PlayerRangedAttack : MonoBehaviour
     {
         public event Action<bool> OnRangedAttack;

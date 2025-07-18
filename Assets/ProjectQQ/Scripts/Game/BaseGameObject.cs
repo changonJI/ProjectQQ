@@ -8,12 +8,9 @@ namespace QQ
     {
         public abstract GameObjectType Type { get; }
 
-        private bool isLoaded = false;
-        public bool IsLoaded
-        {
-            get { return isLoaded; }
-            set { isLoaded = value; }
-        }
+        private bool isActive;
+        private bool isStart;
+        protected int tableID = 0;
 
         public virtual float GetSpeed() => 0f;
 
@@ -27,56 +24,93 @@ namespace QQ
         protected StatusEffectController status;
         protected bool IsStunned => status.HasStatus(StatusEffectController.StatusEffect.Stunned);
         #endregion
-
-        public abstract void Init();
-
-        public abstract void SetData(int id);
-
-        public void SetParent(Transform transform)
-        {
-            gameObject.transform.SetParent(transform);
-        }
-
        
         #region 유니티 생명주기 함수
         protected virtual void Awake()
         {
-            Init();
-
             status = new StatusEffectController();
-
             RigidBody = GetComponent<Rigidbody2D>();
+
             if (null == RigidBody)
             {
                 LogHelper.LogError($"{gameObject.name} 리지드바디2D가 없음");
             }
-
-            OnAwake();
+            
+            OnInit();
         }
 
-        abstract protected void OnAwake();
+        /// <summary>
+        /// 최초 1회 세팅
+        /// </summary>
+        abstract protected void OnInit();
 
         protected virtual void Start()
         {
             OnStart();
+
+            isStart = true;
+
+            Focus();
         }
         abstract protected void OnStart();
 
-        protected virtual void OnEnable()
+        /// <summary>
+        /// Instancing 이후 OnEnable 기능을 하는 메소드
+        /// </summary>
+        protected void Focus()
         {
-            OnEnabled();
-        }
-        abstract protected void OnEnabled();
+            // 세팅 안되었으면 return
+            if (!isStart)
+                return;
 
-        protected virtual void OnDisable()
-        {
-            OnDisabled();
+            OnFocus();
         }
-        abstract protected void OnDisabled();
+
+        /// <summary>
+        /// Focus 실행 메소드
+        /// </summary>
+        protected abstract void OnFocus();
+
+        /// <summary>
+        /// OnDisable 역할을 하는 메소드
+        /// </summary>
+        protected void LostFocus()
+        {
+            // 세팅 안되었으면 return
+            if (!isStart)
+                return;
+
+            OnLostFocus();
+        }
+
+        /// <summary>
+        /// LostFocus 이후 실행 메소드
+        /// </summary>
+        protected abstract void OnLostFocus();
 
         protected virtual void Update()
         {
             OnUpdate();
+        }
+
+        public void SetActive(bool isActive)
+        {
+            if (this.isActive == isActive)
+                return;
+
+            this.isActive = isActive;
+
+            if (gameObject.activeSelf != isActive)
+                gameObject.SetActive(isActive);
+
+            if (isActive)
+            {
+                Focus();
+            }
+            else
+            {
+                LostFocus();
+            }
         }
 
         abstract protected void OnUpdate();
@@ -99,6 +133,27 @@ namespace QQ
         }
         abstract protected void OnDestroyed();
 
+
+        protected virtual void OnTriggerEnter2D(Collider2D other)
+        {
+            OnTriggerEnter2Ded(other);
+        }
+        abstract protected void OnTriggerEnter2Ded(Collider2D other);
         #endregion
+
+        public void SetParent(Transform transform)
+        {
+            gameObject.transform.SetParent(transform);
+        }
+
+        public void SetTableID(int id)
+        {
+            tableID = id;
+
+            if(tableID < 0)
+            {
+                LogHelper.LogError($"{gameObject.name} Table ID 설정 안 됨 : {tableID}");
+            }
+        }
     }
 }

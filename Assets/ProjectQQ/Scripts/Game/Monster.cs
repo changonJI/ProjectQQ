@@ -15,35 +15,21 @@ namespace QQ
         
         public Transform TargetTransform { get; private set; }
 
-        /// <summary> 생성자 호출 함수 </summary>
-        public override void Init()
+        protected override void OnInit()
         {
-            monsterData = new MonsterData();
-        }
+            base.OnInit();
 
-        public override void SetData(int id)
-        {
-            var data = MonsterDataManager.Instance.Get(id);
-
-            monsterData.Set(data);
-        }
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-
-            stateContext = new MonsterStateContext(this);
-            MonsterMovement = GetComponent<MonsterMovement>();
+            InitMonster();
+            InitController();
         }
 
         protected override void OnStart()
         {
+            SetTable();
             stateContext.ChangeState(stateContext.GetIdleState());
+
             TryFindPlayer();
         }
-
-        protected override void OnEnabled() { }
-        protected override void OnDisabled() { }
 
         protected override void OnUpdate()
         {
@@ -72,6 +58,25 @@ namespace QQ
         public void TakeDamage(int damage, Vector3 transformPosition)
         {
             Debug.Log("아얏");
+        }
+
+        private void InitMonster()
+        {
+            monsterData = new MonsterData();
+            stateContext = new MonsterStateContext(this);
+            
+        }
+
+        private void InitController()
+        {
+            MonsterMovement = GetComponent<MonsterMovement>();
+        }
+
+        private void SetTable()
+        {
+            var data = MonsterDataManager.Instance.Get(tableID);
+
+            monsterData.Set(data);
         }
     }
 }
