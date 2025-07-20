@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QQ
 {
@@ -57,6 +59,17 @@ namespace QQ
                 LogHelper.LogError($"PlayerStatData is Null : {id}");
                 return default;
             }
+        }
+
+        public List<ItemData> GetRandomItems(int count)
+        {
+            if (dic_Data.Count == 0 || count <= 0)
+                return new List<ItemData>();
+
+            return dic_Data.Values
+                .OrderBy(_ => Guid.NewGuid()) // 무작위 정렬
+                .Take(count)
+                .ToList();
         }
     }
 }

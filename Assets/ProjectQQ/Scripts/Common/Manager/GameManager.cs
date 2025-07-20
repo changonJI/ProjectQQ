@@ -100,7 +100,7 @@ public class GameManager : DontDestroySingleton<GameManager>
     /// 게임 멈춤 - bool 값 이용
     /// </summary>
     /// <param name="isPaused"></param>
-    public void GamePause(bool isPaused)
+    public void TimeScaleChanger(bool isPaused)
     {
         Time.timeScale = isPaused ? 0 : 1;
     }
@@ -112,11 +112,11 @@ public class GameManager : DontDestroySingleton<GameManager>
     /// <summary>
     /// 동기 씬 로드
     /// </summary>
-    public void LoadScene(SceneType sceneType)
+    public void LoadScene(SceneType sceneType, SceneEntryType entryType = SceneEntryType.Default)
     {
         if (SceneExists(sceneType.ToString()))
         {
-            LoadingSceneManager.LoadScene(sceneType);
+            LoadingSceneManager.LoadScene(sceneType, entryType);
         }
         else
         {
@@ -142,4 +142,29 @@ public class GameManager : DontDestroySingleton<GameManager>
 
     #endregion
     
+    #region GameCycle
+
+    public void GamePause()
+    {
+        TimeScaleChanger(true);
+        UIPause.Instantiate();
+    }
+
+    public void GameResume()
+    {
+        TimeScaleChanger(false);
+        UIPause.CloseUI();
+    }
+
+    public void BackToMain()
+    {
+        TimeScaleChanger(false);
+        
+        UIGameHud.CloseUI();
+        PoolManager.Instance.DestroyAll();
+        
+        LoadScene(SceneType.MainScene, SceneEntryType.ReturnToMenu);
+    }
+
+    #endregion
 }

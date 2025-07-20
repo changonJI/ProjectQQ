@@ -4,6 +4,14 @@ using UnityEngine.SceneManagement;
 
 namespace QQ
 {
+    public enum SceneEntryType
+    {
+        Default,        // 기본
+        EnterStage,     // 스테이지 진입 시 (→ Dialogue 호출)
+        ReloadScene,    // 재시작
+        ReturnToMenu    // 메인으로 돌아감
+    }
+    
     public class LoadingSceneManager : MonoBehaviour
     {
         public const string mainSceneName = "MainScene";
@@ -11,6 +19,7 @@ namespace QQ
         public const string loadingSceneName = "LoadingScene";
 
         public static string nextScene;
+        public static SceneEntryType entryType = SceneEntryType.Default;
 
         // 중복 씬 로드 방지용
         private static bool canLoad = false;
@@ -19,10 +28,9 @@ namespace QQ
 
         [SerializeField] private UIProgressBar progressBar;
         
-        public static void LoadScene(SceneType sceneName)
+        public static void LoadScene(SceneType sceneType, SceneEntryType sceneEntryType = SceneEntryType.Default)
         {
-            string nextScene = string.Empty;
-            switch (sceneName)
+            switch (sceneType)
             {
                 case SceneType.MainScene:
                     nextScene = mainSceneName;
@@ -35,9 +43,10 @@ namespace QQ
                     break;
             }
 
-            UIIndicator.Instantiate();
+            entryType = sceneEntryType;
 
-            SceneManager.LoadScene("LoadingScene");
+            UIIndicator.Instantiate();
+            SceneManager.LoadScene(loadingSceneName);
         }
 
         private void Awake()
@@ -45,11 +54,23 @@ namespace QQ
             // 초기화 작업
             canLoad = true;
             progressBar.Init(0f, 1f);
+
+            if (entryType == SceneEntryType.Default)
+                entryType = SceneEntryType.EnterStage;
         }
 
         private void Start()
         {
-            Init().Forget();
+            switch (entryType)
+            {
+                case SceneEntryType.EnterStage:
+                    Init().Forget(); // UIDialogue → GameScene
+                    break;
+
+                default:
+                    LoadSceneAsync(nextScene).Forget(); // 바로 씬 로딩
+                    break;
+            }
         }
 
         private async UniTaskVoid Init()
@@ -106,7 +127,14 @@ namespace QQ
                         op.allowSceneActivation = true;
 
                         // UIRoot 초기화
-                        await UIRoot.Instance.ClearUI();
+                        if (UIRoot.Instance != null)
+                        {
+                            await UIRoot.Instance.ClearUI();
+                        }
+                        else
+                        {
+                            Debug.LogWarning("UIRoot.Instance is null. Skipping ClearUI().");
+                        }
 
                         UIIndicator.CloseUI();
 

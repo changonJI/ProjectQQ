@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using ProjectQQ.Scripts.UI.Popup;
 using UnityEngine;
 
 namespace QQ
@@ -16,10 +17,7 @@ namespace QQ
         private void Start()
         {
             Init().Forget();
-        }
-
-        void Update()
-        {
+            UIGameHud.Instantiate();
         }
 
         private async UniTaskVoid Init()
@@ -43,6 +41,19 @@ namespace QQ
 
                 spawner.SetStage(10, 1, stage.GetComponent<GridManager>(), cameraHalfW, cameraHalfH);
             }
+        }
+        
+        [ContextMenu("스테이지 클리어")]
+        private void StageClearSuccess()
+        {
+            GameManager.Instance.TimeScaleChanger(true); // 게임 일시 정지
+            UIClearReward.Instantiate(); // 룰렛 UI 호출
+        }
+
+        private void StageClearFail()
+        {
+            GameManager.Instance.TimeScaleChanger(true); // 게임 일시 정지
+            // 실패 UI.Instantiate;
         }
     }
 }

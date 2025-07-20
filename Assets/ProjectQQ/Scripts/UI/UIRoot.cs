@@ -17,15 +17,15 @@ namespace QQ {
         [SerializeField] RectTransform depthToast;
         [SerializeField] RectTransform depthIndicator;
 
-        private List<UI> uiList;
-        private List<UI> escapeUIList;
+        private List<UI> uiList = new List<UI>();
+        private List<UI> escapeUIList = new List<UI>();
 
         protected override void Awake()
         {
             base.Awake();
 
-            uiList = new List<UI>();
-            escapeUIList = new List<UI>();
+            // uiList = new List<UI>();
+            // escapeUIList = new List<UI>();
 
             UI.OnCreateAction += OnCreateAction;
             UI.OnFocusAction += OnFocusAction;
@@ -149,7 +149,8 @@ namespace QQ {
                 await UniTask.Yield();
             }
 
-            uiList.Clear();
+            if(uiList != null)
+                uiList.Clear();
         }
 
         public void EscapeEvent(UI ui)
