@@ -50,7 +50,11 @@ namespace QQ
                         LogHelper.LogError($"Creat DonDestroySingleTone : {typeof(T)}");
 #endif
                         var name = typeof(T).Name;
-                        instance = new GameObject(string.Concat("SingletonOf", typeof(T).Name), typeof(T)).GetComponent<T>();
+                        if(!name.Contains("UI"))  
+                        {
+                            name = string.Concat("SingletonOf", name);
+                        }
+                        instance = new GameObject(name, typeof(T)).GetComponent<T>();
                     }
                 }
 
@@ -59,6 +63,8 @@ namespace QQ
         }
 
         public static bool IsValid() => instance != null;
+
+        public virtual void Init() {}
 
         protected virtual void Awake()
         {

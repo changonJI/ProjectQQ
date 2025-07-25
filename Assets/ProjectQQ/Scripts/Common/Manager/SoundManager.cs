@@ -19,7 +19,7 @@ namespace QQ
             base.Awake();
         }
 
-        public void Init()
+        public override void Init()
         {
             bgmSource = gameObject.AddComponent<AudioSource>();
             uiSource = gameObject.AddComponent<AudioSource>();

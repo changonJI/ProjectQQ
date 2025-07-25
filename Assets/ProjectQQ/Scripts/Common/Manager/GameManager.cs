@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : DontDestroySingleton<GameManager>
 {
-    public void Init() { }
+    public override void Init() { }
    
     #region Playerprefs
     /// <summary>

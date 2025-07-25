@@ -32,20 +32,35 @@ namespace QQ
         /// <summary>
         /// UI Prefab load and instantiate
         /// </summary>
-        public static async UniTask<GameObject> Instantiate(System.Type type)
+        public static async UniTask<GameObject> AsyncInstantiate(System.Type type)
         {
             var resource = await Resources.LoadAsync<GameObject>(StringBuilderPool.Get(uiLocalPath, type.Name));
 
             return GameObject.Instantiate(resource as GameObject);
         }
 
-        public static async UniTask<GameObject> Instantiate(ResType type, string name)
+        public static async UniTask<GameObject> AsyncInstantiate(ResType type, string name)
         {
             string path = GetResourcePath(type, name);
 
             var resource = await Resources.LoadAsync<GameObject>(path);
 
             return GameObject.Instantiate(resource as GameObject);
+        }
+
+        public static void Instantiate(ResType type, string name, System.Action callback = null)
+        {
+            string path = GetResourcePath(type, name);
+            var resource = Resources.Load<GameObject>(path);
+            if (resource == null)
+            {
+                LogHelper.LogError($"Resource not found : {name}");
+                return;
+            }
+            var obj = GameObject.Instantiate(resource);
+            obj.name = name;
+
+            callback?.Invoke();
         }
 
         private static string GetResourcePath(ResType type, string name)

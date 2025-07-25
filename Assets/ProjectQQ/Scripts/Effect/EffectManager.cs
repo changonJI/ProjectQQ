@@ -15,7 +15,7 @@ namespace QQ
             base.OnDestroy();
         }
 
-        public void Init() { }
+        public override void Init() { }
 
         public async UniTaskVoid PlayEffect(int skillID)
         {

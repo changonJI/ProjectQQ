@@ -23,7 +23,7 @@ namespace QQ
         private async UniTaskVoid Init()
         {            
             // 스테이지 로드  // TODO. stage BaseGameObject 통해서 값 넣도록 변경
-            stage = await ResManager.Instantiate(ResType.Stage, "Stage1");
+            stage = await ResManager.AsyncInstantiate(ResType.Stage, "Stage1");
 
             cameraManager.SetCameraTarget(CameraType.Default, stage.transform);
 

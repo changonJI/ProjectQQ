@@ -29,7 +29,7 @@ namespace QQ
             inputActions.Disable();
         }
 
-        public void Init()
+        public override void Init()
         {
             inputActions = new PlayerInputActions();
             inputActions.Enable();

@@ -200,7 +200,7 @@ namespace QQ
         {
             if (instance == null)
             {
-                await ResManager.Instantiate(typeof(T));
+                await ResManager.AsyncInstantiate(typeof(T));
                 
                 instance.OnOkCallback = okAction;
                 instance.OnCloseCallback = closeAction;
