@@ -24,9 +24,6 @@ namespace QQ {
         {
             base.Awake();
 
-            // uiList = new List<UI>();
-            // escapeUIList = new List<UI>();
-
             UI.OnCreateAction += OnCreateAction;
             UI.OnFocusAction += OnFocusAction;
             UI.OnLostFocusAction += OnLostFocusAction;
