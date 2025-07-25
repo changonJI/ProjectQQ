@@ -11,7 +11,7 @@ namespace QQ
         public GridManager Grid { get; set; }
         private PathContextPool pathContextPool = new PathContextPool();
 
-        public UniTask FindPathAsync(Vector2Int start, Vector2Int end, List<GridNode> resultPath)
+        public UniTask FindPathAsync(Vector2 start, Vector2 end, List<GridNode> resultPath)
         {
             return UniTask.RunOnThreadPool(() =>
             {
@@ -54,43 +54,40 @@ namespace QQ
                 PathNode currentPathNode = openSet.Pop();
                 GridNode currentNode = currentPathNode.BaseNode;
 
-                for (int i = 0; i < openSet.Count; ++i)
+                // 탐색 완료한 노드 체크
+                closed[currentNode.GridPos.x, currentNode.GridPos.y] = true;
+
+                // 이번 노드 == 종착점인 경우 탐색 종료
+                if (currentNode == targetNode)
                 {
-                    // 탐색 완료한 노드 체크
-                    closed[currentNode.GridPos.x, currentNode.GridPos.y] = true;
+                    PathNode startPathNode = pathNodes[startNode.GridPos.x, startNode.GridPos.y];
+                    // 경로 추적
+                    RetracePath(startPathNode, currentPathNode, resultPath);
 
-                    // 이번 노드 == 종착점인 경우 탐색 종료
-                    if (currentNode == targetNode)
+                    return;
+                }
+
+                // curNode 주변 8칸 탐색
+                foreach (Vector2Int dir in _dirs)
+                {
+                    Vector2Int dirPos = currentNode.GridPos + dir;
+                    GridNode neighbour = Grid.GetNode(dirPos.x, dirPos.y);
+                    if (null == neighbour || false == neighbour.IsWalkable
+                        || true == closed[neighbour.GridPos.x, neighbour.GridPos.y])
                     {
-                        PathNode startPathNode = pathNodes[startNode.GridPos.x, startNode.GridPos.y];
-                        // 경로 추적
-                        RetracePath(startPathNode, currentPathNode, resultPath);
-
-                        return;
+                        continue;
                     }
 
-                    // curNode 주변 8칸 탐색
-                    foreach (Vector2Int dir in _dirs)
+                    PathNode neighbourPath = pathNodes[neighbour.GridPos.x, neighbour.GridPos.y];
+                    int costToNeighbour = currentPathNode.gCost + GetHeuristicDistance(currentNode, neighbour);
+                    neighbourPath.SetCost(costToNeighbour, GetHeuristicDistance(neighbour, targetNode));
+                    neighbourPath.Parent = currentPathNode;
+
+                    if (!openSet.Contains(neighbourPath))
                     {
-                        Vector2Int dirPos = currentNode.GridPos + dir;
-                        GridNode neighbour = Grid.GetNode(dirPos.x, dirPos.y);
-                        if (null == neighbour || false == neighbour.IsWalkable
-                            || true == closed[neighbour.GridPos.x, neighbour.GridPos.y])
-                        {
-                            continue;
-                        }
-
-                        PathNode neighbourPath = pathNodes[neighbour.GridPos.x, neighbour.GridPos.y];
-                        int costToNeighbour = currentPathNode.gCost + GetHeuristicDistance(currentNode, neighbour);
-                        neighbourPath.SetCost(costToNeighbour, GetHeuristicDistance(neighbour, targetNode));
-                        neighbourPath.Parent = currentPathNode;
-
-                        if (!openSet.Contains(neighbourPath))
-                        {
-                            openSet.Add(neighbourPath);
-                        }
+                        openSet.Add(neighbourPath);
                     }
-                }//END for openSet
+                }
             }//END while
         }
 
@@ -146,12 +143,22 @@ namespace QQ
         public bool[,] closed;
         public Heap<PathNode> openSet;
 
-        public PathContext(int gridSizeX, int gridSizeY)
+        public PathContext(int gridSizeX, int gridSizeY, GridManager grid)
         {
             pathNodes = new PathNode[gridSizeX, gridSizeY];
             opened = new bool[gridSizeX, gridSizeY];
             closed = new bool[gridSizeX, gridSizeY];
             openSet = new Heap<PathNode>(gridSizeX * gridSizeY);
+
+            for (int x = 0; x < gridSizeX; x++)
+            {
+                for (int y = 0; y < gridSizeY; y++)
+                {
+                    pathNodes[x, y] = new PathNode();
+                }
+            }
+
+            Reset(grid);
         }
 
         public void Reset(GridManager grid)
@@ -183,7 +190,7 @@ namespace QQ
                 return context;
             }
 
-            return new PathContext(grid.GridSize.x, grid.GridSize.y);
+            return new PathContext(grid.GridSize.x, grid.GridSize.y, grid);
         }
 
         public void Release(PathContext ctx)

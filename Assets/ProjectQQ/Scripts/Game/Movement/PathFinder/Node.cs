@@ -45,7 +45,7 @@ namespace QQ
 
         public void Reset(GridNode baseNode = null)
         {
-            BaseNode = BaseNode;
+            BaseNode = baseNode;
 
             Parent = null;
             gCost = 0;
