@@ -113,6 +113,8 @@ namespace QQ
         {
             int count = Physics2D.OverlapCircle(transform.localPosition + new Vector3(0, 9, 0), attackRadius, enemyFilter, hitEnemy);
 
+            minDist = float.MaxValue;
+
             if (count == 0)
             {
                 target = null;
@@ -257,6 +259,12 @@ namespace QQ
                 myStyle.normal.textColor = Color.green;
                 GUI.Label(new Rect(20, 40, Screen.width * 0.3f, Screen.height * 0.3f), stateContext.GetCurFSMType().ToString(), myStyle);
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.localPosition + new Vector3(0, 9, 0), attackRadius);
         }
 #endif
 
