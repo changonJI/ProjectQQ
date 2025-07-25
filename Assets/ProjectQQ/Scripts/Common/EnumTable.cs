@@ -85,6 +85,7 @@ namespace QQ
         Main = 0,
         Back = 1,
         Destroy = 2,
+        Indicator = 3,
     }
 
     public enum Layer : byte

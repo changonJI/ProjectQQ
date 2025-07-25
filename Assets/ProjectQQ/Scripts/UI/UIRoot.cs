@@ -73,7 +73,7 @@ namespace QQ {
         private void OnLostFocusAction(UI ui)
         {
             if (ui.uiType == UIType.Back)
-                escapeUIList.Remove(ui);
+                escapeUIList.Remove(ui); 
         }
 
         public void OnDestroyAction(UI ui)

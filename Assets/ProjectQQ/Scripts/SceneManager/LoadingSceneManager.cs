@@ -127,14 +127,7 @@ namespace QQ
                         op.allowSceneActivation = true;
 
                         // UIRoot 초기화
-                        if (UIRoot.Instance != null)
-                        {
-                            await UIRoot.Instance.ClearUI();
-                        }
-                        else
-                        {
-                            Debug.LogWarning("UIRoot.Instance is null. Skipping ClearUI().");
-                        }
+                        await UIRoot.Instance.ClearUI();
 
                         UIIndicator.CloseUI();
 

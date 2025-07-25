@@ -1,7 +1,7 @@
 namespace QQ {
     public class UIIndicator : UI<UIIndicator>
     {
-        public override UIType uiType => UIType.Back;
+        public override UIType uiType => UIType.Indicator;
 
         public override UIDepth uiDepth => UIDepth.Indicator;
 

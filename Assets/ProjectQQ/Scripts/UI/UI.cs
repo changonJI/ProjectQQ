@@ -118,7 +118,8 @@ namespace QQ
 
         public virtual void Close()
         {
-            if (uiType == UIType.Back && isActive)
+            if ((uiType == UIType.Back || uiType == UIType.Indicator) &&
+                isActive)
             {
                 SetActive(false);
             }
