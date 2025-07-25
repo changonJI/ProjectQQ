@@ -74,9 +74,12 @@ public class Heap<T> where T : IHeapItem<T>
             if (item.CompareTo(parentItem) > 0) // item이 parent보다 우선되는 경우
             {
                 Swap(item, parentItem);
+                parentIndex = (item.HeapIndex - 1) / 2;
             }
-
-            parentIndex = (item.HeapIndex - 1) / 2;
+            else
+            {
+                break; // 더 이상 올릴 필요 없음
+            }
         }
     }
     

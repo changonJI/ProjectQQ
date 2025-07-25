@@ -24,6 +24,7 @@ namespace QQ
         {            
             // 스테이지 로드  // TODO. stage BaseGameObject 통해서 값 넣도록 변경
             stage = await ResManager.Instantiate(ResType.Stage, "Stage1");
+            Pathfinder.Instance.Grid = stage.GetComponent<GridManager>();
 
             cameraManager.SetCameraTarget(CameraType.Default, stage.transform);
 
