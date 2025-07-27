@@ -1,7 +1,6 @@
 Parts_Body.png
 size:1070,542
 filter:Linear,Linear
-pma:true
 scale:0.5
 Body
 bounds:516,217,323,327
