@@ -1,7 +1,6 @@
 Parts_Weapon.png
 size:687,1039
 filter:Linear,Linear
-pma:true
 scale:0.5
 Gatling/ArmL
 bounds:338,5,187,233
