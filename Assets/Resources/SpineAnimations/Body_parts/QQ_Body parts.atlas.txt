@@ -1,0 +1,27 @@
+QQ_Body parts.png
+size:1661,516
+filter:Linear,Linear
+scale:0.5
+Body
+bounds:1057,187,323,327
+Cigar
+bounds:1593,368,146,40
+rotate:90
+FootL
+bounds:1533,41,163,126
+rotate:90
+FootR
+bounds:1409,32,172,122
+rotate:90
+Head
+bounds:2,2,526,512
+HeadDie
+bounds:530,3,525,511
+LegL
+bounds:1382,357,209,157
+offsets:0,0,209,173
+LegR
+bounds:1382,206,213,149
+offsets:0,0,213,180
+LowerBody
+bounds:1057,34,350,151
