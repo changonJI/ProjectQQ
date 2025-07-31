@@ -12,6 +12,11 @@ public class GameManager : DontDestroySingleton<GameManager>
     /// </summary>
     public void ClearPlayerData() => PlayerPrefs.DeleteAll();
 
+    public bool IsValidPlayer()
+    {
+        return PlayerPrefs.HasKey(PlayerDataType.UserName.ToString());
+    }
+
     /// <summary>
     /// playerprefs에 저장
     /// </summary>

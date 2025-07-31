@@ -83,7 +83,7 @@ namespace QQ
 
         private void Init()
         {
-            if (GameManager.Instance.GetStringPlayerData(PlayerDataType.UserName) == string.Empty)
+            if (!GameManager.Instance.IsValidPlayer())
             {
                 UICreateNickName.Instantiate();
             }
