@@ -69,7 +69,7 @@ namespace QQ
 
         private void InitController()
         {
-            MonsterMovement = GetComponent<MonsterMovement>();
+            MonsterMovement = gameObject.AddComponent<MonsterMovement>(this);
         }
 
         private void SetTable()
