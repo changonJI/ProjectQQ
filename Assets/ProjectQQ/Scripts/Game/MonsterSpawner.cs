@@ -122,10 +122,10 @@ namespace QQ
                 return resultPos;
             }
 
-            CalcCameraGridArea();
+            CalcCameraArea();
 
             // 랜덤 추출 범위 : 그리드로 지정된 영역
-            if (true == isOutsiedCamera && true == camBound.isValid())
+            if (true == isOutsiedCamera && true == camBound.IsValid())
             {
                 int gridW = StageGrid.GridSize.x;
                 int gridH = StageGrid.GridSize.y;
@@ -248,7 +248,7 @@ namespace QQ
             camBound.SetCameraHalfSize(playerCameraHalfW, playerCameraHalfH);
         }
 
-        public void CalcCameraGridArea()
+        private void CalcCameraArea()
         {
             Vector3 actorPosition = PoolManager.Instance.actor.transform.position;
             GridNode actorNode = StageGrid.GetNodeFromWorldPos(actorPosition);
@@ -267,7 +267,6 @@ namespace QQ
                 int camBottomGridY = Mathf.Max(0, StageGrid.GetGridY(actorPosition.y - camBound.cameraSizeHalf.y));
 
                 camBound.SetEdgeGridIndex(actorNode, camTopGridY, camRightGridX, camBottomGridY, camLeftGridX);
-
             }
         }
         private struct SpawnRuntimeData
@@ -291,7 +290,7 @@ namespace QQ
             public int bottomGridY;
             public int leftGridX;
 
-            public bool isValid()
+            public bool IsValid()
             {
                 if (null == centerNode || 0 >= cameraSizeHalf.x || 0 >= cameraSizeHalf.y
                     || 0 >= topGridY - bottomGridY || 0 >= rightGridX - leftGridX)
