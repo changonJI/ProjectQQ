@@ -30,13 +30,16 @@ namespace QQ
                 ItemData data = new ItemData
                 {
                     id = short.Parse(columns[0]),
-                    itemType = System.Enum.Parse<ItemType>(columns[1]),
-                    nameId = int.Parse(columns[2]),
-                    desId = int.Parse(columns[3]),
-                    iconName = columns[4],
-                    lvCount = short.Parse(columns[5]),
-                    skillId = int.Parse(columns[6]),
-                    boxValue = int.Parse(columns[7])
+                    itemType = Enum.Parse<ItemType>(columns[1]),
+                    nameId = int.Parse(columns[3]),
+                    desId = int.Parse(columns[4]),
+                    iconName = columns[5],
+                    lvCount = short.Parse(columns[6]),
+                    skillId = int.Parse(columns[7]),
+                    dropChance = float.TryParse(columns[10], out float chance) ? chance : 0f,
+                    upgradeTo = short.Parse(columns[11]),
+                    isShopItem = ParseBool(columns[13]),
+                    isHidden = ParseBool(columns[14])
                 };
 
                 if (!dic_Data.ContainsKey(data.id))
@@ -70,6 +73,18 @@ namespace QQ
                 .OrderBy(_ => Guid.NewGuid()) // 무작위 정렬
                 .Take(count)
                 .ToList();
+        }
+        
+        public List<ItemData> GetAll()
+        {
+            return dic_Data.Values.ToList();
+        }
+        
+        private bool ParseBool(string value)
+        {
+            return value.Equals("true", StringComparison.OrdinalIgnoreCase)
+                   || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase)
+                   || value.Equals("1");
         }
     }
 }

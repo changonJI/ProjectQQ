@@ -2,26 +2,20 @@ using QQ;
 
 public struct ItemData : IData
 {
-    public short id;    // key
-    /// <summary>
-    /// BoxItemType은 상자 테이블의 group_id를 참조한다.
-    /// </summary>
-    public ItemType itemType;   // 아이템타입. 
-    /// <summary>
-    /// 언어 테이블 참조
-    /// </summary>
-    public int nameId;  // 아이템 이름
-    /// <summary>
-    /// 언어 테이블 참조
-    /// </summary>
-    public int desId;    // 아이템 설명
-    public string iconName; // 아이템 이미지 리소스명
-    public short lvCount; // 현재 보유 수량. 중복으로 먹었을시 더 큰 값으로 가져올때 사용
-    /// <summary>
-    /// 스킬 테이블 참조
-    /// </summary>
-    public int skillId; // skillID값
-    public int boxValue; // BoxItemType에 따라 상자에서 나오는 아이템의 ID값
+    public short id;                 // 아이템 고유 ID
+    public ItemType itemType;       // 0=상점, 1=소비, 2=공격, 3=패시브, 4=상자, 5=조합
+    public int nameId;              // 이름 텍스트 ID (언어 테이블)
+    public int desId;               // 설명 텍스트 ID (언어 테이블)
+    public string iconName;         // UI 아이콘 파일명 (png)
+    
+    public short lvCount;           // 아이템 레벨 수 (최대 성장 단계)
+    public int skillId;             // 연결된 스킬 ID
+    
+    public float dropChance;        // 드랍 확률 (예: 0.2 = 20%)
+    public short upgradeTo;         // 진화 대상 아이템 ID
+
+    public bool isShopItem;         // 상점 노출 여부
+    public bool isHidden;           // UI에서 숨김 여부
 
     public void Clear()
     {
@@ -32,6 +26,24 @@ public struct ItemData : IData
         iconName = string.Empty;
         lvCount = 0;
         skillId = 0;
-        boxValue = 0;
+        dropChance = 0f;
+        upgradeTo = 0;
+        isShopItem = false;
+        isHidden = false;
+    }
+
+    public void Set(ItemData data)
+    {
+        id = data.id;
+        itemType = data.itemType;
+        nameId = data.nameId;
+        desId = data.desId;
+        iconName = data.iconName;
+        lvCount = data.lvCount;
+        skillId = data.skillId;
+        dropChance = data.dropChance;
+        upgradeTo = data.upgradeTo;
+        isShopItem = data.isShopItem;
+        isHidden = data.isHidden;
     }
 }

@@ -48,10 +48,13 @@ namespace QQ
 
     public enum ItemType : byte
     {
-        None = 0,
-        Material = 1, // 재료 아이템
-        Box = 2, // 상자 아이템
-        Consume = 3, // 소비 아이템
+        Shop = 0,   // 상점 전용 아이템
+        Consumable, // 소비형 아이템 (ex. 회복)
+        Attack,     // 공격형 아이템
+        Passive,    // 패시브 아이템
+        Box,        // 상자형 아이템
+        Combine,   // 조합 재료/결과 아이템
+        None = 99
     }
     #endregion
 
@@ -166,6 +169,7 @@ namespace QQ
         Stage = 3,
         Texture = 4,
         Effect = 5,
+        Sprite = 6,
     }
 
     public enum InputMap : byte // 키 입력 상황
