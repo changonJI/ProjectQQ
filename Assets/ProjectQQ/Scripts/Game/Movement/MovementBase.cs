@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace QQ
 {
@@ -8,7 +9,12 @@ namespace QQ
     [DisallowMultipleComponent]
     public abstract class MovementBase : MonoBehaviour, IOwnable
     {
+        [SerializeField] private bool isOnGizmo = false;
+
         [SerializeField] protected Vector2 moveDirection;
+        protected Stack<GridNode> path = new Stack<GridNode>(); // top이 목적지, bottom이 출발점
+        protected bool findingPath; // FindPathAsync 작업 걸어두었으면 true
+
         public Vector2 MoveDirection { get => moveDirection; protected set => moveDirection = value; }
         public Vector2 LastMoveDirection { get; protected set; }
         public bool IsDirectionLock { get; private set; }
@@ -102,5 +108,17 @@ namespace QQ
         protected abstract void OnDestroyed();
         protected abstract void OnUpdate();
         protected abstract void OnFixedUpdate();
+        private void OnDrawGizmos()
+        {
+            if (true == isOnGizmo && false == findingPath)
+            {
+                foreach (var pathNode in path)
+                {
+                    Gizmos.color = UnityEngine.Color.blue;
+
+                    Gizmos.DrawCube(pathNode.WorldPosition, Vector3.one * (Pathfinder.Instance.Grid.NodeDiameter - Pathfinder.Instance.Grid.NodeRadius / 5));
+                }
+            }
+        }
     }
 }

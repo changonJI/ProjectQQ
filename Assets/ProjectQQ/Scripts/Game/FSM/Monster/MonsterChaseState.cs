@@ -29,13 +29,13 @@ namespace QQ.FSM
                 return;
             }
 
-            Vector2 dir = (monster.TargetTransform.position - monster.transform.position).normalized;
-            monster.MonsterMovement.SetDirection(dir);
+            // actor의 위치 쫒기
+            monster.MonsterMovement.SetDestination(monster.TargetTransform.position);
         }
 
         public void Exit()
         {
-            monster.MonsterMovement.SetDirection(Vector2.zero);
+            monster.MonsterMovement.SetDestination(monster.transform.position);
         }
     }
 }
