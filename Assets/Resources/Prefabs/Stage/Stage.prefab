@@ -207,9 +207,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61efd332d8a093745add42cc37727c93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOnGizmo: 0
   unwalkableLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   nodeRadius: 10
   worldSizeX: 1000
   worldSizeY: 1000
@@ -225,6 +226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98584994cf8df94d9b343cbaa75113a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnMonsterCount: 0
+  isOnGizmo: 0
 --- !u!1 &5811279261808207625
 GameObject:
   m_ObjectHideFlags: 0

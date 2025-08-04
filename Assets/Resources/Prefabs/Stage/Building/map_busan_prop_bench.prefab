@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6153652797290267351}
   - component: {fileID: 650131268523057892}
   - component: {fileID: 5901408819193602332}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: map_busan_prop_bench
   m_TagString: Wall
   m_Icon: {fileID: 0}
