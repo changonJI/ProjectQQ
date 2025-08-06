@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2616779181046938892}
   - component: {fileID: 5378933133409794853}
   m_Layer: 7
-  m_Name: TestMonster
+  m_Name: Cat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,7 +193,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 83a72b50afbf1f14eae0ca6baae96286, type: 2}
+  - {fileID: 2100000, guid: 5b83cf92008f1e74a93ff252ba380b72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: abbde918ae951f0449ff2ae929978cc8, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 1e0755b2bb86b4e49a9de29c3c62ad3a, type: 2}
   initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0

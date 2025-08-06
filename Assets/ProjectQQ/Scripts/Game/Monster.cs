@@ -12,7 +12,10 @@ namespace QQ
         public MonsterMovement MonsterMovement { get; private set; }
         
         private StatusEffectController.StatusEffect currentStatus = StatusEffectController.StatusEffect.None;
-        
+
+        // 이속
+        public override float GetSpeed() => monsterData.speed + addSpeed;
+        private float addSpeed = 0f;
         public Transform TargetTransform { get; private set; }
 
         protected override void OnInit()
@@ -69,7 +72,7 @@ namespace QQ
 
         private void InitController()
         {
-            MonsterMovement = GetComponent<MonsterMovement>();
+            MonsterMovement = gameObject.AddComponent<MonsterMovement>(this);
         }
 
         private void SetTable()

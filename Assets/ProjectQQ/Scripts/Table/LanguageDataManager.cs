@@ -28,6 +28,10 @@ namespace QQ
                 LanguageData data = new LanguageData() 
                 { 
                     id = int.Parse(columns[0]),
+                    korean = columns[1],
+                    english = columns[2],
+                    chinese = columns[3],
+                    japanese = columns[4]
                 };
 
                 if (!dic_Data.ContainsKey(data.id))

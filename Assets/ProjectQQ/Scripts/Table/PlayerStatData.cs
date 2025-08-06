@@ -1,7 +1,6 @@
 public struct PlayerStatData : IData
 {
-    public short id;    // key
-    public short playerLevel;   // 캐릭터 레벨
+    public short playerLevel;   // 캐릭터 레벨 (key)
     public short heartMax;  // 레벨별 최대 체력
     public short baseAttack;    // 레벨별 캐릭터의 기본 공격력
     public float baseSpeed; // 레벨별 캐릭터의 기본 이동 속도
@@ -9,7 +8,6 @@ public struct PlayerStatData : IData
 
     public void Clear()
     {
-        id = 0;
         playerLevel = 0;
         heartMax = 0;
         baseAttack = 0;
@@ -19,7 +17,6 @@ public struct PlayerStatData : IData
 
     public void Set(PlayerStatData data)
     {
-        id = data.id;
         playerLevel = data.playerLevel;
         heartMax = data.heartMax;
         baseAttack = data.baseAttack;

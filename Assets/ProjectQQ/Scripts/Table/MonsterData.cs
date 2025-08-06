@@ -14,6 +14,14 @@ public struct MonsterData : IData
     public float attackAng; // 공격 범위(각도)
     public float speed; // 속도
     public string spriteName;
+    // public float hitboxSize;    // hitbox_radius
+    //public short dropItemId1;   // drop_item_id_1
+    //public short dropRate1;     // drop_rate_1
+    //public short dropItemId2;   // drop_item_id_2
+    //public short dropRate2;     // drop_rate_2
+    //public short dropItemId3;   // drop_item_id_3
+    //public short dropRate3;     // drop_rate_3
+    //public ItemType dropItemType;
 
     public void Clear()
     {
