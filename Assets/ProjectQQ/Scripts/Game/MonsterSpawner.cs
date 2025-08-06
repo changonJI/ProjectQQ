@@ -14,7 +14,7 @@ namespace QQ
         public const int chapterSegmentDivider = 10000;
         public const int stageSegmentDivider = 100;
 
-        private List<SpawnRuntimeData> spawnRuntimeDatas = new List<SpawnRuntimeData>();
+        private readonly List<SpawnRuntimeData> spawnRuntimeDatas = new List<SpawnRuntimeData>();
         public int Chapter { get; private set; }
         public int Stage { get; private set; }
         private GridManager StageGrid { get; set; }
@@ -23,7 +23,7 @@ namespace QQ
         public int spawnMonsterCount = 0;   // 인스펙터에 소환 마리수 표시하기위한 테스트 변수
 
         CameraBouond camBound;
-        List<GridNode> spawnAreaNodes = new List<GridNode>();
+        readonly List<GridNode> spawnAreaNodes = new List<GridNode>();
 
         public BaseGameObject Owner { get; private set; }
 
