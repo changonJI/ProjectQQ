@@ -77,9 +77,12 @@ namespace QQ
                 return;
             }
 
+            // monster1 소환
+            int monsterNameId = MonsterDataManager.Instance.Get(spawnData.monsterId1).nameId;
+            string monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
             for (int i = 0; i < spawnData.monsterCnt1; ++i)
             {
-                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, "TestMonster", spawnData.monsterId1);
+                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnData.monsterId1);
 
                 // 위치 지정
                 if (null != monster)
@@ -91,9 +94,12 @@ namespace QQ
                 }
             }
 
+            // monster2 소환
+            monsterNameId = MonsterDataManager.Instance.Get(spawnData.monsterId2).nameId;
+            monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
             for (int i = 0; i < spawnData.monsterCnt2; ++i)
             {
-                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, "TestMonster", spawnData.monsterId2);
+                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnData.monsterId2);
 
                 // 위치 지정
                 if (null != monster)
