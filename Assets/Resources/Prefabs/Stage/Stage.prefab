@@ -169,7 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8760257251474460747}
   - component: {fileID: -6247128847658101782}
-  - component: {fileID: 3900617719614568798}
+  - component: {fileID: 3348812583308763908}
   m_Layer: 0
   m_Name: Stage
   m_TagString: Untagged
@@ -214,7 +214,7 @@ MonoBehaviour:
   nodeRadius: 10
   worldSizeX: 1000
   worldSizeY: 1000
---- !u!114 &3900617719614568798
+--- !u!114 &3348812583308763908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,11 +223,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5288158634944034263}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b98584994cf8df94d9b343cbaa75113a, type: 3}
+  m_Script: {fileID: 11500000, guid: e1f41c9804f0cc44cb6cd25c7cc3fc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnMonsterCount: 0
-  isOnGizmo: 0
+  chapter: 0
+  stage: 0
 --- !u!1 &5811279261808207625
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ namespace QQ
     /// 주기마다 List<SpawnRuntimeData>를 순회,
     /// 타임트리거에 MonsterSpawnData에 해당하는 소환 실행
     /// </summary>
-    public class MonsterSpawner : MonoBehaviour
+    public class MonsterSpawner : MonoBehaviour, IOwnable
     {
         public const int chapterSegmentDivider = 10000;
         public const int stageSegmentDivider = 100;
@@ -25,7 +25,14 @@ namespace QQ
         CameraBouond camBound;
         List<GridNode> spawnAreaNodes = new List<GridNode>();
 
+        public BaseGameObject Owner { get; private set; }
+
         [SerializeField] private bool isOnGizmo;
+
+        public void Init(BaseGameObject obj)
+        {
+            Owner = obj;
+        }
 
         void Start()
         {
