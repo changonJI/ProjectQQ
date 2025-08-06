@@ -27,15 +27,14 @@ namespace QQ
 
                 MonsterSpawnData data = new MonsterSpawnData
                 {
-                    index = short.Parse(columns[0]),  // 웨이브 인덱스
-                    id = int.Parse(columns[1]),    // 웨이브 아이디
-                    spawnStart = int.Parse(columns[2]),    // spawn 시작 시간
-                    spawnLoop = int.Parse(columns[3]),    // spawn 반복 시간
-                    spawnCount = int.Parse(columns[4]),    // spawn 횟수
-                    monsterId1 = int.Parse(columns[5]),    // monster ID 1
-                    monsterCnt1 = short.Parse(columns[6]),  // monster 마릿수 1
-                    monsterId2 = int.Parse(columns[7]),    // monster ID 2
-                    monsterCnt2 = short.Parse(columns[8])   // monster 마릿수 2
+                    id = int.Parse(columns[0]),    // 웨이브 아이디
+                    spawnStart = int.Parse(columns[1]),    // spawn 시작 시간
+                    spawnLoop = int.Parse(columns[2]),    // spawn 반복 시간
+                    spawnCount = int.Parse(columns[3]),    // spawn 횟수
+                    monsterId1 = int.Parse(columns[4]),    // monster ID 1
+                    monsterCnt1 = short.Parse(columns[5]),  // monster 마릿수 1
+                    monsterId2 = int.Parse(columns[6]),    // monster ID 2
+                    monsterCnt2 = short.Parse(columns[7])   // monster 마릿수 2
                 };
 
                 if (!dic_Data.ContainsKey(data.id))

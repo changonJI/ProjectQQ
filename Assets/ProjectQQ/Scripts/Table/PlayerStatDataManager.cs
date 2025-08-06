@@ -21,23 +21,22 @@ namespace QQ
             {
                 string[] columns = str.Split('\t');
 
-                // key°ª ºñ¾îÀÖÀ¸¸é ³Ñ±è
+                // keyê°’ ë¹„ì–´ìžˆìœ¼ë©´ ë„˜ê¹€
                 if (string.IsNullOrEmpty(columns[0]))
                     continue;
 
                 PlayerStatData data = new PlayerStatData
                 {
-                    id = short.Parse(columns[0]),
-                    playerLevel = short.Parse(columns[1]),
-                    heartMax = short.Parse(columns[2]),
-                    baseAttack = short.Parse(columns[3]),
-                    baseSpeed = float.Parse(columns[4]),
-                    dodgeCooldown = float.Parse(columns[5]),
+                    playerLevel = short.Parse(columns[0]),
+                    heartMax = short.Parse(columns[1]),
+                    baseAttack = short.Parse(columns[2]),
+                    baseSpeed = float.Parse(columns[3]),
+                    dodgeCooldown = float.Parse(columns[4]),
                 };
 
-                if (!dic_Data.ContainsKey(data.id))
+                if (!dic_Data.ContainsKey(data.playerLevel))
                 {
-                    dic_Data.Add(data.id, data);
+                    dic_Data.Add(data.playerLevel, data);
                 }
             }
         }
