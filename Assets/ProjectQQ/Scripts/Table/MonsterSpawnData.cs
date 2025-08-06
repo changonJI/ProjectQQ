@@ -1,6 +1,5 @@
 public struct MonsterSpawnData : IData
 {
-    public short index;    // ?
     public int id;   // 웨이브 아이디(100101 => 앞자리부터 10 챕터, 01 스테이지, 01 웨이브 번호)
     public int spawnStart;  // spawn 시작 시간
     public int spawnLoop;  // spawn 반복 시간
@@ -19,7 +18,6 @@ public struct MonsterSpawnData : IData
     public void Clear()
     {
         id = 0;
-        index = 0;
         spawnStart = 0;
         spawnLoop = 0;
         spawnCount = 0;

@@ -9,12 +9,12 @@ namespace QQ
     /// 주기마다 List<SpawnRuntimeData>를 순회,
     /// 타임트리거에 MonsterSpawnData에 해당하는 소환 실행
     /// </summary>
-    public class MonsterSpawner : MonoBehaviour
+    public class MonsterSpawner : MonoBehaviour, IOwnable
     {
         public const int chapterSegmentDivider = 10000;
         public const int stageSegmentDivider = 100;
 
-        private List<SpawnRuntimeData> spawnRuntimeDatas = new List<SpawnRuntimeData>();
+        private readonly List<SpawnRuntimeData> spawnRuntimeDatas = new List<SpawnRuntimeData>();
         public int Chapter { get; private set; }
         public int Stage { get; private set; }
         private GridManager StageGrid { get; set; }
@@ -23,7 +23,16 @@ namespace QQ
         public int spawnMonsterCount = 0;   // 인스펙터에 소환 마리수 표시하기위한 테스트 변수
 
         CameraBouond camBound;
-        public Vector2 test;
+        readonly List<GridNode> spawnAreaNodes = new List<GridNode>();
+
+        public BaseGameObject Owner { get; private set; }
+
+        [SerializeField] private bool isOnGizmo;
+
+        public void Init(BaseGameObject obj)
+        {
+            Owner = obj;
+        }
 
         void Start()
         {
@@ -32,15 +41,11 @@ namespace QQ
 
         void Update()
         {
-            int maxCatchUp = 5;
-            int loopCount = 0;
-
-            if (null != camBound.centerNode)
-                test = camBound.centerNode.WorldPosition;
-
-            // 혹시라도 긴 틱이 밀렸을 경우를 대비하기 위해 while로 조건 잡음
-            while (++loopCount < maxCatchUp && true == TryAdvanceTick(ref spawnCheckTimestamp, 1.0f))
+            if (true == TryAdvanceTick(ref spawnCheckTimestamp, 1.0f))
             {
+                // 카메라 영역과 소환 범위 연산
+                CalcCameraAndSpawnArea();
+
                 for (int i = spawnRuntimeDatas.Count - 1; i >= 0; --i)
                 {
                     SpawnRuntimeData runtimeData = spawnRuntimeDatas[i];
@@ -79,28 +84,34 @@ namespace QQ
                 return;
             }
 
+            // monster1 소환
+            int monsterNameId = MonsterDataManager.Instance.Get(spawnData.monsterId1).nameId;
+            string monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
             for (int i = 0; i < spawnData.monsterCnt1; ++i)
             {
-                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, "TestMonster", spawnData.monsterId1);
+                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnData.monsterId1);
 
                 // 위치 지정
                 if (null != monster)
                 {
-                    Vector3 spawnPos = RandomSpawnPos(true);
+                    Vector3 spawnPos = GetRandomSpawnPos();
                     monster.transform.position = spawnPos;
 
                     ++spawnMonsterCount;
                 }
             }
 
+            // monster2 소환
+            monsterNameId = MonsterDataManager.Instance.Get(spawnData.monsterId2).nameId;
+            monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
             for (int i = 0; i < spawnData.monsterCnt2; ++i)
             {
-                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, "TestMonster", spawnData.monsterId2);
+                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnData.monsterId2);
 
                 // 위치 지정
                 if (null != monster)
                 {
-                    Vector3 spawnPos = RandomSpawnPos(true);
+                    Vector3 spawnPos = GetRandomSpawnPos();
                     monster.transform.position = spawnPos;
 
                     ++spawnMonsterCount;
@@ -112,7 +123,7 @@ namespace QQ
         /// 그리드 기반 랜덤 소환 위치 지정
         /// </summary>
         /// <returns></returns>
-        private Vector3 RandomSpawnPos(bool isOutsiedCamera)
+        private Vector3 GetRandomSpawnPos()
         {
             Vector3 resultPos = Vector3.zero;
 
@@ -122,61 +133,19 @@ namespace QQ
                 return resultPos;
             }
 
-            CalcCameraGridArea();
-
             // 랜덤 추출 범위 : 그리드로 지정된 영역
-            if (true == isOutsiedCamera && true == camBound.isValid())
+            if (true == camBound.IsValid() && 0 < spawnAreaNodes.Count)
             {
-                int gridW = StageGrid.GridSize.x;
-                int gridH = StageGrid.GridSize.y;
+                int randomNode = -1;
 
-                // 소환 제외 영역 모서리
-                int leftGridX = camBound.leftGridX;
-                int rightGridX = camBound.rightGridX;
-                int topGridY = camBound.topGridY;
-                int bottomGridY = camBound.bottomGridY;
+                int i = 0;
+                do
+                {
+                    randomNode = Random.Range(0, spawnAreaNodes.Count);
+                    i++;
+                } while (true == spawnAreaNodes[randomNode].IsWalkable && i < 500);
 
-                // 제외 영역 기준 상, 하, 좌, 우 구획 4별 노드 수
-                int topNodeCount = (gridH - topGridY) * gridW;
-                int bottomNodeCount = (bottomGridY + 1) * gridW;
-                int leftNodeCount = leftGridX * (topGridY - bottomGridY + 1);
-                int rightNodeCount = (gridW - rightGridX - 1) * (topGridY - bottomGridY + 1);
-
-                int nodeCount = topNodeCount + bottomNodeCount + leftNodeCount + rightNodeCount;
-                int randomNode = Random.Range(0, nodeCount);
-                if (randomNode < topNodeCount)
-                {
-                    // 상단 영역 (camTopGridY+1 ~ StageGrid.GridSize.y - 1)
-                    int idx = randomNode;
-                    int y = topGridY + (idx / gridW) + 1;
-                    int x = idx % gridW;
-                    resultPos = StageGrid.GetNode(x, y).WorldPosition;
-                }
-                else if (randomNode < topNodeCount + bottomNodeCount)
-                {
-                    // 하단 영역 (0 ~ camBottomGridY)
-                    int idx = randomNode - topNodeCount;
-                    int y = idx / gridW;
-                    int x = idx % gridW;
-                    resultPos = StageGrid.GetNode(x, y).WorldPosition;
-                }
-                else if (randomNode < topNodeCount + bottomNodeCount + leftNodeCount)
-                {
-                    // 좌측 영역 (camBottomGridY ~ camTopGridY) & (0 ~ camLeftGridX-1)
-                    int idx = randomNode - topNodeCount - bottomNodeCount;
-                    int y = bottomGridY + (idx / leftGridX);
-                    int x = idx % leftGridX;
-                    resultPos = StageGrid.GetNode(x, y).WorldPosition;
-                }
-                else
-                {
-                    // 우측 영역 (camBottomGridY ~ camTopGridY) & (camRightGridX+1 ~ StageGrid.GridSize.x-1)
-                    int idx = randomNode - topNodeCount - bottomNodeCount - leftNodeCount;
-                    int width = gridW - rightGridX - 1;
-                    int y = bottomGridY + (idx / width);
-                    int x = rightGridX + 1 + (idx % width);
-                    resultPos = StageGrid.GetNode(x, y).WorldPosition;
-                }
+                resultPos = spawnAreaNodes[randomNode].WorldPosition;
             }
             else
             {
@@ -248,8 +217,13 @@ namespace QQ
             camBound.SetCameraHalfSize(playerCameraHalfW, playerCameraHalfH);
         }
 
-        public void CalcCameraGridArea()
+        private void CalcCameraAndSpawnArea()
         {
+            if (0 >= spawnRuntimeDatas.Count)
+            {
+                return;
+            }
+
             Vector3 actorPosition = PoolManager.Instance.actor.transform.position;
             GridNode actorNode = StageGrid.GetNodeFromWorldPos(actorPosition);
 
@@ -268,8 +242,108 @@ namespace QQ
 
                 camBound.SetEdgeGridIndex(actorNode, camTopGridY, camRightGridX, camBottomGridY, camLeftGridX);
 
+                CalcSpawnArea();
             }
         }
+
+        private void CalcSpawnArea()
+        {
+            spawnAreaNodes.Clear();
+
+            int gridW = StageGrid.GridSize.x;
+            int gridH = StageGrid.GridSize.y;
+
+            // 소환 영역 박스
+            int leftGridX = camBound.leftGridX - 1;
+            int rightGridX = camBound.rightGridX + 1;
+            int topGridY = camBound.topGridY + 1;
+            int bottomGridY = camBound.bottomGridY - 1;
+
+            if (leftGridX >= 0)
+            {
+                for (int y = Mathf.Max(bottomGridY, 0); y < topGridY; ++y)
+                {
+                    GridNode node = StageGrid.GetNode(leftGridX, y);
+                    if (null == node)
+                    {
+                        break;
+                    }
+                    if (false == node.IsWalkable)
+                    {
+                        continue;
+                    }
+
+                    spawnAreaNodes.Add(node);
+                }
+            }
+            if (topGridY < gridH)
+            {
+                for (int x = Mathf.Max(leftGridX, 0); x < rightGridX; ++x)
+                {
+                    GridNode node = StageGrid.GetNode(x, topGridY);
+                    if (null == node)
+                    {
+                        break;
+                    }
+                    if (false == node.IsWalkable)
+                    {
+                        continue;
+                    }
+
+                    spawnAreaNodes.Add(node);
+                }
+            }
+            if (rightGridX < gridW)
+            {
+                for (int y = Mathf.Max(bottomGridY, 0) + 1; y < topGridY + 1; ++y)
+                {
+                    GridNode node = StageGrid.GetNode(rightGridX, y);
+                    if (null == node)
+                    {
+                        break;
+                    }
+                    if (false == node.IsWalkable)
+                    {
+                        continue;
+                    }
+
+                    spawnAreaNodes.Add(node);
+                }
+            }
+            if (bottomGridY >= 0)
+            {
+                for (int x = Mathf.Max(leftGridX, 0) + 1; x < rightGridX + 1; ++x)
+                {
+                    GridNode node = StageGrid.GetNode(x, bottomGridY);
+                    if (null == node)
+                    {
+                        break;
+                    }
+                    if (false == node.IsWalkable)
+                    {
+                        continue;
+                    }
+
+                    spawnAreaNodes.Add(node);
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (true == isOnGizmo)
+            {
+                foreach (var spawnArea in spawnAreaNodes)
+                {
+                    Color color = UnityEngine.Color.yellow;
+                    color.a = 0.5f;
+                    Gizmos.color = color;
+
+                    Gizmos.DrawCube(spawnArea.WorldPosition, Vector3.one * (Pathfinder.Instance.Grid.NodeDiameter - Pathfinder.Instance.Grid.NodeRadius / 5));
+                }
+            }
+        }
+
         private struct SpawnRuntimeData
         {
             public int id;                  // 테이블 데이터 id
@@ -291,7 +365,7 @@ namespace QQ
             public int bottomGridY;
             public int leftGridX;
 
-            public bool isValid()
+            public bool IsValid()
             {
                 if (null == centerNode || 0 >= cameraSizeHalf.x || 0 >= cameraSizeHalf.y
                     || 0 >= topGridY - bottomGridY || 0 >= rightGridX - leftGridX)

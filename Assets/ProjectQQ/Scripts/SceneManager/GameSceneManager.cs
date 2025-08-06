@@ -8,7 +8,7 @@ namespace QQ
     public class GameSceneManager : MonoBehaviour
     {
         [SerializeField] private CameraManager cameraManager;
-        GameObject stage;
+        Stage stage;
         private void Awake()
         {
             cameraManager.Init();
@@ -23,8 +23,8 @@ namespace QQ
         private async UniTaskVoid Init()
         {            
             // 스테이지 로드  // TODO. stage BaseGameObject 통해서 값 넣도록 변경
-            stage = await ResManager.AsyncInstantiate(ResType.Stage, "Stage1");
-            Pathfinder.Instance.Grid = stage.GetComponent<GridManager>();
+            GameObject stageObject = await ResManager.AsyncInstantiate(ResType.Stage, "Stage1");
+            stage = stageObject.GetComponent<Stage>();
 
             cameraManager.SetCameraTarget(CameraType.Default, stage.transform);
 
@@ -33,15 +33,10 @@ namespace QQ
             GameObject actor = await PoolManager.Instance.GetObject(GameObjectType.Actor, "Actor", 1);
             cameraManager.SetCameraTarget(CameraType.Player, actor.transform);
 
-            // 몬스터 로드
-            MonsterSpawner spawner = stage.GetComponent<MonsterSpawner>();
-            if (null != spawner)
-            {
-                float cameraHalfH = cameraManager.GetCameraOrthographicSize(CameraType.Player);
-                float cameraHalfW = cameraHalfH * cameraManager.GetCameraAspect();
-
-                spawner.SetStage(10, 1, stage.GetComponent<GridManager>(), cameraHalfW, cameraHalfH);
-            }
+            // 몬스터 스포너 세팅
+            float cameraHalfH = cameraManager.GetCameraOrthographicSize(CameraType.Player);
+            float cameraHalfW = cameraHalfH * cameraManager.GetCameraAspect();
+            stage.SetMonsterSpawner(cameraHalfW, cameraHalfH);
         }
         
         [ContextMenu("스테이지 클리어")]

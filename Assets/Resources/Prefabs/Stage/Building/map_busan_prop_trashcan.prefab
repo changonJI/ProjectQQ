@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3077447107981460391}
   - component: {fileID: 784061205312073601}
   - component: {fileID: 1779325060589146877}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: map_busan_prop_trashcan
   m_TagString: Wall
   m_Icon: {fileID: 0}

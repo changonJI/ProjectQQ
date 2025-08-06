@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2065600708925239802}
   - component: {fileID: 7384951486512608035}
   - component: {fileID: 4220343630407405026}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: map_busan_prop_bush_2
   m_TagString: Wall
   m_Icon: {fileID: 0}

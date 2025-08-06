@@ -198,6 +198,7 @@ namespace QQ
         Building,   // 맵에 배치된 오브젝트
         Item,
         SFX,
+        Stage,      // 맵
     }
 
     public enum SoundType : byte

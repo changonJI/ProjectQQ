@@ -11,7 +11,7 @@ namespace QQ
         public GridManager Grid { get; set; }
         private PathContextPool pathContextPool = new PathContextPool();
 
-        public UniTask FindPathAsync(Vector2 start, Vector2 end, List<GridNode> resultPath)
+        public UniTask FindPathAsync(Vector2 start, Vector2 end, Stack<GridNode> resultPath)
         {
             return UniTask.RunOnThreadPool(() =>
             {
@@ -30,7 +30,7 @@ namespace QQ
             });
         }
 
-        void FindPath(Vector2 startPos, Vector2 targetPos, PathContext context, List<GridNode> resultPath)
+        void FindPath(Vector2 startPos, Vector2 targetPos, PathContext context, Stack<GridNode> resultPath)
         {
             // 간단한 표기를 위한..
             PathNode[,] pathNodes = context.pathNodes;
@@ -96,16 +96,20 @@ namespace QQ
         /// </summary>
         /// <param name="startNode"></param>
         /// <param name="endNode"></param>
-        private void RetracePath(PathNode startNode, PathNode endNode, List<GridNode> resultPath)
+        private void RetracePath(PathNode startNode, PathNode endNode, Stack<GridNode> resultPath)
         {
+            // 경로 넣기 전 초기화
+            resultPath.Clear();
+
             PathNode currentNode = endNode;
 
             while (currentNode != startNode)
             {
-                resultPath.Add(currentNode.BaseNode);
+                resultPath.Push(currentNode.BaseNode);
                 currentNode = currentNode.Parent;
             }
-            resultPath.Reverse();
+
+            resultPath.Push(startNode.BaseNode);
         }
 
         private int GetHeuristicDistance(GridNode nodeA, GridNode nodeB)
