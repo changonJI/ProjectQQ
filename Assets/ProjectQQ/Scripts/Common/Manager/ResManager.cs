@@ -12,7 +12,7 @@ namespace QQ
         private const string objectLocalPath = "Prefabs/Object/";
         private const string textureLocalPath = "Image/UI/";
         private const string effectLocalPath = "Prefabs/Effect/";
-        private const string spriteLocalPath = "Sprite/";
+        private const string spriteLocalPath = "Image/";
 
         /// <summary>
         /// Load a resource from the Resources folder In General

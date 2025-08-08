@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 namespace QQ
 {
@@ -30,16 +31,15 @@ namespace QQ
                 ItemData data = new ItemData
                 {
                     id = short.Parse(columns[0]),
-                    itemType = Enum.Parse<ItemType>(columns[1]),
-                    nameId = int.Parse(columns[3]),
-                    desId = int.Parse(columns[4]),
-                    iconName = columns[5],
-                    lvCount = short.Parse(columns[6]),
-                    skillId = int.Parse(columns[7]),
-                    dropChance = float.TryParse(columns[10], out float chance) ? chance : 0f,
-                    upgradeTo = short.Parse(columns[11]),
-                    isShopItem = ParseBool(columns[13]),
-                    isHidden = ParseBool(columns[14])
+                    itemType = (ItemType)int.Parse(columns[1]),
+                    nameId = int.Parse(columns[2]),
+                    desId = int.Parse(columns[3]),
+                    iconName = columns[4],
+                    lvCount = short.Parse(columns[5]),
+                    // skillId = int.Parse(columns[6]),
+                    targetType = short.Parse(columns[7]),
+                    nextID = int.Parse(columns[8]),
+                    isShopItem = ParseBool(columns[9]),
                 };
 
                 if (!dic_Data.ContainsKey(data.id))
@@ -74,17 +74,61 @@ namespace QQ
                 .Take(count)
                 .ToList();
         }
-        
+
         public List<ItemData> GetAll()
         {
             return dic_Data.Values.ToList();
         }
-        
+
         private bool ParseBool(string value)
         {
             return value.Equals("true", StringComparison.OrdinalIgnoreCase)
                    || value.Equals("TRUE", StringComparison.OrdinalIgnoreCase)
                    || value.Equals("1");
+        }
+        
+        public List<ItemData> GetRandomRouletteItems(int minCount = 3, int maxCount = 5)
+        {
+            List<ItemData> allItems = GetAll()
+                .Where(item => item.id > 0)
+                .DistinctBy(item => item.id)
+                .ToList();
+
+            var groupedByType = allItems
+                .GroupBy(item => item.itemType)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            List<ItemData> result = new List<ItemData>();
+
+            // Step 1: 각 itemType에서 하나씩 선택
+            foreach (var kv in groupedByType)
+            {
+                var itemsOfType = kv.Value;
+                if (itemsOfType.Count > 0)
+                {
+                    var randomItem = itemsOfType[UnityEngine.Random.Range(0, itemsOfType.Count)];
+                    result.Add(randomItem);
+                }
+            }
+
+            // Step 2: 추가 아이템을 무작위로 넣되, 중복 피함
+            int maxSlotCount = UnityEngine.Random.Range(minCount, maxCount + 1);
+
+            var remainingCandidates = allItems
+                .Where(item => !result.Contains(item))
+                .OrderBy(_ => Guid.NewGuid())
+                .ToList();
+
+            foreach (var item in remainingCandidates)
+            {
+                if (result.Count >= maxSlotCount)
+                    break;
+
+                result.Add(item);
+            }
+
+            // 최종 정렬 (옵션)
+            return result.OrderBy(_ => Guid.NewGuid()).ToList();
         }
     }
 }

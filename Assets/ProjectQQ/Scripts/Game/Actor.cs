@@ -1,5 +1,6 @@
 using QQ.FSM;
 using System.Collections.Generic;
+using ProjectQQ.Scripts.UI.Popup;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,7 +12,15 @@ namespace QQ
         
         public PlayerMovement PlayerMovement { get; private set; }
         private PlayerStatData playerStatData;
+        
+        // 레벨
+        private int level = 1;
+        private int currentExp = 0;
+        
+        public int Level => level;
+        public int Exp => currentExp;
 
+        // 인벤토리
         private List<ItemData> inventory;
 
         // 범위
@@ -74,7 +83,10 @@ namespace QQ
             }
             else if(other.gameObject.layer == (int)Layer.Item)
             {
-
+                if (other.gameObject.TryGetComponent<ICollectable>(out var item))
+                {
+                    item.Collect(this);
+                }
             }
         }
 
@@ -107,6 +119,7 @@ namespace QQ
         public float GetAddSpeed() => addSpeed;
         public void SetAddSpeed(float speed) => addSpeed = speed;
         public void CalcAddSpeed(float speed) => addSpeed += speed;
+        
         #endregion
 
         private void ScanObject()
@@ -129,7 +142,7 @@ namespace QQ
 
                     float dist = Vector2.SqrMagnitude(enemy.transform.localPosition - transform.localPosition);
 
-                    LogHelper.Log($"dist : {dist}");
+                    // LogHelper.Log($"dist : {dist}");
 
                     if (dist < minDist)
                     {
@@ -233,6 +246,8 @@ namespace QQ
                 layerMask = 1 << (int)Layer.Enemy,
                 useTriggers = true
             };
+            
+            GameManager.Instance.RegisterActor(this);
         }
 
         private void InitController()
@@ -268,5 +283,89 @@ namespace QQ
         }
 #endif
 
+        /// <summary>
+        /// 체력 회복
+        /// </summary>
+        /// <param name="healAmount">아이템 회복량</param>
+        public void Heal(int healAmount)
+        {
+            if (IsDead) return;
+
+            currentHp += healAmount;
+            currentHp = Mathf.Min(currentHp, maxHp());
+        }
+
+        #region LevelSystem
+
+        /// <summary>
+        /// 다음 레벨까지 필요한 경험치
+        /// </summary>
+        public int ExpToNextLevel
+        {
+            get
+            {
+                var data = ExpDataManager.Instance.Get(level);
+                return data.NextLvExp;
+            }
+        }
+
+        /// <summary>
+        /// 최대 레벨 여부 확인
+        /// </summary>
+        public bool IsMaxLevel
+        {
+            get
+            {
+                var data = ExpDataManager.Instance.Get(level);
+                return data.NextLvExp <= 0;
+            }
+        }
+        
+        public void AddExp(int amount)
+        {
+            if (IsDead || IsMaxLevel) return;
+
+            currentExp += amount;
+
+            while (!IsMaxLevel && currentExp >= ExpToNextLevel)
+            {
+                currentExp -= ExpToNextLevel;
+                level++;
+
+                OnLevelUp();
+            }
+
+            Debug.Log($"경험치 획득: +{amount} → 현재: {currentExp}/{ExpToNextLevel} (Lv.{level})");
+        }
+        
+        private void OnLevelUp()
+        {
+            Debug.Log($"레벨업 → Lv.{level}");
+            
+            GameManager.Instance.TimeScaleChanger(true); // 게임 일시 정지
+            UIClearReward.Instantiate(); // 룰렛 UI 호출
+
+            // 능력치 증가에 따른 플레이어 스탯 변경
+            // 이펙트, 사운드, UI 알림
+        }
+
+        #endregion
+
+        #region Inventory
+
+        public List<ItemData> GetInventory() => inventory;
+
+        public void AddItem(ItemData data)
+        {
+            inventory.Add(data);
+        }
+
+        public void ReplaceItem(ItemData oldItem, ItemData newItem)
+        {
+            inventory.Remove(oldItem);
+            inventory.Add(newItem);
+        }
+
+        #endregion
     }
 }

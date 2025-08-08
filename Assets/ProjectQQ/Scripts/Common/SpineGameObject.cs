@@ -20,6 +20,8 @@ namespace QQ
         [SerializeField] private SkeletonAnimation animWeapon;
         private Skin skinWeapon;
         private readonly Dictionary<string, Spine.Animation> dicAnimWeapon = new Dictionary<string, Spine.Animation>();
+        
+        public SkeletonAnimation SpineAnimator => animBody;
         #endregion
 
         /// <summary>
@@ -270,7 +272,7 @@ namespace QQ
         /// <summary>
         /// 현재 상태별 Spine animation name값 return
         /// </summary>
-        private string GetAnimName(AnimState state)
+        public string GetAnimName(AnimState state)
         {
             switch (state)
             {
@@ -280,6 +282,8 @@ namespace QQ
                     return "run";
                 case AnimState.Roll:
                     return "roll";
+                case AnimState.Die: 
+                    return "die";
                 default:
                     LogHelper.LogError($"Unknown animation state: {state}");
                     return string.Empty;

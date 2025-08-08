@@ -34,13 +34,13 @@ namespace QQ
             cameraManager.SetCameraTarget(CameraType.Player, actor.transform);
 
             // 몬스터 스포너 세팅
-            float cameraHalfH = cameraManager.GetCameraOrthographicSize(CameraType.Player);
-            float cameraHalfW = cameraHalfH * cameraManager.GetCameraAspect();
-            stage.SetMonsterSpawner(cameraHalfW, cameraHalfH);
+            // float cameraHalfH = cameraManager.GetCameraOrthographicSize(CameraType.Player);
+            // float cameraHalfW = cameraHalfH * cameraManager.GetCameraAspect();
+            // stage.SetMonsterSpawner(cameraHalfW, cameraHalfH);
         }
         
         [ContextMenu("스테이지 클리어")]
-        private void StageClearSuccess()
+        private void PlayerLevelUp()
         {
             GameManager.Instance.TimeScaleChanger(true); // 게임 일시 정지
             UIClearReward.Instantiate(); // 룰렛 UI 호출

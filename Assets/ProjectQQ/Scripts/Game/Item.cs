@@ -2,6 +2,17 @@ using UnityEngine;
 
 namespace QQ
 {
+    public enum OriginTypeItem
+    {
+        Pistol = 3,
+        Rifle = 5,
+        Grenade = 8,
+        Dagger = 13,
+        Flashbang = 18,
+        Camera = 23,
+        Cigarette = 28,
+        EnergyDrink = 33
+    }
     public class Item : BaseGameObject, ICollectable
     {
         public override GameObjectType Type => GameObjectType.Item;
@@ -14,11 +25,13 @@ namespace QQ
         protected override void OnTriggerEnter2Ded(Collider2D other) {}
         protected override void OnFocus() {}
         protected override void OnLostFocus() {}
+        protected virtual void OnUseItem(Actor actor) {}
 
-        public void Collect()
+        public void Collect(Actor actor)
         {
             Debug.Log($"Collect Item : {gameObject.name}");
-            Destroy(gameObject);
+            
+            OnUseItem(actor);
         }
     }
 }

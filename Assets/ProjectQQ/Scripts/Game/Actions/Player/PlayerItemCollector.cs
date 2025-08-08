@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace ProjectQQ.Scripts.Game.Actions.Player
 {
-    [Obsolete]
     public class PlayerItemCollector : MonoBehaviour
     {
         public event Action<bool> OnItemCollected; 
@@ -25,28 +24,28 @@ namespace ProjectQQ.Scripts.Game.Actions.Player
             };
         }
 
-        public void TryCollectItems()
-        {
-            Vector2 center = transform.position + new Vector3(0, 9, 0);
-
-            int count = Physics2D.OverlapCircle(center, pickupRange, filter, itemResults);
-
-            if (count <= 0)
-            {
-                OnItemCollected?.Invoke(false);
-                return;
-            }
-
-            for (int i = 0; i < count; i++)
-            {
-                Collider2D col = itemResults[i];
-
-                if (col.TryGetComponent<ICollectable>(out var item))
-                {
-                    item.Collect();
-                }
-            }
-        }
+        // public void TryCollectItems()
+        // {
+        //     Vector2 center = transform.position + new Vector3(0, 9, 0);
+        //
+        //     int count = Physics2D.OverlapCircle(center, pickupRange, filter, itemResults);
+        //
+        //     if (count <= 0)
+        //     {
+        //         OnItemCollected?.Invoke(false);
+        //         return;
+        //     }
+        //
+        //     for (int i = 0; i < count; i++)
+        //     {
+        //         Collider2D col = itemResults[i];
+        //
+        //         if (col.TryGetComponent<ICollectable>(out var item))
+        //         {
+        //             item.Collect();
+        //         }
+        //     }
+        // }
 
         private void OnDrawGizmosSelected()
         {

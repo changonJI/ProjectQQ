@@ -4,7 +4,21 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : DontDestroySingleton<GameManager>
 {
+    private Actor playerActor;
+    public Actor Player => playerActor;
+    
     public override void Init() { }
+
+    public void RegisterActor(Actor actor)
+    {
+        if (actor == null)
+        {
+            Debug.LogWarning("RegisterActor: actor가 null입니다.");
+            return;
+        }
+
+        playerActor = actor;
+    }
    
     #region Playerprefs
     /// <summary>

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
 using QQ;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,6 +11,7 @@ namespace ProjectQQ.Scripts.UI.Popup
         [SerializeField] private Transform slotParent;
         [SerializeField] private UIButtonAndText btnExit;
 
+        private Actor actor;
         private List<UIButtonAndText> btnSlots = new List<UIButtonAndText>();
         private Dictionary<UIButtonAndText, ItemData> btnToData = new Dictionary<UIButtonAndText, ItemData>();
 
@@ -18,10 +19,11 @@ namespace ProjectQQ.Scripts.UI.Popup
 
         protected override void OnInit()
         {
-            // 랜덤 아이템 로드
-            List<ItemData> randomItemDataList = ItemDataManager.Instance.GetRandomItems(slotCount);
+            actor = GameManager.Instance.Player; // Actor 참조
 
-            foreach (var itemData in randomItemDataList)
+            var rewardCandidates = ItemDataManager.Instance.GetRandomRouletteItems();
+
+            foreach (var itemData in rewardCandidates)
             {
                 GameObject itemSlotPrefab = ResManager.LoadResource<GameObject>(ResType.UI, "UIItemSlot");
                 if (itemSlotPrefab == null)
@@ -31,12 +33,9 @@ namespace ProjectQQ.Scripts.UI.Popup
                 }
 
                 GameObject itemSlotGO = Instantiate(itemSlotPrefab, slotParent);
-
-                // 아이템 데이터 설정
                 UIItemSlot itemSlot = itemSlotGO.GetOrAddComponent<UIItemSlot>();
                 itemSlot.SetData(itemData);
 
-                // 버튼 처리
                 UIButtonAndText button = itemSlotGO.GetComponent<UIButtonAndText>();
                 if (button != null)
                 {
@@ -56,7 +55,7 @@ namespace ProjectQQ.Scripts.UI.Popup
                 button.OnClickClear();
             }
         }
-
+        
         protected override void OnStart()
         {
             btnExit.OnClickAdd(OnClickExit);
@@ -95,10 +94,10 @@ namespace ProjectQQ.Scripts.UI.Popup
             btnToData.Clear();
         }
 
-        private void OnClickItemSlot(ItemData itemData)
+        private void OnClickItemSlot(ItemData selectedItem)
         {
-            Debug.Log($"선택한 아이템은 {itemData.nameId.ToText()}입니다.");
-            // 플레이어 아이템 습득
+            // 선택한 아이템 인벤토리에 넣기
+            
             OnClickExit();
         }
 

@@ -10,12 +10,11 @@ public struct ItemData : IData
     
     public short lvCount;           // 아이템 레벨 수 (최대 성장 단계)
     public int skillId;             // 연결된 스킬 ID
+    public short targetType;        // 타겟팅
     
-    public float dropChance;        // 드랍 확률 (예: 0.2 = 20%)
-    public short upgradeTo;         // 진화 대상 아이템 ID
+    public int nextID;         // 진화 대상 아이템 ID
 
     public bool isShopItem;         // 상점 노출 여부
-    public bool isHidden;           // UI에서 숨김 여부
 
     public void Clear()
     {
@@ -26,10 +25,9 @@ public struct ItemData : IData
         iconName = string.Empty;
         lvCount = 0;
         skillId = 0;
-        dropChance = 0f;
-        upgradeTo = 0;
+        targetType = 0;
+        nextID = 0;
         isShopItem = false;
-        isHidden = false;
     }
 
     public void Set(ItemData data)
@@ -41,9 +39,8 @@ public struct ItemData : IData
         iconName = data.iconName;
         lvCount = data.lvCount;
         skillId = data.skillId;
-        dropChance = data.dropChance;
-        upgradeTo = data.upgradeTo;
+        targetType = data.targetType;
+        nextID = data.nextID;
         isShopItem = data.isShopItem;
-        isHidden = data.isHidden;
     }
 }

@@ -19,7 +19,7 @@ public class DropItem : Item
     {
         _itemData = itemData;
 
-        iconImage.sprite = LoadItemIcon(_itemData.iconName);
+        iconImage.sprite = LoadItemIcon(_itemData.nameId.ToText());
         // 이펙트 적용
     }
 

@@ -13,7 +13,8 @@ namespace QQ
         private MonsterData monsterData;
         
         // 체력
-        private int maxHp() => monsterData.hp;
+        // private int maxHp() => monsterData.hp;
+        private int maxHp() => 1;
         private int currentHp;
         
         public MonsterMovement MonsterMovement { get; private set; }
@@ -74,7 +75,8 @@ namespace QQ
 
             if (currentHp <= 0)
             {
-                Die();
+                stateContext.ChangeState(stateContext.GetDieState());
+                // Die();
             }
             else
             {
@@ -82,40 +84,41 @@ namespace QQ
             }
         }
 
-        private void Die()
+        public async UniTaskVoid Die()
         {
             Debug.Log("몬스터 사망");
 
             // TODO: 사망 애니메이션 또는 효과 -> UniTask
             // TODO: 아이템 드랍
-            TryDropItem();
+            await TryDropMonstItem();
             
-            PoolManager.Instance.ReleaseObject(this.gameObject);
+            Destroy(gameObject);
+            // PoolManager.Instance.ReleaseObject(this.gameObject);
         }
 
-        private async UniTaskVoid TryDropItem()
+        private async UniTask TryDropMonstItem()
         {
-            // 1. 소비형 아이템만 필터링
             List<ItemData> candidates = ItemDataManager.Instance.GetAll()
-                .Where(data => data.itemType == ItemType.Consumable) // item_type == 1
+                .Where(data => data.itemType == ItemType.Consumable)
                 .ToList();
+
+            // 랜덤 시드에 시간 요소를 더해 다양화
+            float timeOffset = Time.time * 1000f;
 
             foreach (var item in candidates)
             {
-                // 2. 드랍 확률 검사
-                if (UnityEngine.Random.value <= item.dropChance)
+                // 시간 offset으로 좌표 무작위성을 더함
+                float randX = Mathf.PerlinNoise(item.id, timeOffset) - 0.5f;
+                float randZ = Mathf.PerlinNoise(item.id + 999, timeOffset) - 0.5f;
+                Vector3 dropPosition = transform.position + new Vector3(randX, 0, randZ);
+
+                string prefabName = LanguageDataManager.Instance.Get(item.nameId, ConturyType.English);
+                GameObject itemPrefab = await PoolManager.Instance.GetObject(GameObjectType.Item, prefabName, item.id);
+                itemPrefab.transform.position = dropPosition;
+
+                if (itemPrefab.TryGetComponent(out DropItem itemComponent))
                 {
-                    // 3. 아이템 드랍
-                    GameObject dropObj = await PoolManager.Instance.GetObject(GameObjectType.Item, "DropItem", 5);
-                    dropObj.transform.position = transform.position;
-
-                    if (dropObj.TryGetComponent(out DropItem dropItem))
-                    {
-                        dropItem.DataInit(item);
-                    }
-
-                    Debug.Log($"[드랍 성공] 몬스터가 {item.id} 아이템을 드랍했습니다.");
-                    break; // 한 개만 드랍 후 종료
+                    itemComponent.DataInit(item);
                 }
             }
         }

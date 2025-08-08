@@ -15,6 +15,6 @@ namespace QQ
     
     public interface ICollectable
     {
-        void Collect();
+        void Collect(Actor actor);
     }
 }
