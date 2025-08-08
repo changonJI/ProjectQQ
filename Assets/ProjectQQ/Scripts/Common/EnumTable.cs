@@ -19,9 +19,7 @@ namespace QQ
         MonsterData = 9,
         DropData = 10,
         BossPatternData = 11,
-
-        // table Type 미정
-        SkillData = 20,
+        SkillData = 12,
     }
 
     public enum MonsterType : byte
