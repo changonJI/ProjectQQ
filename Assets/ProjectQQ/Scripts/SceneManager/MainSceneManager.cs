@@ -32,12 +32,20 @@ namespace QQ
                 GameManager.Instance.Init();
                 InputManager.Instance.Init();
                 SoundManager.Instance.Init();
-                EffectManager.Instance.Init();
+                SkillManager.Instance.Init();
                 PoolManager.Instance.Init();
+
+                //TODO: VideoManger 추가 필요
             }
 
             if (!isFirst)
                 isFirst = true;
+
+            //TODO : Intro 체크
+            if (GameManager.Instance.IsValidPlayer())
+            {
+                //TODO: VideoManager 실행
+            }
 
             UIMainScene.Instantiate();
         }

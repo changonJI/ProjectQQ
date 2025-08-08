@@ -63,7 +63,7 @@ namespace QQ
         protected abstract void OnStart();
 
         /// <summary>
-        /// start 이후 1회 호출, SetActive(true) 기능을 하는 메소드
+        /// start 이후 1회 호출, gameObject.SetActive(true) 기능을 하는 메소드
         /// </summary>
         protected void Focus()
         {

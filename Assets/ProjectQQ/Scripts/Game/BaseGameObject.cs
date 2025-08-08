@@ -11,10 +11,12 @@ namespace QQ
         private bool isActive;
         private bool isStart;
         protected int tableID = 0;
+        protected Vector3 spawnPos = Vector3.zero;
 
         public virtual float GetSpeed() => 0f;
 
-        public Rigidbody2D RigidBody { get; protected set; }
+        protected Rigidbody2D rigid;
+        protected CapsuleCollider2D col;
 
         #region FSM
         public BaseStateContext stateContext;
@@ -29,9 +31,10 @@ namespace QQ
         protected virtual void Awake()
         {
             status = new StatusEffectController();
-            RigidBody = GetComponent<Rigidbody2D>();
+            rigid = GetComponent<Rigidbody2D>();
+            col = GetComponent<CapsuleCollider2D>();
 
-            if (null == RigidBody)
+            if (null == rigid)
             {
                 LogHelper.LogError($"{gameObject.name} 리지드바디2D가 없음");
             }
@@ -115,10 +118,15 @@ namespace QQ
 
         abstract protected void OnUpdate();
 
+        /// <summary>
+        /// Start에서 TableData가 세팅 되므로 TableData 세팅 이후 FixedUpdate가 실행
+        /// </summary>
         protected virtual void FixedUpdate()
         {
-            OnFixedUpdate();
+            if(isStart)
+                OnFixedUpdate();
         }
+
         abstract protected void OnFixedUpdate();
 
         protected virtual void LateUpdate()
@@ -154,6 +162,20 @@ namespace QQ
             {
                 LogHelper.LogError($"{gameObject.name} Table ID 설정 안 됨 : {tableID}");
             }
+        }
+
+        public void SetSpawnPos(Vector3 pos)
+        {
+            transform.localPosition = pos;
+            spawnPos = pos;
+        }
+
+        public Rigidbody2D GetRigid() => rigid;
+        public CapsuleCollider2D GetCollider() => col;
+
+        public void Move(Vector2 vec)
+        {
+            rigid.MovePosition(transform.localPosition + (Vector3)vec);
         }
     }
 }

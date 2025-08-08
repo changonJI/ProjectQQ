@@ -4,7 +4,7 @@ using UnityEngine;
 namespace QQ
 {
     /// <summary>
-    /// ÅØ½ºÆ® ÀÔ·Â ÆË¾÷
+    /// í…ìŠ¤íŠ¸ ì…ë ¥ íŒì—…
     /// </summary>
     public class UICreateNickName : UI<UICreateNickName>
     {
@@ -21,9 +21,9 @@ namespace QQ
 
         protected override void OnInit()
         {
-            txtTitle.text = "Å¸ÀÌÆ²";
+            txtTitle.text = "íƒ€ì´í‹€";
             inputField.text = string.Empty;
-            txtDefault.text = "ÀÔ·ÂÄ­";
+            txtDefault.text = "ì…ë ¥ì¹¸";
         }
 
         protected override void OnStart()
@@ -53,14 +53,14 @@ namespace QQ
         {
             if (inputField.text.Length > limitTxt)
             {
-                LogHelper.LogError("±ÛÀÚ ÃÊ°ú. ÆË¾÷ ¶ç¿ï°Í. ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä");
+                LogHelper.LogError("ê¸€ì ì´ˆê³¼. íŒì—… ë„ìš¸ê²ƒ. ë‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”");
             }
             else
             {
                 UIPopupConfirm.Instantiate(
                     okAction: CancelNickName,
                     closeAction: ConfirmNickName,
-                    "º¯°æ ÇÒ ¼ö ¾ø½À´Ï´Ù.", "Ãë¼Ò", "È®ÀÎ"
+                    "ë³€ê²½ í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.", "ì·¨ì†Œ", "í™•ì¸"
                 );
             }
         }
@@ -94,6 +94,8 @@ namespace QQ
             UIPopupConfirm.CloseUI();
             UIMainScene.Instantiate();
             Close();
+
+            //TODO : GameScene 1-1 ë°”ë¡œ ì§„ì… ì²˜ë¦¬
         }
 
         private void CancelNickName()

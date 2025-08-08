@@ -10,7 +10,8 @@ namespace QQ
     
     public interface IDamageable
     {
-        void TakeDamage(int damage, Vector3 transformPosition);
+        void TakeDamage(int damage, Vector3 lastHitPos);
+        void TakeStatus(SkillOptionType type, float value = 0);
     }
     
     public interface ICollectable

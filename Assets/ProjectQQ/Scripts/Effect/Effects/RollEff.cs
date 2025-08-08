@@ -1,6 +1,6 @@
 namespace QQ
 {
-    public class RollEff : EffectSystem
+    public class RollEff : SkillSystem
     {
         protected override void OnInit()
         {

@@ -1,6 +1,6 @@
+using ProjectQQ.Scripts.UI.Popup;
 using QQ.FSM;
 using System.Collections.Generic;
-using ProjectQQ.Scripts.UI.Popup;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -23,19 +23,29 @@ namespace QQ
         // 인벤토리
         private List<ItemData> inventory;
 
-        // 범위
+        // 공격 범위 범위
         private float minDist = float.MaxValue;
-        private readonly float attackRadius = 30f;
-        private readonly float attackRadiusRange = 900f;
+        private float attackRadius;
+        // attackRadius 제곱값(sqrMagnitude 값 계산)
+        private float attackRadiusRange => Mathf.Pow(attackRadius, 2);
+
         private readonly Collider2D[] hitEnemy = new Collider2D[100];
         private ContactFilter2D enemyFilter;
         private Transform target = null;
+
+        // 아이템 pull 범위
+        private float itemRadius;
+        private readonly Collider2D[] hitItem = new Collider2D[100];
+        private ContactFilter2D itemFilter;
 
         // 이속
         public override float GetSpeed() => playerStatData.baseSpeed + addSpeed;
         private float addSpeed = 0f;
         // 체력
         private int maxHp() => playerStatData.heartMax;
+        /// <summary>
+        /// 최초 1회(Init) heartMax로 체크
+        /// </summary>
         private int currentHp;
         public bool IsDead = false;
         
@@ -59,7 +69,8 @@ namespace QQ
 
         protected override void OnFixedUpdate()
         {
-            ScanObject();
+            ScanMonsterObject();
+            ScanItemObject();
         }
 
         protected override void OnUpdate()
@@ -122,7 +133,7 @@ namespace QQ
         
         #endregion
 
-        private void ScanObject()
+        private void ScanMonsterObject()
         {
             int count = Physics2D.OverlapCircle(transform.localPosition + new Vector3(0, 9, 0), attackRadius, enemyFilter, hitEnemy);
 
@@ -155,12 +166,31 @@ namespace QQ
             if (target == null) return;
             if(target.gameObject.activeSelf == false) return;
 
-            Attack(target, minDist);
+            Attack(minDist);
+        }
+
+        private void ScanItemObject()
+        {
+            int count = Physics2D.OverlapCircle(transform.localPosition + new Vector3(0, 9, 0), itemRadius, itemFilter, hitItem);
+
+            for (int i = 0; i < count; i++)
+            {
+                var item = hitItem[i];
+
+                if (item == null) continue;
+                if(item.gameObject.activeSelf == false) continue;
+
+                Vector3 dir = (item.transform.localPosition - transform.localPosition).normalized;
+
+                // TODO: 5f는 임시로 넣은 아이템 이속 값
+                // 자석효과
+                item.transform.localPosition += (dir * 5f * Time.fixedDeltaTime);
+            }
         }
 
         #region 공격 + 피격 (수정 예정)
 
-        private void Attack(Transform target, float dist)
+        private void Attack(float dist)
         {
             // 현재 FSM 체크
             if (stateContext.GetCurFSMType() == FSMState.Die || stateContext.GetCurFSMType() == FSMState.Knockback) return;
@@ -168,15 +198,14 @@ namespace QQ
             // 현재 들고 있는 
             foreach(var weapon in inventory)
             {
-                //TODO : TableID로 공격 범위 체크
                 // 사거리 체크
                 if (dist > attackRadiusRange) continue;
 
-                //TODO: Table ID로 id, duration 필요
+                var skillData = SkillDataManager.Instance.Get(weapon.skillId);
                 // CoolTime 체크
-                if (!CoolTimeManager.Instance.IsItemReady(weapon.skillId, 5f)) continue;
+                if (!CoolTimeManager.Instance.IsItemReady(weapon.skillId, skillData.cooltime)) continue;
 
-                EffectManager.Instance.PlayEffect(weapon.skillId).Forget();
+                SkillManager.Instance.UseSkill(weapon.skillId, transform.localPosition).Forget();
             }
         }
 
@@ -225,6 +254,37 @@ namespace QQ
             ChangeKnockBackState();
         }
 
+        public void TakeStatus(SkillOptionType type, float value = 0)
+        {
+            switch (type)
+            {
+                case SkillOptionType.Xp_Pull:
+                    itemRadius += value;
+                    break;
+                case SkillOptionType.Heal:
+                    int addHp = Mathf.Clamp((int)value + currentHp, currentHp, maxHp());
+                    currentHp = addHp;
+                    break;
+                case SkillOptionType.MoveSpdUp:
+                case SkillOptionType.MoveSpdDown:
+                    CalcAddSpeed(value);
+                    break;
+                case SkillOptionType.Stun:
+                    status.ApplyStatus(StatusEffectController.StatusEffect.Stunned, value);
+                    break;
+                case SkillOptionType.Invincible:
+                    status.ApplyStatus(StatusEffectController.StatusEffect.Invincible, value);
+                    break;
+
+                case SkillOptionType.None:
+                case SkillOptionType.Damage:
+                case SkillOptionType.Explosion:
+                default:
+                    // 기본적으로 데미지 타입은 처리하지 않음
+                    // Explosion은 BulletDamage에서 처리
+                    break;
+            }
+        }
         #endregion
 
         public Transform GetTarget()
@@ -246,6 +306,17 @@ namespace QQ
                 layerMask = 1 << (int)Layer.Enemy,
                 useTriggers = true
             };
+
+            itemFilter = new ContactFilter2D()
+            {
+                useLayerMask = true,
+                layerMask = 1 << (int)Layer.Item,
+                useTriggers = true
+            };
+
+            currentHp = maxHp();
+            attackRadius = GameConf.AttackRadius;
+            itemRadius = GameConf.ItemRadius;
             
             GameManager.Instance.RegisterActor(this);
         }

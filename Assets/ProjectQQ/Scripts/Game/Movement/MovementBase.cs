@@ -97,7 +97,7 @@ namespace QQ
         protected virtual void Move(Vector2 dir, float velocity)
         {
             Vector2 vec2DeltaMovement = Time.fixedDeltaTime * velocity * dir;
-            Owner.RigidBody.MovePosition(Owner.RigidBody.position + vec2DeltaMovement);
+            Owner.Move(vec2DeltaMovement);
 
             // refresh last move direction on movement
             LastMoveDirection = dir;

@@ -30,7 +30,7 @@ namespace QQ
 
             await UniTask.WaitForSeconds(3f); // 맵 로드 후 딜레이
             // 플레이어 로드
-            GameObject actor = await PoolManager.Instance.GetObject(GameObjectType.Actor, "Actor", 1);
+            GameObject actor = await PoolManager.Instance.GetObject(GameObjectType.Actor, "Actor", Vector3.zero, PlayerStatDataManager.Instance.Get(1).playerLevel);
             cameraManager.SetCameraTarget(CameraType.Player, actor.transform);
 
             // 몬스터 스포너 세팅

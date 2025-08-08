@@ -23,13 +23,13 @@ namespace QQ
         public System.Action OnClickAction
         {
             get => OnClick;
-            set => OnClick += value;
+            set => OnClick = value;
         }
 
         public System.Action OnLongClickAction
         {
             get => OnLongClick;
-            set => OnLongClick += value;
+            set => OnLongClick = value;
         }
 
         private void Update()
@@ -41,7 +41,7 @@ namespace QQ
         }
 
         /// <summary>
-        /// ¹öÆ° ¹üÀ§ ¾È¿¡¼­ ¸¶¿ì½º¸¦ ´©¸£´Â ¼ø°£ÀÇ ÀÌº¥Æ®
+        /// ë²„íŠ¼ ë²”ìœ„ ì•ˆì—ì„œ ë§ˆìš°ìŠ¤ë¥¼ ëˆ„ë¥´ëŠ” ìˆœê°„ì˜ ì´ë²¤íŠ¸
         /// </summary>
         public override void OnPointerDown(PointerEventData eventData)
         {
@@ -50,7 +50,7 @@ namespace QQ
         }
 
         /// <summary>
-        /// ¹öÆ° ¹üÀ§ »ó°ü¾øÀÌ ¸¶¿ì½º¸¦ ´©¸£°í ¶®À» ¶§ ¹ß»ıÇÏ´Â ÀÌº¥Æ®
+        /// ë²„íŠ¼ ë²”ìœ„ ìƒê´€ì—†ì´ ë§ˆìš°ìŠ¤ë¥¼ ëˆ„ë¥´ê³  ë• ì„ ë•Œ ë°œìƒí•˜ëŠ” ì´ë²¤íŠ¸
         /// </summary>
         public override void OnPointerUp(PointerEventData eventData)
         {
@@ -58,7 +58,7 @@ namespace QQ
         }
 
         /// <summary>
-        /// ¹öÆ° ¹üÀ§ ¾È¿¡¼­ ¸¶¿ì½º¸¦ ´©¸£°í ¶­À» ¶§ ¹ß»ıÇÏ´Â ÀÌº¥Æ®
+        /// ë²„íŠ¼ ë²”ìœ„ ì•ˆì—ì„œ ë§ˆìš°ìŠ¤ë¥¼ ëˆ„ë¥´ê³  ë•Ÿì„ ë•Œ ë°œìƒí•˜ëŠ” ì´ë²¤íŠ¸
         /// </summary>
         public override void OnPointerClick(PointerEventData eventData)
         {
@@ -71,7 +71,7 @@ namespace QQ
                 OnClick?.Invoke();
             }
 
-            // »ç¿îµå Àç»ı
+            // ì‚¬ìš´ë“œ ì¬ìƒ
             SoundManager.Instance.PlayUI(audioClip);
 
             SetPress(false);

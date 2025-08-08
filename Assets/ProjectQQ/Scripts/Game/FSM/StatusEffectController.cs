@@ -10,12 +10,9 @@ namespace QQ.FSM
         public enum StatusEffect
         {
             None        = 0,
-            Invincible  = 1 << 0,
-            Poison      = 1 << 1,
-            Stunned     = 1 << 2,
-            Slowed      = 1 << 3,
-            Silenced    = 1 << 4,
-            Burning     = 1 << 5
+            Stunned     = 1 << 1,
+            Slowed      = 1 << 2,
+            Invincible  = 1 << 3,
         }
         
         private StatusEffect current = StatusEffect.None;
@@ -30,7 +27,7 @@ namespace QQ.FSM
         {
             if(current == StatusEffect.None) return;
             
-            // »óÅÂÀÌ»ó Å¸ÀÌ¸Ó
+            // ìƒíƒœì´ìƒ íƒ€ì´ë¨¸
             expiredBuffer.Clear();
 
             foreach (var kvp in timers)
@@ -52,8 +49,8 @@ namespace QQ.FSM
             {
                 current |= effect;
                 OnStatusApplied?.Invoke(effect);
-                ShowEffectVisual(effect);     // TODO : ÀÌÆåÆ® Ã³¸®
-                UpdateUI(effect, true);       // TODO : UI Ç¥½Ã
+                ShowEffectVisual(effect);     // TODO : ì´í™íŠ¸ ì²˜ë¦¬
+                UpdateUI(effect, true);       // TODO : UI í‘œì‹œ
             }
 
             if (duration > 0f)
@@ -69,8 +66,8 @@ namespace QQ.FSM
                 current &= ~effect;
                 timers.Remove(effect);
                 OnStatusRemoved?.Invoke(effect);
-                HideEffectVisual(effect);     // TODO : ÀÌÆåÆ® Á¦°Å
-                UpdateUI(effect, false);      // TODO : UI Á¦°Å
+                HideEffectVisual(effect);     // TODO : ì´í™íŠ¸ ì œê±°
+                UpdateUI(effect, false);      // TODO : UI ì œê±°
             }
         }
 
@@ -81,17 +78,17 @@ namespace QQ.FSM
 
         private void ShowEffectVisual(StatusEffect effect)
         {
-            // ¿¹: particleSystem.Play() or ÀÌÆåÆ® ¸Å´ÏÀú È£Ãâ
+            // ì˜ˆ: particleSystem.Play() or ì´í™íŠ¸ ë§¤ë‹ˆì € í˜¸ì¶œ
         }
 
         private void HideEffectVisual(StatusEffect effect)
         {
-            // ¿¹: particleSystem.Stop() or ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+            // ì˜ˆ: particleSystem.Stop() or ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
         }
 
         private void UpdateUI(StatusEffect effect, bool enable)
         {
-            // ¿¹: »óÅÂÀÌ»ó ¾ÆÀÌÄÜ on/off
+            // ì˜ˆ: ìƒíƒœì´ìƒ ì•„ì´ì½˜ on/off
         }
     }
 }

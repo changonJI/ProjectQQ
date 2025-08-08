@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using QQ.FSM;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace QQ
@@ -113,8 +113,7 @@ namespace QQ
                 Vector3 dropPosition = transform.position + new Vector3(randX, 0, randZ);
 
                 string prefabName = LanguageDataManager.Instance.Get(item.nameId, ConturyType.English);
-                GameObject itemPrefab = await PoolManager.Instance.GetObject(GameObjectType.Item, prefabName, item.id);
-                itemPrefab.transform.position = dropPosition;
+                GameObject itemPrefab = await PoolManager.Instance.GetObject(GameObjectType.Item, prefabName, dropPosition, item.id);
 
                 if (itemPrefab.TryGetComponent(out DropItem itemComponent))
                 {
@@ -140,6 +139,10 @@ namespace QQ
             var data = MonsterDataManager.Instance.Get(tableID);
 
             monsterData.Set(data);
+        }
+
+        public void TakeStatus(SkillOptionType type, float value = 0)
+        {
         }
     }
 }

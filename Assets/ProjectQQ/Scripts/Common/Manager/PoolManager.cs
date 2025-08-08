@@ -57,7 +57,7 @@ namespace QQ
                 sfxRoot = SFXs.transform;
             }
         }
-        private async UniTask<BaseGameObject> CreateBaseGameObject(GameObjectType objType, string prefabName, int tableID)
+        private async UniTask<BaseGameObject> CreateBaseGameObject(GameObjectType objType, string prefabName, Vector3 spawnPos, int tableID)
         {
             GameObject obj = await ResManager.AsyncInstantiate(ObjTypeToResType(objType), prefabName);
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
@@ -71,12 +71,13 @@ namespace QQ
             }
 
             baseGameObj.SetTableID(tableID);
+            baseGameObj.SetSpawnPos(spawnPos);
             baseGameObj.SetActive(true);
 
             return baseGameObj;
         }
 
-        public async UniTask<GameObject> GetObject(GameObjectType objType, string prefabName, int tableID = 0)
+        public async UniTask<GameObject> GetObject(GameObjectType objType, string prefabName, Vector3 spawnPos, int tableID = 0)
         {
             GameObject obj = null;
 
@@ -84,7 +85,7 @@ namespace QQ
             if (objType == GameObjectType.Actor)
             {
                 // Create Object Instance
-                BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, tableID);
+                BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, spawnPos, tableID);
 
                 actor = baseGameObj as Actor;
 
@@ -109,7 +110,7 @@ namespace QQ
             if (0 == poolPair.queue.Count && poolCapacity > poolPair.list.Count)
             {
                 // Create Object Instance
-                BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, tableID);
+                BaseGameObject baseGameObj = await CreateBaseGameObject(objType, prefabName, spawnPos, tableID);
 
                 obj = baseGameObj.gameObject;
                 obj.name = prefabName;
@@ -121,6 +122,7 @@ namespace QQ
             {
                 BaseGameObject poolObject = poolPair.queue.Dequeue();
 
+                poolObject.SetSpawnPos(spawnPos);
                 poolObject.SetActive(true);
                 obj = poolObject.gameObject;
             }
@@ -159,7 +161,7 @@ namespace QQ
                 GameObjectType.Actor => obj.AddComponent<Actor>(),
                 GameObjectType.Monster => obj.AddComponent<Monster>(),
                 GameObjectType.Item => obj.AddComponent<Item>(),
-                GameObjectType.SFX => obj.AddComponent<EffectSystem>(),
+                GameObjectType.SFX => obj.AddComponent<SkillSystem>(),
                 _ => null
             };
 

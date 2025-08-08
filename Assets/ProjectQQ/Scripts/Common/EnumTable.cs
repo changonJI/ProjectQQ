@@ -19,6 +19,9 @@ namespace QQ
         MonsterData = 9,
         DropData = 10,
         BossPatternData = 11,
+
+        // table Type 미정
+        SkillData = 20,
     }
 
     public enum MonsterType : byte
@@ -56,6 +59,28 @@ namespace QQ
         Combine,   // 조합 재료/결과 아이템
         None = 99
     }
+
+    public enum SkillType : byte
+    {
+        None = 0,
+        bullet = 1, 
+        box = 2,
+        item = 3,
+    }
+
+    public enum SkillOptionType : byte
+    {
+        None = 0,
+        Damage = 1, // 범위 데미지
+        Explosion = 2, // 폭발 이후 스킬 id 값
+        Xp_Pull = 3, // 경험치 획득범위 증가
+        Heal = 4, // 체력 회복
+        MoveSpdUp = 5, // 이동 속도 증가
+        MoveSpdDown = 6, // 이동 속도 감소
+        Stun = 7, // 기절 시간
+        Invincible = 8, // 무적
+    }
+
     #endregion
 
     #region PlayerPref

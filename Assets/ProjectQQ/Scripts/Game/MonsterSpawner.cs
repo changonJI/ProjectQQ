@@ -1,6 +1,6 @@
-using UnityEngine;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace QQ
 {
@@ -89,14 +89,11 @@ namespace QQ
             string monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
             for (int i = 0; i < spawnData.monsterCnt1; ++i)
             {
-                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnData.monsterId1);
+                Vector3 spawnPos = GetRandomSpawnPos();
+                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnPos, spawnData.monsterId1);
 
-                // 위치 지정
                 if (null != monster)
                 {
-                    Vector3 spawnPos = GetRandomSpawnPos();
-                    monster.transform.position = spawnPos;
-
                     ++spawnMonsterCount;
                 }
             }
@@ -106,14 +103,11 @@ namespace QQ
             monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
             for (int i = 0; i < spawnData.monsterCnt2; ++i)
             {
-                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnData.monsterId2);
+                Vector3 spawnPos = GetRandomSpawnPos();
+                GameObject monster = await PoolManager.Instance.GetObject(GameObjectType.Monster, monsterName, spawnPos, spawnData.monsterId2);
 
-                // 위치 지정
                 if (null != monster)
                 {
-                    Vector3 spawnPos = GetRandomSpawnPos();
-                    monster.transform.position = spawnPos;
-
                     ++spawnMonsterCount;
                 }
             }

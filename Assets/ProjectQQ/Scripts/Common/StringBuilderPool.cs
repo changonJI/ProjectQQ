@@ -6,11 +6,11 @@ namespace QQ
     public static class StringBuilderPool
     {
         private static ObjectPool<StringBuilder> pool = new ObjectPool<StringBuilder>(
-            createFunc: () => new StringBuilder(),  // StringBuilder »ı¼º, ÃÊ±â ¹öÆÛ »çÀÌÁî default : 16
-            actionOnGet: sb => sb.Clear(),  // °¡Á®¿Ã ¶§ ÃÊ±âÈ­
-            actionOnRelease: sb => sb.Clear(),  // ¹İÈ¯½Ã ÃÊ±âÈ­
-            actionOnDestroy: sb => sb.Clear(), // »èÁ¦ ½Ã ÃÊ±âÈ­
-            maxSize: 1000  // ÃÖ´ë Å©±â
+            createFunc: () => new StringBuilder(),  // StringBuilder ìƒì„±, ì´ˆê¸° ë²„í¼ ì‚¬ì´ì¦ˆ default : 16
+            actionOnGet: sb => sb.Clear(),  // ê°€ì ¸ì˜¬ ë•Œ ì´ˆê¸°í™”
+            actionOnRelease: sb => sb.Clear(),  // ë°˜í™˜ì‹œ ì´ˆê¸°í™”
+            actionOnDestroy: sb => sb.Clear(), // ì‚­ì œ ì‹œ ì´ˆê¸°í™”
+            maxSize: 1000  // ìµœëŒ€ í¬ê¸°
         );
 
         public static string Get(params string[] text)

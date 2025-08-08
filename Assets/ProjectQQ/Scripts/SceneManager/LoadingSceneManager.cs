@@ -83,6 +83,8 @@ namespace QQ
             // CloseUI 대기
             await UniTask.Yield();
 
+            // TODO: chapter - 1에 처음 진입했다면 영상실행
+            // 그 이후 UIDialogue 호출
             UIDialogue.Instantiate(okAction: () => LoadSceneAsync(gameSceneName).Forget());
 
         }

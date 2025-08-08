@@ -129,7 +129,7 @@ namespace QQ
             skinBody = new Skin("BodySkin");
             skinWeapon = new Skin("WeaponSkin");
 
-            var findSkinBody = animBody.skeleton.Data.FindSkin("default");
+            var findSkinBody = animBody.skeleton.Data.FindSkin(GameConf.SpineBody0);
             if (findSkinBody != null)
             {
                 skinBody.AddSkin(findSkinBody);
@@ -142,7 +142,7 @@ namespace QQ
 
             if (Type == GameObjectType.Actor)
             {
-                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin("Weapon0");
+                var findSkinWeapon = animWeapon.skeleton.Data.FindSkin(GameConf.SpineWeapon0);
 
                 if (findSkinWeapon != null)
                 {
@@ -277,13 +277,13 @@ namespace QQ
             switch (state)
             {
                 case AnimState.Idle:
-                    return "idle";
+                    return GameConf.AnimIdle;
                 case AnimState.Run:
-                    return "run";
+                    return GameConf.AnimRun;
                 case AnimState.Roll:
-                    return "roll";
-                case AnimState.Die: 
-                    return "die";
+                    return GameConf.AnimRoll;
+                case AnimState.Die:
+                    return GameConf.AnimDie;
                 default:
                     LogHelper.LogError($"Unknown animation state: {state}");
                     return string.Empty;
@@ -302,6 +302,8 @@ namespace QQ
                 case AnimState.Run:
                     return true;
                 case AnimState.Roll:
+                    return false;
+                case AnimState.Die:
                     return false;
                 default:
                     LogHelper.LogError($"Unknown animation state: {state}");

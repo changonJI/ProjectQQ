@@ -83,14 +83,14 @@ namespace QQ
         }
 
         /// <summary>
-        /// Dialogue UI ÃÊ±âÈ­
+        /// Dialogue UI ì´ˆê¸°í™”
         /// </summary>
         private void InitUI()
         {
-            //TODO: ÀúÀåµÈ µ¥ÀÌÅÍ¿¡¼­ ÇöÀç Ã©ÅÍ¸¦ ²£´ÂÁö ¾È²£´ÂÁö¿¡µû¶ó skip ¹öÆ° on/off Ã³¸®ÇÏ±â
+            //TODO: ì €ì¥ëœ ë°ì´í„°ì—ì„œ í˜„ì¬ ì±•í„°ë¥¼ ê¹¼ëŠ”ì§€ ì•ˆê¹¼ëŠ”ì§€ì—ë”°ë¼ skip ë²„íŠ¼ on/off ì²˜ë¦¬í•˜ê¸°
             //btnSkip.gameObject.SetActive(false); // TODO: Set Skip Button Active State
 
-            //TODO: Table Data ChapterIndex·Î GetÇÏ±â
+            //TODO: Table Data ChapterIndexë¡œ Getí•˜ê¸°
             //tableData = DialogueDataMagaer.Instance.Get(chapterIndex);
             //imgBg.sprite.; // TODO: Set Background Sprite
             imgL.texture = null; // TODO: Set Left Image Sprite
@@ -101,14 +101,13 @@ namespace QQ
 
         private void OnClickNext()
         {
-            //TODO : ¸¶Áö¸· ÆäÀÌÁö Ã¼Å©
+            //TODO : ë§ˆì§€ë§‰ í˜ì´ì§€ ì²´í¬
             if (page == 1)
             {
                 OnNextScene?.Invoke();
             }
             else
             {
-                Debug.Log("TestNest");
                 SetImage(UIDialouguePos.Left, "Popup");
 
                 page++;
