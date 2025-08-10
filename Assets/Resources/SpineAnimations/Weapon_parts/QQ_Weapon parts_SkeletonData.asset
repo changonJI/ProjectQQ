@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: QQ_Weapon parts_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: 383823c12a0fb30408b563efff0ac354, type: 2}
+  - {fileID: 11400000, guid: 08d109f47edbcc443bcce1d47daeba59, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: d2b3bf476e2d6184091c2adfb59131cb, type: 3}
   isUpgradingBlendModeMaterials: 0
