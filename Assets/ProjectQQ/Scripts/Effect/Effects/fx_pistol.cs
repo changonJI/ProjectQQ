@@ -1,6 +1,6 @@
 namespace QQ
 {
-    public class fx_pistol : SkillSystem
+    public class fx_pistol : SkillBullet
     {
        
     }

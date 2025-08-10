@@ -16,7 +16,7 @@ namespace QQ
         public virtual float GetSpeed() => 0f;
 
         protected Rigidbody2D rigid;
-        protected CapsuleCollider2D col;
+        protected BoxCollider2D col;
 
         #region FSM
         public BaseStateContext stateContext;
@@ -32,7 +32,7 @@ namespace QQ
         {
             status = new StatusEffectController();
             rigid = GetComponent<Rigidbody2D>();
-            col = GetComponent<CapsuleCollider2D>();
+            col = GetComponent<BoxCollider2D>();
 
             if (null == rigid)
             {
@@ -171,7 +171,7 @@ namespace QQ
         }
 
         public Rigidbody2D GetRigid() => rigid;
-        public CapsuleCollider2D GetCollider() => col;
+        public BoxCollider2D GetCollider() => col;
 
         public void Move(Vector2 vec)
         {

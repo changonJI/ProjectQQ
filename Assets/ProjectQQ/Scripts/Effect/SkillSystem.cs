@@ -101,21 +101,37 @@ namespace QQ
             if (data.id <= 0)
                 return false;
 
-            return processTime >= data.duration;
+            float duration = data.duration * 0.001f;
+            return processTime >= duration;
         }
 
         /// <summary>
-        /// skillType Bullet만 목표 방향으로 돌림
+        /// 바라보는 방향 구하기
         /// </summary>
-        private void SetDir()
+        protected void SetDir()
         {
             if (target != null)
             {
                 dir = (targetPos - startPos).normalized;
-
-                // 이미지 돌려야 할때 사용
-                SetAngle();
             }
+        }
+
+        /// <summary>
+        /// SetDir 이후 사용할것. 이미지 돌려야 할때 사용
+        /// 내적, Cos값을 이용한 각도 구하기
+        /// cosTheta = ((x1 * x2) + (y1 * y2)) / (vec3A.magnitude * vec3B.magnitude);
+        /// </summary>
+        protected void SetAngle()
+        {
+            // 0도 기준 내적값(내적 == cosTheta 값)
+            float cosTheta = Vector3.Dot(Vector3.up, dir);
+            // cosTheta값으로 Theta값 구하기. Acos은 radian 값이므로 rad2deg를 곱해준다.
+            float theta = Mathf.Acos(cosTheta) * Mathf.Rad2Deg;
+
+            // 시계방향으로 돌리기위해 -값을 곱해준다.
+            transform.localRotation = Quaternion.Euler(0, 0, -theta);
+
+            LogHelper.DrawLine(spawnPos, targetPos, Color.red, 1f);
         }
 
         /// <summary>
@@ -142,14 +158,17 @@ namespace QQ
             if(data.mainOptionType == SkillOptionType.Explosion)
             {
                 PoolManager.Instance.ReleaseObject(gameObject);
-                SkillManager.Instance.UseSkill(data.mainOptionValue, transform.localPosition).Forget();
+
+                int optionValue = (int)(data.mainOptionValue * 0.001f);
+                SkillManager.Instance.UseSkill(optionValue, transform.localPosition).Forget();
                 return;
             }
 
             // 데미지 적용
             if (target.TryGetComponent<IDamageable>(out var damageable))
             {
-                damageable.TakeDamage(GetSkillTypeData(SkillOptionType.Damage), transform.position);
+                int damage = (int)(GetSkillTypeData(SkillOptionType.Damage) * 0.001f);
+                damageable.TakeDamage(damage, transform.position);
 
                 --data.blowCount;
 
@@ -163,7 +182,7 @@ namespace QQ
         {
             Collider[] hits = Physics.OverlapSphere(
                 transform.position,
-                data.range,
+                data.range * 0.001f,
                 LayerMask.GetMask(Layer.Enemy.ToString())
             );
 
@@ -172,7 +191,8 @@ namespace QQ
                 IDamageable target = hit.GetComponent<IDamageable>();
                 if (target != null)
                 {
-                    target.TakeDamage(GetSkillTypeData(SkillOptionType.Damage), transform.position);
+                    int damage = (int)(GetSkillTypeData(SkillOptionType.Damage) * 0.001f);
+                    target.TakeDamage(damage, transform.position);
                 }
             }
 
@@ -258,25 +278,6 @@ namespace QQ
             }
 
             return value;
-        }
-
-        /// <summary>
-        /// 내적, Cos값을 이용한 각도 구하기
-        /// cosTheta = ((x1 * x2) + (y1 * y2)) / (vec3A.magnitude * vec3B.magnitude);
-        /// </summary>
-        protected void SetAngle()
-        {
-            // 바라보는 방향 정규화값
-            Vector3 dir = (targetPos - spawnPos).normalized;
-            // 0도 기준 내적값(내적 == cosTheta 값)
-            float cosTheta = Vector3.Dot(Vector3.up, dir);
-            // cosTheta값으로 Theta값 구하기. Acos은 radian 값이므로 rad2deg를 곱해준다.
-            float theta = Mathf.Acos(cosTheta) * Mathf.Rad2Deg;
-
-            // 시계방향으로 돌리기위해 -값을 곱해준다.
-            transform.localRotation = Quaternion.Euler(0, 0, -theta);
-
-            LogHelper.DrawLine(spawnPos, targetPos, Color.red, 1f);
         }
     }
 }

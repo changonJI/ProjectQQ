@@ -11,6 +11,7 @@ namespace QQ
         {
             base.OnFocus();
 
+            SetDir();
             SetAngle();
             SetMoveLinear();
         }

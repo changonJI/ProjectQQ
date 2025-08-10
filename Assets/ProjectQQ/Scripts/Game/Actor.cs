@@ -198,14 +198,33 @@ namespace QQ
             // 현재 들고 있는 
             foreach(var weapon in inventory)
             {
-                // 사거리 체크
+                //// 사거리 체크
+                //if (dist > attackRadiusRange) continue;
+
+                //var skillData = SkillDataManager.Instance.Get(weapon.skillId);
+
+                //float cooltime = skillData.cooltime * 0.001f;
+                //// CoolTime 체크
+                //if (!CoolTimeManager.Instance.IsItemReady(weapon.skillId, cooltime)) continue;
+
+                //SkillManager.Instance.UseSkill(weapon.skillId, transform.localPosition).Forget();
+
+                //Test
+                var skillData = SkillDataManager.Instance.Get(3);
+                if (skillData.id <= 0) return;
+
+                float weaponRange = skillData.range;
+
+                //NOTE: Bullet형 Range값 체크 필요
+                //if (dist > Mathf.Pow(weaponRange, 2)) continue;
                 if (dist > attackRadiusRange) continue;
 
-                var skillData = SkillDataManager.Instance.Get(weapon.skillId);
+                float cooltime = skillData.cooltime * 0.001f;
                 // CoolTime 체크
-                if (!CoolTimeManager.Instance.IsItemReady(weapon.skillId, skillData.cooltime)) continue;
+                if (!CoolTimeManager.Instance.IsItemReady(3, cooltime)) continue;
 
-                SkillManager.Instance.UseSkill(weapon.skillId, transform.localPosition).Forget();
+                SkillManager.Instance.UseSkill(3, transform.localPosition).Forget();
+
             }
         }
 
