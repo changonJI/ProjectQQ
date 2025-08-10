@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c7603266e526449b06efd7f9a10d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animBody: {fileID: 0}
-  animWeapon: {fileID: 0}
+  animBody: {fileID: 3077647302194174295}
+  animWeapon: {fileID: 2012356928613337899}
   IsDead: 0
   onActorState: 1
 --- !u!50 &3074001158339007908
@@ -124,7 +124,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 10, y: 20}
+  m_Size: {x: 10, y: 18}
   m_EdgeRadius: 0
 --- !u!1 &2568097538577802378
 GameObject:

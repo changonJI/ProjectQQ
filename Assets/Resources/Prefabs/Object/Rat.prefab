@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef98e56101ac6624ca940350708fee74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animBody: {fileID: 0}
+  animBody: {fileID: 841430669056933037}
   animWeapon: {fileID: 0}
 --- !u!114 &2386275540243164587
 MonoBehaviour:
