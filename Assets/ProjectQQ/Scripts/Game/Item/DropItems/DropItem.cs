@@ -19,7 +19,7 @@ public class DropItem : Item
     {
         _itemData = itemData;
 
-        iconImage.sprite = LoadItemIcon(_itemData.nameId.ToText());
+        iconImage.sprite = LoadItemIcon(_itemData.iconName);
         // 이펙트 적용
     }
 
@@ -29,10 +29,10 @@ public class DropItem : Item
     public void OnCollected()
     {
         // 인벤토리 등에 아이템 추가
-        // PlayerInventory.Instance.AddItem(_itemData);
+        // PoolManager.Instance.actor.GetInventory(
 
         // 드랍 아이템 제거 (PoolManager 사용 시 반환)
-        PoolManager.Instance.ReleaseObject(this.gameObject);
+        PoolManager.Instance.ReleaseObject(gameObject);
     }
 
     /// <summary>

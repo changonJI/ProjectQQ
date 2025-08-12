@@ -27,14 +27,18 @@ namespace QQ
 
                 DialogueData data = new DialogueData
                 {
-                    id = short.Parse(columns[0]),
-                    nameId = int.Parse(columns[1]),
-                    desTextId = int.Parse(columns[2]),
-                    positionType1 = System.Enum.Parse<DialogueImgPosType>(columns[3]),
-                    imgName1 = columns[4],
-                    positionType2 = System.Enum.Parse<DialogueImgPosType>(columns[5]),
-                    imgName2 = columns[6],
-                    backgroundName = columns[7]
+                    id              = short.Parse(columns[0]),
+                    dialogueGroup   = short.Parse(columns[1]),
+                    speakerType     = byte.Parse(columns[2]),
+                    speakerNameId   = int.Parse(columns[3]),
+                    dialogueTextId  = int.Parse(columns[4]),
+                    emotionType     = byte.Parse(columns[5]),
+                    portraitId      = columns[6],
+                    voiceClipId     = columns[7],
+                    nextDialogueId  = short.Parse(columns[8]),
+                    triggerEvent    = columns[9],
+                    autoAdvance     = bool.Parse(columns[10]),
+                    advanceDelay    = float.Parse(columns[11])
                 };
 
                 if (!dic_Data.ContainsKey(data.id))

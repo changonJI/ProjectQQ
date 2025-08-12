@@ -16,9 +16,9 @@ namespace ProjectQQ.Scripts.UI.Popup
         public void SetData(ItemData data)
         {
             iconImage.sprite = Resources.Load<Sprite>($"Icon/{data.iconName}");
-            nameText.text = data.nameId.ToText();
+            nameText.text = data.nameId.ToString();
             simpleDescriptionText.text = $"아이템 타입 : {data.itemType.ToString()} \n 아이템 등급 : {data.lvCount}";
-            descriptionText.text = data.desId.ToText();
+            descriptionText.text = data.desId.ToString();
         }
     }
 }

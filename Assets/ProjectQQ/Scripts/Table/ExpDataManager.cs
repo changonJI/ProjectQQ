@@ -27,14 +27,13 @@ namespace QQ
 
                 ExpData data = new ExpData
                 {
-                    id = short.Parse(columns[0]),
-                    level = short.Parse(columns[1]),
-                    NextLvExp = short.Parse(columns[2])
+                    level = short.Parse(columns[0]),
+                    NextLvExp = short.Parse(columns[1])
                 };
 
-                if (!dic_Data.ContainsKey(data.id))
+                if (!dic_Data.ContainsKey(data.level))
                 {
-                    dic_Data.Add(data.id, data);
+                    dic_Data.Add(data.level, data);
                 }
             }
         }

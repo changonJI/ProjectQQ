@@ -12,7 +12,9 @@ public struct ItemData : IData
     public int skillId;             // 연결된 스킬 ID
     public short targetType;        // 타겟팅
     
-    public int nextID;         // 진화 대상 아이템 ID
+    public int nextID;              // 진화 대상 아이템 ID
+
+    public int originType;          // 진화 그룹
 
     public bool isShopItem;         // 상점 노출 여부
 
@@ -27,6 +29,7 @@ public struct ItemData : IData
         skillId = 0;
         targetType = 0;
         nextID = 0;
+        originType = 0;
         isShopItem = false;
     }
 
@@ -41,6 +44,7 @@ public struct ItemData : IData
         skillId = data.skillId;
         targetType = data.targetType;
         nextID = data.nextID;
+        originType = data.originType;
         isShopItem = data.isShopItem;
     }
 }

@@ -94,9 +94,42 @@ namespace ProjectQQ.Scripts.UI.Popup
             btnToData.Clear();
         }
 
-        private void OnClickItemSlot(ItemData selectedItem)
+        private async void OnClickItemSlot(ItemData selectedItem)
         {
+            ItemData oldItem = new ItemData();
+            
             // 선택한 아이템 인벤토리에 넣기
+            if (selectedItem.itemType == ItemType.Attack)
+            {
+                // ★ 열거 중 수정 방지: 스냅샷 사용
+                var inventorySnapshot = PoolManager.Instance.actor.GetInventory().ToArray();
+
+                bool found = false;
+                foreach (var VARIABLE in inventorySnapshot)
+                {
+                    if (VARIABLE.originType == selectedItem.originType)
+                    {
+                        oldItem = VARIABLE;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    PoolManager.Instance.actor.ReplaceItem(oldItem, selectedItem);
+                }
+                else
+                {
+                    PoolManager.Instance.actor.AddItem(selectedItem);
+                }
+            }
+            else if (selectedItem.itemType == ItemType.Consumable)
+            {
+                GameObject item = await PoolManager.Instance.GetObject(GameObjectType.Item, selectedItem.iconName, PoolManager.Instance.actor.transform.localPosition);
+                
+                Debug.Log("item name : " + item.name);
+            }
             
             OnClickExit();
         }
@@ -104,6 +137,7 @@ namespace ProjectQQ.Scripts.UI.Popup
         private void OnClickExit()
         {
             Debug.Log("OnClickExit");
+            GameManager.Instance.TimeScaleChanger(false);
             CloseUI();
         }
     }

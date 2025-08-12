@@ -383,6 +383,8 @@ namespace QQ
 
             currentHp += healAmount;
             currentHp = Mathf.Min(currentHp, maxHp());
+            
+            Debug.Log($"{gameObject.name} <UNK>: {currentHp}");
         }
 
         #region LevelSystem
