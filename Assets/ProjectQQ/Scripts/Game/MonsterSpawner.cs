@@ -85,8 +85,7 @@ namespace QQ
             }
 
             // monster1 소환
-            int monsterNameId = MonsterDataManager.Instance.Get(spawnData.monsterId1).nameId;
-            string monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
+            string monsterName = MonsterDataManager.Instance.Get(spawnData.monsterId1).spriteName;
             for (int i = 0; i < spawnData.monsterCnt1; ++i)
             {
                 Vector3 spawnPos = GetRandomSpawnPos();
@@ -99,8 +98,7 @@ namespace QQ
             }
 
             // monster2 소환
-            monsterNameId = MonsterDataManager.Instance.Get(spawnData.monsterId2).nameId;
-            monsterName = LanguageDataManager.Instance.Get(monsterNameId, ConturyType.English);
+            monsterName = MonsterDataManager.Instance.Get(spawnData.monsterId2).spriteName;
             for (int i = 0; i < spawnData.monsterCnt2; ++i)
             {
                 Vector3 spawnPos = GetRandomSpawnPos();

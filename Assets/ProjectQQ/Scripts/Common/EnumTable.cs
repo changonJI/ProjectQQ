@@ -38,6 +38,18 @@ namespace QQ
         Ranged = 2, // 원거리 공격
     }
 
+    public enum MonsterAIType : byte
+    {
+        None = 0,
+        ChasePlayer = 1,    // 플레이어 추적
+        Strafe = 2,         // 플레이어 주변 회피/원형 이동
+        AOE = 3,            // 범위 중심 공격
+        Charge = 4,         // 돌진
+        Trap = 5,           // 트랩 또는 지형 기반 공격
+        Summon = 6,         // 소환
+        StatusInflict = 7,  // 상태이상
+    }
+
     public enum DialogueImgPosType : byte
     {
         None = 0,

@@ -21,7 +21,7 @@ namespace QQ
             {
                 string[] columns = str.Split('\t');
 
-                // key°ª ºñ¾îÀÖÀ¸¸é ³Ñ±è
+                // keyê°’ ë¹„ì–´ìžˆìœ¼ë©´ ë„˜ê¹€
                 if (string.IsNullOrEmpty(columns[0]))
                     continue;
 
@@ -38,7 +38,8 @@ namespace QQ
                     attackLag = float.Parse(columns[8]),
                     attackAng = float.Parse(columns[9]),
                     speed = float.Parse(columns[10]),
-                    spriteName = columns[11],
+                    dropId = int.Parse(columns[11]),
+                    spriteName = columns[12],
                 };
 
                 if (!dic_Data.ContainsKey(data.id))

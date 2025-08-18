@@ -13,15 +13,22 @@ public struct MonsterData : IData
     public float attackLag; // 딜레이 시간
     public float attackAng; // 공격 범위(각도)
     public float speed; // 속도
+    public int dropId;  // 아이템 드롭 정보 드롭테이블 id
     public string spriteName;
-    // public float hitboxSize;    // hitbox_radius
-    //public short dropItemId1;   // drop_item_id_1
-    //public short dropRate1;     // drop_rate_1
-    //public short dropItemId2;   // drop_item_id_2
-    //public short dropRate2;     // drop_rate_2
-    //public short dropItemId3;   // drop_item_id_3
-    //public short dropRate3;     // drop_rate_3
-    //public ItemType dropItemType;
+    //public float hitboxSize;    // hitbox_radius
+    //public MonsterAIType aiType;
+    //public int aggroRange;
+    //public int attackRange;
+    //public bool isRanged;
+    //public string spawnCondition;
+    //public string deathFxName;
+    //public string deathSoundName;
+    //public string animationType;    // ?
+    //public bool isElite;
+    //public int resistStun;  // 스턴저항 ㅠㅠ
+    //public int resistSlow;  // 이속저하저항..
+    //public int summonType;  // ..?
+    //public bool isRespawnable; //?
 
     public void Clear()
     {
