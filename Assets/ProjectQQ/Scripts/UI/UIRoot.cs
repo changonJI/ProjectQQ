@@ -111,7 +111,9 @@ namespace QQ {
                 case UIDepth.Indicator:
                     obj.SetParent(depthIndicator);
                     break;
-            }            
+            }
+
+            obj.localScale = Vector3.one;
         }
 
         private void SetLayer(GameObject obj, int layer)
