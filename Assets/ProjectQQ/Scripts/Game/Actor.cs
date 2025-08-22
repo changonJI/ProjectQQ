@@ -135,7 +135,7 @@ namespace QQ
 
         private void ScanMonsterObject()
         {
-            int count = Physics2D.OverlapCircle(transform.localPosition + new Vector3(0, 9, 0), attackRadius, enemyFilter, hitEnemy);
+            int count = Physics2D.OverlapCircle(transform.localPosition, attackRadius, enemyFilter, hitEnemy);
 
             minDist = float.MaxValue;
 
@@ -171,7 +171,7 @@ namespace QQ
 
         private void ScanItemObject()
         {
-            int count = Physics2D.OverlapCircle(transform.localPosition + new Vector3(0, 9, 0), itemRadius, itemFilter, hitItem);
+            int count = Physics2D.OverlapCircle(transform.localPosition, itemRadius, itemFilter, hitItem);
 
             for (int i = 0; i < count; i++)
             {
@@ -180,11 +180,11 @@ namespace QQ
                 if (item == null) continue;
                 if(item.gameObject.activeSelf == false) continue;
 
-                Vector3 dir = (item.transform.localPosition - transform.localPosition).normalized;
+                Vector3 dir = (transform.localPosition - item.transform.localPosition).normalized;
 
                 // TODO: 5f는 임시로 넣은 아이템 이속 값
                 // 자석효과
-                item.transform.localPosition += (dir * 5f * Time.fixedDeltaTime);
+                item.transform.localPosition += (dir * GameConf.ItemGetSpeed * Time.fixedDeltaTime);
             }
         }
 
@@ -369,7 +369,7 @@ namespace QQ
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.localPosition + new Vector3(0, 9, 0), attackRadius);
+            Gizmos.DrawWireSphere(transform.localPosition, attackRadius);
         }
 #endif
 
