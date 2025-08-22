@@ -25,7 +25,6 @@ namespace QQ
             SetLayer();
             
             owner = PoolManager.Instance.actor;
-            target = owner.GetTarget()?.GetComponent<Monster>() ?? null;
         }
 
         protected override void OnStart() 
@@ -34,6 +33,14 @@ namespace QQ
 
         protected override void OnFocus()
         {
+            target = owner.GetTarget()?.GetComponent<Monster>() ?? null;
+
+            if(target == null)
+            {
+                PoolManager.Instance.ReleaseObject(gameObject);
+                return;
+            }
+
             // 데이터 초기화(풀링 대비)
             SetTable();
             // process 시간 초기화
