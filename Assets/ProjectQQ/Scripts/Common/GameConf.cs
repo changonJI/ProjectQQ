@@ -16,7 +16,8 @@ public static class GameConf
 
     #region float
     public const float ActorOffset = 9f;
-    public const float AttackRadius = 30f;
-    public const float ItemRadius = 30f;
+    public const float AttackRadius = 60f;
+    public const float ItemRadius = 15f;
+    public const float ItemGetSpeed = 70f;
     #endregion
 }
