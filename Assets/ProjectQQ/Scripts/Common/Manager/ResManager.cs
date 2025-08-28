@@ -13,6 +13,7 @@ namespace QQ
         private const string textureLocalPath = "Image/UI/";
         private const string effectLocalPath = "Prefabs/Effect/";
         private const string spriteLocalPath = "Image/";
+        private const string animationPath = "Animations/";
 
         /// <summary>
         /// Load a resource from the Resources folder In General
@@ -82,6 +83,8 @@ namespace QQ
                     return StringBuilderPool.Get(effectLocalPath, name);
                 case ResType.Sprite:
                     return StringBuilderPool.Get(spriteLocalPath, name);
+                case ResType.Animation:
+                    return StringBuilderPool.Get(animationPath, name); 
                 default:
                     LogHelper.LogError($"Unknown resource type: {type}");
                     return null;

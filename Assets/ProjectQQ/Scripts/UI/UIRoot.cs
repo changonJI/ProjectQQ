@@ -52,6 +52,13 @@ namespace QQ {
             
         }
 
+        public void SetActive(bool isActive)
+        {
+            canvasHud.enabled = isActive;
+            canvasFixed.enabled = isActive;
+            canvasOverlay.enabled = isActive;
+        }
+
         public void OnCreateAction(UI ui)
         {
             //NOTE: Indicator는 uiList에서 제외. 추가시 씬전환할때 ClearUI에서 충돌

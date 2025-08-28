@@ -1,3 +1,5 @@
+using ProjectQQ;
+using System.Collections;
 using UnityEngine;
 
 namespace QQ
@@ -16,12 +18,7 @@ namespace QQ
                 TableDataManager.LoadTableData();
         }
 
-        private void Start()
-        {
-            Init();
-        } 
-        
-        private void Init()
+        private IEnumerator Start()
         {
             if (!isFirst)
             {
@@ -34,17 +31,17 @@ namespace QQ
                 SoundManager.Instance.Init();
                 SkillManager.Instance.Init();
                 PoolManager.Instance.Init();
-
-                //TODO: VideoManger 추가 필요
+                VideoManager.Instance.Init();
             }
 
             if (!isFirst)
                 isFirst = true;
 
-            //TODO : Intro 체크
-            if (GameManager.Instance.IsValidPlayer())
+            if (!GameManager.Instance.IsValidPlayer())
             {
-                //TODO: VideoManager 실행
+                yield return new WaitForSeconds(1f);
+
+                VideoManager.Instance.PlayViedo("QQ_intro");
             }
 
             UIMainScene.Instantiate();

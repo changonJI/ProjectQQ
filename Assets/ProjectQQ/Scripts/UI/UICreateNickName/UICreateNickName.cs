@@ -21,9 +21,9 @@ namespace QQ
 
         protected override void OnInit()
         {
-            txtTitle.text = "타이틀";
+            txtTitle.text = 1.ToText();
             inputField.text = string.Empty;
-            txtDefault.text = "입력칸";
+            txtDefault.text = "name";
         }
 
         protected override void OnStart()
@@ -51,16 +51,16 @@ namespace QQ
 
         public void OnClickConfirm()
         {
-            if (inputField.text.Length > limitTxt)
+            if (inputField.text.Length > limitTxt || inputField.text.TrimEnd() == "")
             {
-                LogHelper.LogError("글자 초과. 팝업 띄울것. 다시 입력하세요");
+                LogHelper.LogError("글자 확인 필요");
             }
             else
             {
                 UIPopupConfirm.Instantiate(
                     okAction: CancelNickName,
                     closeAction: ConfirmNickName,
-                    "변경 할 수 없습니다.", "취소", "확인"
+                    2.ToText(), 4.ToText() , 3.ToText()
                 );
             }
         }
@@ -92,10 +92,10 @@ namespace QQ
         {
             GameManager.Instance.SavePlayerData(PlayerDataType.UserName, inputField.text);
             UIPopupConfirm.CloseUI();
-            UIMainScene.Instantiate();
+
+            GameManager.Instance.LoadScene(SceneType.GameScene, SceneEntryType.EnterStage);
             Close();
 
-            //TODO : GameScene 1-1 바로 진입 처리
         }
 
         private void CancelNickName()

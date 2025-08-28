@@ -206,6 +206,7 @@ namespace QQ
         Texture = 4,
         Effect = 5,
         Sprite = 6,
+        Animation = 7,
     }
 
     public enum InputMap : byte // 키 입력 상황
