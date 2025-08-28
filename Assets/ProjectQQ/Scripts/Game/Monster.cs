@@ -8,7 +8,7 @@ namespace QQ
 {
     public class Monster : SpineGameObject, IDamageable
     {
-        public override GameObjectType Type => GameObjectType.Monster;
+        public override GameObjectType ObjType => GameObjectType.Monster;
 
         private MonsterData monsterData;
         

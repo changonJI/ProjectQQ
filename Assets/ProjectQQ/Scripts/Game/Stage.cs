@@ -4,7 +4,7 @@ namespace QQ
 {
     public class Stage : BaseGameObject
     {
-        public override GameObjectType Type => GameObjectType.Stage;
+        public override GameObjectType ObjType => GameObjectType.Stage;
 
         private MonsterSpawner monsterSpawner;
         private GridManager grid;

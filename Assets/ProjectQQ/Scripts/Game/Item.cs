@@ -15,7 +15,7 @@ namespace QQ
     }
     public class Item : BaseGameObject, ICollectable
     {
-        public override GameObjectType Type => GameObjectType.Item;
+        public override GameObjectType ObjType => GameObjectType.Item;
         protected override void OnInit() 
         {
             SetLayer(gameObject, GameObjectType.Item);

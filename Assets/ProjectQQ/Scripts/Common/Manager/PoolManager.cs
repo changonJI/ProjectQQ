@@ -134,7 +134,7 @@ namespace QQ
         {
             BaseGameObject baseGameObj = obj.GetComponent<BaseGameObject>();
 
-            Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(baseGameObj.Type);
+            Dictionary<string, (List<BaseGameObject>, Queue<BaseGameObject>)> pool = GetPoolByType(baseGameObj.ObjType);
             if (pool.TryGetValue(obj.name, out (List<BaseGameObject> list, Queue<BaseGameObject> queue) poolPair))
             {
                 poolPair.queue.Enqueue(baseGameObj);

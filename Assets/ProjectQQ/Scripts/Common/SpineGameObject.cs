@@ -7,7 +7,7 @@ namespace QQ
 {
     public class SpineGameObject : BaseGameObject
     {
-        public override GameObjectType Type => GameObjectType.Default;
+        public override GameObjectType ObjType => GameObjectType.Default;
 
         #region animation 관련 변수
         // 현재 애니메이션 상태값
@@ -96,7 +96,7 @@ namespace QQ
             }
 
             // Weapon SkeletonAnimation 초기화, Actor만 적용
-            if (animWeapon != null && Type == GameObjectType.Actor)
+            if (animWeapon != null && ObjType == GameObjectType.Actor)
             {
                 // 초기화 안할시 skeletionanimation.skeleton이 null
                 animWeapon.Initialize(false);
@@ -142,7 +142,7 @@ namespace QQ
                 LogHelper.LogError("default skin not found for Body.");
             }
 
-            if (Type == GameObjectType.Actor)
+            if (ObjType == GameObjectType.Actor)
             {
                 var findSkinWeapon = animWeapon.skeleton.Data.FindSkin(GameConf.SpineWeapon0);
 

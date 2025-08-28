@@ -4,7 +4,7 @@ namespace QQ
 {
     public class SkillSystem : BaseGameObject
     {
-        public override GameObjectType Type => GameObjectType.SFX;
+        public override GameObjectType ObjType => GameObjectType.SFX;
 
         // 초기화 변수
         protected float processTime;

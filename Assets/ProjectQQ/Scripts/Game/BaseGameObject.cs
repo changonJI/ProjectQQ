@@ -6,7 +6,7 @@ namespace QQ
     [DisallowMultipleComponent]
     public abstract class BaseGameObject : MonoBehaviour
     {
-        public abstract GameObjectType Type { get; }
+        public abstract GameObjectType ObjType { get; }
 
         private bool isActive;
         private bool isStart;
