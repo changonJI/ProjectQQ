@@ -134,8 +134,13 @@ namespace QQ
         {
             // 0도 기준 내적값(내적 == cosTheta 값)
             float cosTheta = Vector3.Dot(Vector3.up, dir);
+            
             // cosTheta값으로 Theta값 구하기. Acos은 radian 값이므로 rad2deg를 곱해준다.
             float theta = Mathf.Acos(cosTheta) * Mathf.Rad2Deg;
+
+            // costheta는 180가 최대이기때문에 360도 계산처리
+            if (dir.x < 0)
+                theta = 360f - theta;
 
             // 시계방향으로 돌리기위해 -값을 곱해준다.
             transform.localRotation = Quaternion.Euler(0, 0, -theta);
