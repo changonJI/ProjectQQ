@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace QQ
 {
@@ -97,7 +97,9 @@ namespace QQ
         protected virtual void Move(Vector2 dir, float velocity)
         {
             Vector2 vec2DeltaMovement = Time.fixedDeltaTime * velocity * dir;
+            
             Owner.Move(vec2DeltaMovement);
+            Owner.FlipX(dir);
 
             // refresh last move direction on movement
             LastMoveDirection = dir;

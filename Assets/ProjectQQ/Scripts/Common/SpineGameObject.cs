@@ -75,7 +75,7 @@ namespace QQ
             {
                 // 초기화 안할시 skeletionanimation.skeleton이 null
                 animBody.Initialize(false);
-
+                
                 // sorting layer, order in layer 세팅
                 SetLayer(animBody, AnimSlotType.Body);
 
@@ -320,6 +320,25 @@ namespace QQ
             float duration = anim.Duration;
 
             return duration;
+        }
+
+        public override void FlipX(Vector2 vec)
+        {
+            if (vec.x == 0) return;
+
+            float dir = vec.x > 0 ? -1 : 1;
+
+            if (animBody != null &&
+                animBody.skeleton.ScaleX != dir)
+            {
+                animBody.skeleton.ScaleX = dir;
+            }
+
+            if (animWeapon != null &&
+                animWeapon.skeleton.ScaleX != dir)
+            {
+                animWeapon.skeleton.ScaleX = dir;
+            }
         }
     }
 }

@@ -177,5 +177,7 @@ namespace QQ
         {
             rigid.MovePosition(transform.localPosition + (Vector3)vec);
         }
+
+        public virtual void FlipX(Vector2 vec) { }
     }
 }

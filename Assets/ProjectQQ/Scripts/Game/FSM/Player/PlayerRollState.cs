@@ -80,7 +80,6 @@ namespace QQ.FSM
 
             addSpeed = eased * rollPower;
 
-            LogHelper.Log(addSpeed);
             actor.SetAddSpeed(addSpeed);
         }
 
