@@ -346,11 +346,6 @@ namespace QQ
             rigid.linearVelocity = Vector2.zero;
         }
 
-        public void SetCollider(bool isActive)
-        {
-            col.enabled = isActive;
-        }
-
 #if UNITY_EDITOR
         [SerializeField] bool onActorState = true;
         private void OnGUI()

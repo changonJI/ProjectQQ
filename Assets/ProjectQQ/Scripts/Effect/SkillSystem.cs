@@ -48,7 +48,7 @@ namespace QQ
             // 위치 초기화
             InitPos();
             // colider On
-            col.enabled = true;
+            SetCollider(true);
             // 움직임 초기화
             rigid.linearVelocity = Vector3.zero;
             // 사운드 실행
@@ -61,7 +61,7 @@ namespace QQ
             // 움직임 정지
             rigid.linearVelocity = Vector3.zero;
             // collider Off
-            col.enabled = false;
+            SetCollider(false);
 
             processTime = 0f;
         }

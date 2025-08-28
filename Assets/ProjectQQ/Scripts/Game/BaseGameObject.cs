@@ -208,6 +208,12 @@ namespace QQ
             rigid.MovePosition(transform.localPosition + (Vector3)vec);
         }
 
+        public void SetCollider(bool isActive)
+        {
+            if(col != null)
+                col.enabled = isActive;
+        }
+
         public virtual void FlipX(Vector2 vec) { }
     }
 }
