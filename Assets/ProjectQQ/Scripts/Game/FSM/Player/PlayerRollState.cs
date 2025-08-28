@@ -18,7 +18,7 @@ namespace QQ.FSM
         private float addSpeed = 0f;
 
         // 구르기 힘(eased * rollPower)
-        private float rollPower = 5f;
+        private float rollPower = 50f;
         // 구르기 anim의 속도 값
         private float easeSpeed = 5f;
 
@@ -36,6 +36,8 @@ namespace QQ.FSM
 
         private void Init()
         {
+            actor.SetCollider(false);
+
             actor.PlayerMovement.SetDirectionLock(true);
             actor.PlayerMovement.SetMoveDirectionToLast();
             duration = actor.GetAnimDuration(AnimState.Roll);
@@ -59,6 +61,8 @@ namespace QQ.FSM
 
         public void Exit()
         {
+            actor.SetCollider(true);
+
             actor.CalcAddSpeed(-addSpeed);
             actor.PlayerMovement.SetDirectionLock(false);
         }

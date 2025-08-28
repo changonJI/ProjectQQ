@@ -8,7 +8,7 @@ namespace QQ
 {
     public class Actor : SpineGameObject, IDamageable
     {
-        public override GameObjectType Type => GameObjectType.Actor;
+        public override GameObjectType ObjType => GameObjectType.Actor;
         
         public PlayerMovement PlayerMovement { get; private set; }
         private PlayerStatData playerStatData;
@@ -335,6 +335,20 @@ namespace QQ
             var data = PlayerStatDataManager.Instance.Get(tableID);
 
             playerStatData.Set(data);
+        }
+
+
+        /// <summary>
+        /// 강체끼리 부딪혔을때 값이 증가하여 움직이는 버그를 막기위해 강제 초기화
+        /// </summary>
+        public void InitVelocity()
+        {
+            rigid.linearVelocity = Vector2.zero;
+        }
+
+        public void SetCollider(bool isActive)
+        {
+            col.enabled = isActive;
         }
 
 #if UNITY_EDITOR

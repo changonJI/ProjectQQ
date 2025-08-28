@@ -23,7 +23,7 @@ namespace QQ.FSM
         
         private readonly List<StatusEffect> expiredBuffer = new();
 
-        private void Update()
+        public void Update()
         {
             if(current == StatusEffect.None) return;
             

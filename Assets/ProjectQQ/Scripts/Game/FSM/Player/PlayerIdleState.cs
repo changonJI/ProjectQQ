@@ -15,6 +15,7 @@ namespace QQ.FSM
         public void Enter()
         {
             actor.PlayerMovement.SetMoveBlock(false);
+            actor.InitVelocity();
             actor.SetCurAnimation(AnimState.Idle);
         }
 

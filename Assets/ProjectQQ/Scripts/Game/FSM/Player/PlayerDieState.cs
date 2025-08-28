@@ -14,6 +14,7 @@ namespace QQ.FSM
         {
             actor.PlayerMovement.SetMoveBlock(true, true);
             actor.SetCurAnimation(AnimState.Die);
+            actor.InitVelocity();
         }
 
         public void Update()
