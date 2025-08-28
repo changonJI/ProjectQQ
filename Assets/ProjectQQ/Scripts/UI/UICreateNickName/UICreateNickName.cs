@@ -14,16 +14,13 @@ namespace QQ
 
         private const int limitTxt = 8;
 
-        [SerializeField] private TextMeshProUGUI txtTitle;
         [SerializeField] private TextMeshProUGUI txtDefault;
         [SerializeField] private TMP_InputField inputField;
-        [SerializeField] private UIButton btnEnter;
 
         protected override void OnInit()
         {
-            txtTitle.text = 1.ToText();
+            txtDefault.text = 1.ToText();
             inputField.text = string.Empty;
-            txtDefault.text = "name";
         }
 
         protected override void OnStart()
