@@ -182,7 +182,6 @@ namespace QQ
 
                 Vector3 dir = (transform.localPosition - item.transform.localPosition).normalized;
 
-                // TODO: 5f는 임시로 넣은 아이템 이속 값
                 // 자석효과
                 item.transform.localPosition += (dir * GameConf.ItemGetSpeed * Time.fixedDeltaTime);
             }

@@ -197,7 +197,7 @@ namespace QQ
 
         public void DestroyAll()
         {
-            Destroy(actor);
+            Destroy(actor.gameObject);
             actor = null;
 
             foreach (var poolPair in monsterPools.Values)
