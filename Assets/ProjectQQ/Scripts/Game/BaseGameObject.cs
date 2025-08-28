@@ -147,11 +147,41 @@ namespace QQ
             OnTriggerEnter2Ded(other);
         }
         abstract protected void OnTriggerEnter2Ded(Collider2D other);
+
+        protected virtual void OnCollisionEnter2D(Collision2D collision)
+        {
+            OnCollisionEnter2Ded(collision);
+        }
+        abstract protected void OnCollisionEnter2Ded(Collision2D other);
         #endregion
 
         public void SetParent(Transform transform)
         {
             gameObject.transform.SetParent(transform);
+        }
+
+        public void SetLayer(GameObject obj, GameObjectType type)
+        {
+            int layer = (int)Layer.Default;
+            switch (type)
+            {
+                case GameObjectType.Actor:
+                    layer = (int)Layer.Player;
+                    break;
+                case GameObjectType.Monster:
+                    layer = (int)Layer.Enemy;
+                    break;
+                case GameObjectType.Item:
+                    layer = (int)Layer.Item;
+                    break;
+            }
+
+            obj.layer = layer;
+
+            foreach (Transform child in obj.transform)
+            {
+                SetLayer(child.gameObject, type);
+            }
         }
 
         public void SetTableID(int id)

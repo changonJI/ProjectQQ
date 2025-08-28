@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 233502806426735348}
   - component: {fileID: 3074001158339007908}
   - component: {fileID: 5261105688982798194}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Actor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7702043684841564213}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EffectBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7271472961206861449}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 5143449843166741217}
   - component: {fileID: 4129578827350871344}
   - component: {fileID: 3077647302194174295}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 8835897133726039541}
   - component: {fileID: 5441380538319301496}
   - component: {fileID: 2012356928613337899}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +459,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9099336905858210819}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EffectFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}

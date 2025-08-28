@@ -17,5 +17,6 @@ namespace QQ
 
         protected override void OnTriggerEnter2Ded(Collider2D other) {}
 
+        protected override void OnCollisionEnter2Ded(Collision2D other) {}
     }
 }

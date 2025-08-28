@@ -56,6 +56,7 @@ namespace QQ
         {
             base.OnInit();
 
+            SetLayer(gameObject, GameObjectType.Actor);
             InitPlayer();
             InitController();
         }
@@ -64,7 +65,6 @@ namespace QQ
         {
             SetTable();
             stateContext.ChangeState(stateContext.GetIdleState());
-            inventory.Add(ItemDataManager.Instance.Get(3));
         }
 
         protected override void OnFixedUpdate()
@@ -88,11 +88,7 @@ namespace QQ
 
         protected override void OnTriggerEnter2Ded(Collider2D other)
         {
-            if(other.gameObject.layer == (int)Layer.Enemy)
-            {
-
-            }
-            else if(other.gameObject.layer == (int)Layer.Item)
+            if(other.gameObject.layer == (int)Layer.Item)
             {
                 if (other.gameObject.TryGetComponent<ICollectable>(out var item))
                 {
@@ -197,19 +193,7 @@ namespace QQ
             // 현재 들고 있는 
             foreach(var weapon in inventory)
             {
-                //// 사거리 체크
-                //if (dist > attackRadiusRange) continue;
-
-                //var skillData = SkillDataManager.Instance.Get(weapon.skillId);
-
-                //float cooltime = skillData.cooltime * 0.001f;
-                //// CoolTime 체크
-                //if (!CoolTimeManager.Instance.IsItemReady(weapon.skillId, cooltime)) continue;
-
-                //SkillManager.Instance.UseSkill(weapon.skillId, transform.localPosition).Forget();
-
-                //Test
-                var skillData = SkillDataManager.Instance.Get(3);
+                var skillData = SkillDataManager.Instance.Get(weapon.skillId);
                 if (skillData.id <= 0) return;
 
                 float weaponRange = skillData.range;
@@ -220,10 +204,9 @@ namespace QQ
 
                 float cooltime = skillData.cooltime * 0.001f;
                 // CoolTime 체크
-                if (!CoolTimeManager.Instance.IsItemReady(3, cooltime)) continue;
+                if (!CoolTimeManager.Instance.IsItemReady(weapon.skillId, cooltime)) continue;
 
-                SkillManager.Instance.UseSkill(3, transform.localPosition).Forget();
-
+                SkillManager.Instance.UseSkill(weapon.skillId, transform.localPosition).Forget();
             }
         }
 
@@ -337,6 +320,8 @@ namespace QQ
             itemRadius = GameConf.ItemRadius;
             
             GameManager.Instance.RegisterActor(this);
+
+            AddItem(ItemDataManager.Instance.Get(3));
         }
 
         private void InitController()

@@ -5,7 +5,7 @@ namespace QQ
 {
     public class CoolTimeManager : Singleton<CoolTimeManager>
     {
-        private Dictionary<int, float> cooldownEnd = new();
+        private Dictionary<int, float> cooldownEnd = new Dictionary<int, float>();
 
         public bool IsItemReady(int skillId, float duration)
         {

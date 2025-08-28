@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DropItem : Item
 {
-    [SerializeField] private SpriteRenderer iconImage; // UI ÀÌ¹ÌÁö (¾ÆÀÌÅÛ ¾ÆÀÌÄÜ Ç¥½Ã¿ë)
+    [SerializeField] private SpriteRenderer iconImage; // UI ì´ë¯¸ì§€ (ì•„ì´í…œ ì•„ì´ì½˜ í‘œì‹œìš©)
 
     private ItemData _itemData;
 
@@ -13,30 +13,30 @@ public class DropItem : Item
     }
 
     /// <summary>
-    /// µå¶ø ¾ÆÀÌÅÛ ÃÊ±âÈ­
+    /// ë“œë ì•„ì´í…œ ì´ˆê¸°í™”
     /// </summary>
     public void DataInit(ItemData itemData)
     {
         _itemData = itemData;
 
         iconImage.sprite = LoadItemIcon(_itemData.iconName);
-        // ÀÌÆåÆ® Àû¿ë
+        // ì´í™íŠ¸ ì ìš©
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ ÀÌ ¾ÆÀÌÅÛ¿¡ ´ê¾ÒÀ» ¶§ È£Ãâ
+    /// í”Œë ˆì´ì–´ê°€ ì´ ì•„ì´í…œì— ë‹¿ì•˜ì„ ë•Œ í˜¸ì¶œ
     /// </summary>
     public void OnCollected()
     {
-        // ÀÎº¥Åä¸® µî¿¡ ¾ÆÀÌÅÛ Ãß°¡
+        // ì¸ë²¤í† ë¦¬ ë“±ì— ì•„ì´í…œ ì¶”ê°€
         // PoolManager.Instance.actor.GetInventory(
 
-        // µå¶ø ¾ÆÀÌÅÛ Á¦°Å (PoolManager »ç¿ë ½Ã ¹İÈ¯)
+        // ë“œë ì•„ì´í…œ ì œê±° (PoolManager ì‚¬ìš© ì‹œ ë°˜í™˜)
         PoolManager.Instance.ReleaseObject(gameObject);
     }
 
     /// <summary>
-    /// ¾ÆÀÌÄÜ ¸®¼Ò½º ºÒ·¯¿À±â
+    /// ì•„ì´ì½˜ ë¦¬ì†ŒìŠ¤ ë¶ˆëŸ¬ì˜¤ê¸°
     /// </summary>
     private Sprite LoadItemIcon(string iconName)
     {

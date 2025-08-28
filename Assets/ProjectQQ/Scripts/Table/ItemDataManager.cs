@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace QQ
@@ -37,7 +36,7 @@ namespace QQ
                     desId = int.Parse(columns[3]),
                     iconName = columns[4],
                     lvCount = short.Parse(columns[5]),
-                    // skillId = int.Parse(columns[6]),
+                    skillId = int.Parse(columns[6]),
                     targetType = short.Parse(columns[7]),
                     nextID = int.Parse(columns[8]),
                     originType = int.Parse(columns[9]),

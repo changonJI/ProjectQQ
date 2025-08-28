@@ -24,12 +24,18 @@ namespace QQ
         // 이속
         public override float GetSpeed() => monsterData.speed + addSpeed;
         private float addSpeed = 0f;
+
+        // 쿨타임
+        private const float atkCoolTime = 1f;
+        private float endAtkCoolTime = 0f;
+
         public Transform TargetTransform { get; private set; }
 
         protected override void OnInit()
         {
             base.OnInit();
 
+            SetLayer(gameObject, GameObjectType.Monster);
             InitMonster();
             InitController();
         }
@@ -55,6 +61,22 @@ namespace QQ
         }
         protected override void OnLateUpdate() { }
         protected override void OnDestroyed() { }
+
+        protected override void OnCollisionEnter2Ded(Collision2D other)
+        {
+            if (other.gameObject.layer == (int)Layer.Player)
+            {
+                if (other.gameObject.TryGetComponent<IDamageable>(out var actor))
+                {
+                    float nowTime = Time.realtimeSinceStartup;
+                    if (nowTime >= endAtkCoolTime)
+                    {
+                        actor.TakeDamage(monsterData.attack, transform.localPosition);
+                        endAtkCoolTime = nowTime;
+                    }
+                }
+            }
+        }
 
         public void TryFindPlayer()
         {

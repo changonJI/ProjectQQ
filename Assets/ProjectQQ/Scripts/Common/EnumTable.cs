@@ -129,6 +129,7 @@ namespace QQ
     public enum Layer : byte
     {
         Default = 0,
+        Player = 3,
         UI = 5,
         Enemy = 7,
         Item = 8,
