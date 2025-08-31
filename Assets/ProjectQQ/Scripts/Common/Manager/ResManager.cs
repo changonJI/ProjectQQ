@@ -11,7 +11,7 @@ namespace QQ
         private const string stageLocalPath = "Prefabs/Stage/";
         private const string objectLocalPath = "Prefabs/Object/";
         private const string textureLocalPath = "Image/UI/";
-        private const string effectLocalPath = "Prefabs/Effect/";
+        private const string effectLocalPath = "Prefabs/Effect/Prefabs/";
         private const string spriteLocalPath = "Image/";
         private const string animationPath = "Animations/";
 
