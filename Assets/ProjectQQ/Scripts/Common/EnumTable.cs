@@ -9,7 +9,7 @@ namespace QQ
     {
         None = 0,
         LanguageData = 1,
-        BaseData = 2,
+        StageData = 2,
         DialogueData = 3,
         PlayerStatData = 4,
         ItemData = 5,
