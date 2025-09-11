@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using ProjectQQ.Scripts.UI.Popup;
+using System;
 using UnityEngine;
 
 namespace QQ
@@ -21,10 +22,9 @@ namespace QQ
         }
 
         private async UniTaskVoid Init()
-        {            
-            // 스테이지 로드  // TODO. stage BaseGameObject 통해서 값 넣도록 변경
-            GameObject stageObject = await ResManager.AsyncInstantiate(ResType.Stage, "Stage1");
-            stage = stageObject.GetComponent<Stage>();
+        {
+            // 스테이지 로드
+            await LoadStage(1, 1);
 
             cameraManager.SetCameraTarget(CameraType.Default, stage.transform);
 
@@ -38,7 +38,18 @@ namespace QQ
             float cameraHalfW = cameraHalfH * cameraManager.GetCameraAspect();
             stage.SetMonsterSpawner(cameraHalfW, cameraHalfH);
         }
-        
+
+        private async UniTask LoadStage(int chapterGroup, int stageNumber)
+        {
+            GameObject stageObject = await ResManager.AsyncInstantiate(
+                ResType.Stage
+                , StringBuilderPool.Get("Chapter", chapterGroup.ToString(),"/Stage", stageNumber.ToString())
+                );
+
+            stage = stageObject.GetComponent<Stage>();
+            stage.SetChapterStage(chapterGroup, stageNumber);
+        }
+
         [ContextMenu("스테이지 클리어")]
         private void PlayerLevelUp()
         {

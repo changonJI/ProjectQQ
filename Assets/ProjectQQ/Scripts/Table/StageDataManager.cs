@@ -1,3 +1,4 @@
+using AmplifyShaderEditor;
 using System.Collections.Generic;
 
 namespace QQ
@@ -35,11 +36,9 @@ namespace QQ
                     stagNameDes = int.Parse(columns[5]),
                     bgmId = columns[6],
                     backgroundAsset = columns[7],
-                    spawnTableId = int.Parse(columns[11]),
-                    dropTableId = int.Parse(columns[12]),
-                    isBossStage = bool.Parse(columns[13]),
-                    stageFxId = columns[10],
-                    stageNumber = int.Parse(columns[14])
+                    isBossStage = bool.Parse(columns[8]),
+                    stageFxId = columns[9],
+                    stageNumber = int.Parse(columns[10])
                 };
 
                 if (!dic_Data.ContainsKey(data.id))
@@ -47,6 +46,36 @@ namespace QQ
                     dic_Data.Add(data.id, data);
                 }
             }
+        }
+
+        public StageData Get(int id)
+        {
+            if (id <= 0) return default;
+
+            if (dic_Data.ContainsKey(id))
+            {
+                return dic_Data[id];
+            }
+            else
+            {
+                LogHelper.LogError($"StageData is Null : {id}");
+                return default;
+            }
+        }
+
+
+        public StageData Get(int chapter, int stage)
+        {
+            foreach(var data in dic_Data)
+            {
+                if (chapter == data.Value.chapterGroup && stage == data.Value.stageGroup)
+                {
+                    return data.Value;
+                }
+            }
+
+            LogHelper.LogError($"StageData is Null : chapter {chapter}, stage {stage}");
+            return default;
         }
     }
 }

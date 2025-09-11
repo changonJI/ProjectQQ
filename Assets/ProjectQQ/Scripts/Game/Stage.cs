@@ -5,12 +5,13 @@ namespace QQ
     public class Stage : BaseGameObject
     {
         public override GameObjectType ObjType => GameObjectType.Stage;
-
+        private StageData stageData;
         private MonsterSpawner monsterSpawner;
         private GridManager grid;
 
-        [SerializeField] short chapter;
-        [SerializeField] short stage;
+        // 값 들어간거 확인용, 안정적 동작 확인 이후 삭제
+        [SerializeField] int chapter;
+        [SerializeField] int stage;
 
         protected override void OnDestroyed() { }
 
@@ -22,11 +23,6 @@ namespace QQ
         {
             monsterSpawner = gameObject.AddComponent<MonsterSpawner>(this);
             grid = gameObject.GetComponent<GridManager>();
-
-            if (0 == chapter || 0 == stage)
-            {
-                LogHelper.LogError($"{gameObject.name} 스테이지 프리팹에 스테이지 chapter, stage 설정 안됨");
-            }
         }
 
         protected override void OnLateUpdate() { }
@@ -46,6 +42,25 @@ namespace QQ
         {
         }
 
+        public void SetChapterStage(int chapterGroup, int stageNumber)
+        {
+            chapter = chapterGroup;
+            stage = stageNumber;
+
+            if (0 == chapter || 0 == stage)
+            {
+                LogHelper.LogError($"{gameObject.name} 스테이지 chapter, stage 설정 안됨");
+            }
+
+            stageData = StageDataManager.Instance.Get(chapter, stage);
+            if (stageData.chapterGroup != chapterGroup || stageData.stageNumber != stageNumber)
+            {
+                LogHelper.LogError($"{gameObject.name} chapter, stage에 매치되는 데이터 없음");
+            }
+            tableID = stageData.id;
+        }
+
+        // SetChapterStage 먼저 하고 호출해야 함
         public void SetMonsterSpawner(float camHalfW, float camHalfH)
         {
             // 몬스터 스폰 세팅
