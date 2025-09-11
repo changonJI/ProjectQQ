@@ -340,7 +340,7 @@ namespace QQ
         {
             public int id;                  // 테이블 데이터 id
             public float nextSpawnTime;     // 다음 소환 타이밍  // TODO. 스테이지 시작시간으로 기준으로 변경 필요
-            public int spawnLoopTime;     // 소환 주기
+            public float spawnLoopTime;     // 소환 주기
             public int remainingSetCount;   // 남은 소환 횟수
         }
 

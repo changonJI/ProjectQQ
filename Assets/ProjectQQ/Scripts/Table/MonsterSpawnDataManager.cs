@@ -28,8 +28,8 @@ namespace QQ
                 MonsterSpawnData data = new MonsterSpawnData
                 {
                     id = int.Parse(columns[0]),    // 웨이브 아이디
-                    spawnStart = int.Parse(columns[1]),    // spawn 시작 시간
-                    spawnLoop = int.Parse(columns[2]),    // spawn 반복 시간
+                    spawnStart = float.Parse(columns[1]),    // spawn 시작 시간
+                    spawnLoop = float.Parse(columns[2]),    // spawn 반복 시간
                     spawnCount = int.Parse(columns[3]),    // spawn 횟수
                     monsterId1 = int.Parse(columns[4]),    // monster ID 1
                     monsterCnt1 = short.Parse(columns[5]),  // monster 마릿수 1
@@ -54,7 +54,7 @@ namespace QQ
             }
             else
             {
-                LogHelper.LogError($"PlayerStatData is Null : {id}");
+                LogHelper.LogError($"MonsterSpawnData is Null : {id}");
                 return default;
             }
         }
