@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ad0f3ae5a8fb6a3408f80db9eb2e0e95
+guid: ffc209896e7f6ff448b77dbbaa139b48
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Noto Sans KR
+  - Pretendard
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b2723e61dc1b63748af47a188e0b17f0
+guid: 1c9b7b98a4ceae94fa4a92e41b951f6a
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Noto Sans KR
+  - FUNFLOW SURVIVOR KR
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

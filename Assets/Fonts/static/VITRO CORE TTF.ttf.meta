@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61c12a4656a2fb54f8571c8422c044b9
+guid: bd13f6225fb72334eaa7d87ed62608b8
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Noto Sans KR
+  - VITRO CORE TTF
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
